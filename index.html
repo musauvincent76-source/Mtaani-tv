@@ -7,13 +7,13 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#000;overflow:hidden;font-family:Arial Black,Arial;height:100vh;display:flex;flex-direction:column}
-#topBar{height:48px;background:#000;display:flex;justify-content:space-between;align-items:center;padding:0 14px;flex-shrink:0;border-bottom:2px solid #ffcc00}
-#logo{color:#ffcc00;font-size:20px;letter-spacing:1px;text-shadow:0 0 5px #ffcc00}
+#topBar{height:48px;background:#000;display:flex;justify-content:space-between;align-items:center;padding:0 14px;border-bottom:2px solid #ffcc00}
+#logo{color:#ffcc00;font-size:20px}
 #clock{color:#fff;font-size:18px}
 #player{flex:1;background:#000;position:relative}
 iframe{width:100%;height:100%;border:0}
-#unmute{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#ffcc00;color:#000;padding:12px 20px;border-radius:30px;font-weight:900;font-size:16px;z-index:10;display:none;cursor:pointer;border:none}
-#bottomTicker{height:42px;background:#0a2a8a;display:flex;align-items:center;overflow:hidden;flex-shrink:0;border-top:2px solid #fff}
+#unmute{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#ffcc00;color:#000;padding:14px 22px;border-radius:30px;font-weight:900;font-size:16px;z-index:20;border:none}
+#bottomTicker{height:42px;background:#0a2a8a;display:flex;align-items:center;overflow:hidden;border-top:2px solid #fff}
 #bottomTicker span{white-space:nowrap;padding-left:100%;animation:scroll 40s linear infinite;color:#fff;font-weight:900;font-size:16px;display:inline-block}
 @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
 </style>
@@ -21,49 +21,44 @@ iframe{width:100%;height:100%;border:0}
 <body>
 <div id="topBar"><span id="logo">MTAANI TV</span><span id="clock">00:00:00</span></div>
 <div id="player">
-  <iframe id="yt" allow="autoplay; fullscreen" allowfullscreen></iframe>
-  <button id="unmute">🔊 BONYEZA HAPA KUWASHA SAUTI</button>
+  <iframe id="yt" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <button id="unmute">🔊 BONYEZA KUWASHA SAUTI</button>
 </div>
-<div id="bottomTicker"><span id="tickerText">MTAANI TV LIVE | Karibu Mtaani! | WhatsApp: 0751768763</span></div>
+<div id="bottomTicker"><span id="tickerText">MTAANI TV LIVE | WhatsApp: 0751768763</span></div>
 <script>
-let videos=[];
-let yt=document.getElementById('yt');
-let btn=document.getElementById('unmute');
+let videos=[]; let yt=document.getElementById('yt'); let btn=document.getElementById('unmute');
 async function load(){
- try{let r=await fetch('ticker.json?t='+Date.now());let j=await r.json();if(j.text)document.getElementById('tickerText').innerText=j.text;}catch(e){}
- try{let r=await fetch('videos.json?t='+Date.now());videos=await r.json();}catch(e){}
- if(!videos ||!videos.length){
-   videos=[{id:"jNQXAC9IVRw",duration:20}]; // video ya default kama videos.json imekufa
- }
+ try{let r=await fetch('videos.json?t='+Date.now());let j=await r.json();
+   // inakubali format zote: ["id1","id2"] au [{"id":"..."}]
+   videos=j.map(v=> typeof v==='string'? {id:v,duration:300} : {id:v.id||v.videoId||v.url?.split('v=')[1], duration:v.duration||300}).filter(v=>v.id);
+ }catch(e){ console.log('videos.json error',e); videos=[{id:"jNQXAC9IVRw",duration:19}]; }
  playSynced();
+ try{let r=await fetch('ticker.json?t='+Date.now());let j=await r.json();if(j.text)document.getElementById('tickerText').innerText=j.text;}catch(e){}
 }
 function playSynced(){
- if(!videos.length)return;
+ if(!videos.length) return;
  let total=videos.reduce((s,v)=>s+(v.duration||300),0);
- let elapsed=Math.floor(Date.now()/1000)%total;
+ let nowSec=Math.floor(Date.now()/1000);
+ let elapsed=nowSec%total; // TRUE LIVE - ukitoka ukirudi imesonga
  let acc=0;
  for(let i=0;i<videos.length;i++){
   let d=videos[i].duration||300;
   if(elapsed<acc+d){
    let offset=elapsed-acc;
-   // mute=1 lazima ndio YouTube iruhusu autoplay - ndio maana ilikua haifanyi!
-   yt.src='https://www.youtube.com/embed/'+videos[i].id+'?autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&playsinline=1&start='+offset;
+   yt.src='https://www.youtube.com/embed/'+videos[i].id+'?autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&start='+offset;
    btn.style.display='block';
-   setTimeout(playSynced,(d-offset+2)*1000);
+   setTimeout(playSynced,(d-offset+1)*1000);
    break;
   }
   acc+=d;
  }
 }
 btn.onclick=()=>{
-  // unmute bila kureload - hairuki mbele tena
-  yt.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}','*');
-  // jaribu tena kwa src kama API haifanyi
-  let src=yt.src.replace('mute=1','mute=0');
-  if(yt.src.includes('mute=1')) yt.src=src;
+  // unmute bila kuruka
+  yt.src=yt.src.replace('mute=1','mute=0');
   btn.style.display='none';
 };
-setInterval(()=>{let d=new Date();document.getElementById('clock').innerText=d.toLocaleTimeString('en-KE',{hour12:false});},1000);
+setInterval(()=>{document.getElementById('clock').innerText=new Date().toLocaleTimeString('en-KE',{hour12:false});},1000);
 load();
 </script>
 </body>
