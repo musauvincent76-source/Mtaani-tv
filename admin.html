@@ -1,70 +1,65 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MTAANI ADMIN</title>
-<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0a0a0a;color:#fff;font-family:sans-serif;padding:20px}h1{color:#ff6600;margin-bottom:20px}.box{background:#1a1a1a;padding:20px;border-radius:10px;margin-bottom:20px;border:1px solid #333}input{width:100%;padding:12px;margin:8px 0;background:#000;border:1px solid #ff6600;border-radius:8px;color:#fff}button{width:100%;padding:12px;background:#ff6600;border:none;border-radius:8px;color:#fff;font-weight:900;cursor:pointer;margin-top:10px}button:hover{background:#ff8800}.video-item{background:#000;padding:12px;border-radius:8px;margin:8px 0;display:flex;justify-content:space-between;align-items:center;border-left:4px solid #ff6600}.del{background:red;padding:6px 12px;border-radius:5px;width:auto}</style>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ADMIN + TV PREVIEW</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0a0a0a;color:#fff;font-family:sans-serif;padding:12px}h1{color:#ff6600;font-size:20px;margin-bottom:12px}.top{display:flex;gap:10px;margin-bottom:12px}.top a{flex:1;text-align:center;padding:12px;background:#001a4d;border:2px solid #ff6600;border-radius:10px;color:#fff;text-decoration:none;font-weight:900}.box{background:#1a1a1a;padding:14px;border-radius:10px;margin-bottom:12px;border:1px solid #333}input,textarea{width:100%;padding:12px;margin:6px 0;background:#000;border:1px solid #ff6600;border-radius:8px;color:#fff}textarea{height:60px}button{width:100%;padding:12px;background:#ff6600;border:none;border-radius:8px;color:#fff;font-weight:900;margin-top:8px}button.g{background:#00aa00}.video{background:#000;padding:10px;border-radius:8px;margin:6px 0;display:flex;justify-content:space-between;border-left:4px solid #ff6600}.del{background:red;width:auto;padding:6px 12px}#preview{width:100%;height:200px;background:#000;border:2px solid #ff6600;border-radius:10px;margin-top:10px}#preview iframe{width:100%;height:100%;border:0;border-radius:8px}</style>
 </head><body>
-<h1>🔥 MTAANI TV ADMIN - DASHBOARD</h1>
-
-<div class="box">
-<h3>Ongeza Video Mpya (Iko na 4)</h3>
-<input id="ytlink" placeholder="Weka YouTube Link (https://youtube.com/watch?v=...)">
-<input id="ytitle" placeholder="Weka Title (mfano: HABARI ZA JIONI)">
-<input id="ydur" type="number" value="300" placeholder="Duration sec (300 = 5min)">
-<button onclick="addVideo()">➕ ADD VIDEO</button>
-<button onclick="saveAll()" style="background:#00aa00">💾 SAVE KWENYE videos.json (GitHub)</button>
+<h1>🔥 MTAANI ADMIN</h1>
+<div class="top">
+<a href="https://musauvincent76-source.github.io/Mtaani-tv/" target="_blank">📺 FUNGUA TV LIVE</a>
+<a href="https://musauvincent76-source.github.io/Mtaani-tv/" target="_blank" style="background:#ff6600">▶️ WATCH TV</a>
 </div>
 
 <div class="box">
-<h3>Videos Zako (<span id="count">0</span>/4)</h3>
+<b>Ongeza Video Mpya (Iko na <span id="cnt">0</span>/4)</b>
+<input id="link" placeholder="YouTube Link (https://youtu.be/...)">
+<input id="title" placeholder="Title - itaonekana juu ya TV (mf: HABARI)">
+<textarea id="desc" placeholder="Description - itaonekana chini kwa Ticker (mf: Habari za Mtaani leo...)"></textarea>
+<input id="dur" type="number" value="300" placeholder="300 = 5min">
+<button onclick="add()">➕ ADD VIDEO + AUTO SAVE</button>
+<button class="g" onclick="save()">💾 SAVE KWENYE videos.json</button>
+<div style="margin-top:10px;font-size:12px;color:#0f0" id="msg"></div>
+</div>
+
+<div class="box">
+<b>Preview ya TV (Utaona hapa chini vile ina-play)</b>
+<div id="preview"><iframe id="play"></iframe></div>
+</div>
+
+<div class="box">
+<b>Videos Zako</b>
 <div id="list"></div>
 </div>
 
 <script>
-let videos=[];
-const TOKEN_KEY='mtaani_token';
+let vids=[];
 async function load(){
- try{
-  let r=await fetch('videos.json?v='+Date.now(),{cache:'no-store'});
-  videos=await r.json();
-  render();
- }catch{videos=[];render();}
+ let r=await fetch('videos.json?v='+Date.now(),{cache:'no-store'}); vids=await r.json(); render();
 }
 function render(){
- document.getElementById('count').innerText=videos.length;
- let html='';
- videos.forEach((v,i)=>{
-  html+=`<div class="video-item"><div><b>${i+1}. ${v.title||'MTAANI TV'}</b><br><small>${v.id} | ${v.duration||300}s</small></div><button class="del" onclick="del(${i})">Futa</button></div>`;
- });
- document.getElementById('list').innerHTML=html||'Hakuna video';
+ document.getElementById('cnt').innerText=vids.length;
+ let h=''; vids.forEach((v,i)=>{
+  h+=`<div class="video"><div><b>${i+1}. ${v.title||'MTAANI'}</b><br><small>${v.id} | ${v.description||'Hakuna desc'}</small></div><button class="del" onclick="del(${i})">Futa</button></div>`;
+ }); document.getElementById('list').innerHTML=h;
+ if(vids[0]) document.getElementById('play').src='https://www.youtube.com/embed/'+vids[0].id+'?mute=1';
 }
-function getIdFromUrl(url){
- let m=url.match(/(?:v=|youtu\.be\/|shorts\/)([A-Za-z0-9_-]{11})/);
- return m?m[1]:url.trim();
+function getId(u){let m=u.match(/(?:v=|be\/|shorts\/)([A-Za-z0-9_-]{11})/);return m?m[1]:u.trim();}
+function add(){
+ let id=getId(document.getElementById('link').value); if(!id||id.length<10)return alert('Link mbaya!');
+ vids.push({id:id, title:document.getElementById('title').value||'MTAANI TV', description:document.getElementById('desc').value||'MTAANI TV LIVE', duration:parseInt(document.getElementById('dur').value)||300});
+ document.getElementById('link').value='';document.getElementById('title').value='';document.getElementById('desc').value='';
+ render(); save(); // AUTO SAVE!
 }
-function addVideo(){
- let link=document.getElementById('ytlink').value;
- let title=document.getElementById('ytitle').value||'MTAANI TV';
- let dur=parseInt(document.getElementById('ydur').value)||300;
- if(!link)return alert('Weka link!');
- let id=getIdFromUrl(link);
- if(id.length<5)return alert('Link sio sawa!');
- videos.push({id:id, title:title, duration:dur});
- document.getElementById('ytlink').value='';document.getElementById('ytitle').value='';
- render();
-}
-function del(i){if(confirm('Futa?')){videos.splice(i,1);render();}}
-
-async function saveAll(){
- let token=localStorage.getItem(TOKEN_KEY)||prompt('Weka GitHub Token yako (ghp_...):');
- if(!token)return;
- localStorage.setItem(TOKEN_KEY,token);
- let content=btoa(unescape(encodeURIComponent(JSON.stringify(videos,null,2))));
+function del(i){vids.splice(i,1);render();save();}
+async function save(){
+ document.getElementById('msg').innerText='⏳ Inasave...';
+ let token=localStorage.getItem('tk')||prompt('Weka GitHub Token ghp_...'); if(!token)return;
+ localStorage.setItem('tk',token);
  let r=await fetch('https://api.github.com/repos/musauvincent76-source/Mtaani-tv/contents/videos.json');
  let j=await r.json();
  let res=await fetch('https://api.github.com/repos/musauvincent76-source/Mtaani-tv/contents/videos.json',{
-  method:'PUT',
-  headers:{'Authorization':'token '+token,'Content-Type':'application/json'},
-  body:JSON.stringify({message:'Update 4 videos na title',content:content,sha:j.sha})
+  method:'PUT',headers:{'Authorization':'token '+token,'Content-Type':'application/json'},
+  body:JSON.stringify({message:'update with desc',content:btoa(unescape(encodeURIComponent(JSON.stringify(vids,null,2)))),sha:j.sha})
  });
- if(res.ok){alert('✅ Ime-save! Sasa TV itaonyesha Title!');}else{alert('❌ Imeshindikana - Token?');localStorage.removeItem(TOKEN_KEY);}
+ document.getElementById('msg').innerText=res.ok?'✅ Ime-save! Sasa fungua TV uone Description chini!':'❌ Token mbaya';
+ if(vids[0]) document.getElementById('play').src='https://www.youtube.com/embed/'+vids[0].id+'?autoplay=1&mute=1';
 }
 load();
 </script>
