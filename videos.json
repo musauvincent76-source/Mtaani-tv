@@ -1,8 +1,56 @@
 [
   {
-    "id": "dQw4w9WgXcQ",
-    "title": "MTAANI NEWS LIVE",
-    "desc": "Habari za mtaa LIVE",
-    "duration": 300
+    "id": "4C_RYef4fXM",
+    "title": "WENDO USU♥️ OFFICIAL 4K VIDEO BY KATHONZWENI SISTERS(KANA DEE) FT KINYAATA SUREBET(KILUNDA JNR)🔥🔥🔥",
+    "desc": "WENDO USU♥️ OFFICIAL 4K VIDEO BY KATHONZWENI SISTERS(KANA DEE) FT KINYAATA SUREBET(KILUNDA JNR)🔥🔥🔥 | by  KANA DEE OFFICIAL ",
+    "duration": 300,
+    "type": "youtube"
+  },
+  {
+    "id": "4EDkfksVFdE",
+    "title": "KICHOME KEIYO VIDEO BY MAPUNJAN KEIYO STAR",
+    "desc": "KICHOME KEIYO VIDEO BY MAPUNJAN KEIYO STAR | by KEIYO STAR THE MUSICIAN (mapunjan)",
+    "duration": 300,
+    "type": "youtube"
+  },
+  {
+    "id": "QXm2HdKdZkQ",
+    "title": "UKUMBAU (OFFICIAL 4K VIDEO) BY REDEMTAR MUTHOKA ",
+    "desc": "UKUMBAU (OFFICIAL 4K VIDEO) BY REDEMTAR MUTHOKA  | by Redemtar Katuku Ministry ",
+    "duration": 300,
+    "type": "youtube"
+  },
+  {
+    "id": "ibO67gimwfY",
+    "title": "Simba Munati - Munzokosaa Niki Mbinditye (Official 4k video)",
+    "desc": "Simba Munati - Munzokosaa Niki Mbinditye (Official 4k video) | by Simba Munati ",
+    "duration": 300,
+    "type": "youtube"
+  },
+  {
+    "id": "HA0CI_JrycQ",
+    "title": "YATOSHA (official video)by SIFAELI MWABUKA",
+    "desc": "YATOSHA (official video)by SIFAELI MWABUKA | by MWABUKA MEDIA OFFICIAL",
+    "duration": 300,
+    "type": "youtube"
+  },
+  {
+    "id": "kHc8ELzuIKM",
+    "title": "Willy Paul - Mwecheche ( Official Dance Visualizer )",
+    "desc": "Willy Paul - Mwecheche ( Official Dance Visualizer ) | by Willy Paul Thee Pozze",
+    "duration": 300,
+    "type": "youtube"
   }
 ]
+
+---CONFIG---
+
+{
+  "intro": null,
+  "settings": {
+    "auto": true,
+    "ticker": "🔴 MTAANI TV LIVE",
+    "views": 1247
+  },
+  "generated": 1789558169746
+}
