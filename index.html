@@ -1,116 +1,61 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MTAANI TV</title>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MTAANI TV</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}
 body{background:#000;color:#fff}
-.top{position:fixed;top:0;left:0;right:0;height:52px;background:#111;display:flex;justify-content:space-between;align-items:center;padding:0 14px;z-index:999;border-bottom:2px solid #222}
+.top{height:52px;background:#111;display:flex;justify-content:space-between;align-items:center;padding:0 14px;border-bottom:2px solid #222}
 .top b{font-size:20px}.top b span{color:#ff0000}
-.live{color:#fff;background:#ff0000;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:900;animation:blink 1s infinite}
+.live{background:#ff0000;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:900;animation:blink 1s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
-
-/* HII NDIO ULISEMA IPELEKWE JUU - RED NA VIEWS + SAA */
-.redTopBar{margin-top:52px;background:#ff0000;border:2px solid #fff;border-left:none;border-right:none;padding:10px 14px;display:flex;justify-content:space-between;align-items:center}
-.redTopBar h2{font-size:14px;font-weight:800;color:#fff;line-height:1.2}
-.redTopBar.right{display:text-align:right}
-.redTopBar.views{font-size:11px;background:#fff;color:#ff0000;padding:4px 8px;border-radius:20px;font-weight:800}
-.redTopBar.clock{font-size:11px;color:#fff;margin-top:4px;font-weight:700}
-
-/* PLAYER KUBWA KAMA ULISEMA */
-.playerWrap{width:100%;background:#000;aspect-ratio:16/9;position:relative}
+.playerWrap{width:100%;aspect-ratio:16/9;background:#000}
 .playerWrap iframe{width:100%;height:100%;border:none}
-
-/* HII YA PILI ITEREMSHE CHINI - IKO CHINI YA PLAYER - RED NA BORDER WHITE */
-.redBottomBox{margin:0;background:#ff0000;border:2px solid #fff;border-left:none;border-right:none;padding:14px}
-.redBottomBox h3{font-size:15px;color:#fff;font-weight:800}
-.redBottomBox p{font-size:12px;color:#ffe6e6;margin-top:6px;line-height:1.4}
-.redBottomBox.meta{margin-top:8px;display:flex;justify-content:space-between;font-size:10px;color:#fff;opacity:.9}
-
-/* AD CHINI KIDOGO NA NAFASI */
-.adArea{margin-top:18px;background:#0a0a0a;min-height:130px;border:1px dashed #333;display:flex;align-items:center;justify-content:center;color:#444;font-size:12px;text-align:center;padding:15px}
-
-.ticker{position:fixed;bottom:0;left:0;right:0;height:32px;background:#111;border-top:2px solid #ff0000;color:#fff;display:flex;align-items:center;overflow:hidden;white-space:nowrap;z-index:998}
-.ticker span{padding-left:100%;animation:scroll 25s linear infinite;display:inline-block;font-size:11px;font-weight:600}
+/* SUKUMA ZOTE CHINI 1 INCH KAMA ULISEMA */
+.bottomStack{margin-top:26px}
+.redBox{background:#ff0000;border:2px solid #fff;padding:12px 14px}
+.redBox h2{font-size:15px;font-weight:800;color:#fff}
+.redMeta{display:flex;justify-content:space-between;margin-top:8px;font-size:11px;font-weight:700}
+.redMeta.views{background:#fff;color:#ff0000;padding:3px 8px;border-radius:12px}
+.tickerInRed{margin-top:10px;background:#b80000;border:1px solid #fff;padding:6px 8px;font-size:11px;white-space:nowrap;overflow:hidden}
+.tickerInRed span{display:inline-block;padding-left:100%;animation:scroll 20s linear infinite}
 @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
-.pad{height:34px}
-</style>
-</head>
-<body>
-
-<div class="top">
-<b>MTAANI <span>TV</span></b>
-<div class="live">🔴 LIVE</div>
-</div>
-
-<!-- RED TOP - VIEWS + SAA JUU KAMA ULISEMA -->
-<div class="redTopBar">
-<h2 id="topTitle">MTAANI TV - LIVE</h2>
-<div class="right">
-<div class="views" id="topViews">👁️ 1,247 watching</div>
-<div class="clock" id="topClock">--:--:--</div>
-</div>
-</div>
-
-<!-- PLAYER KUBWA -->
+.blackBox{background:#000000;border:2px solid #fff;border-top:none;padding:12px 14px}
+.blackBox h3{font-size:13px;color:#fff;font-weight:700}
+.blackBox p{font-size:11px;color:#bbb;margin-top:4px}
+.adBox{background:#0e0e0e;border:2px solid #fff;border-top:none;min-height:120px;display:flex;align-items:center;justify-content:center;color:#666;font-size:12px;text-align:center;padding:12px}
+</style></head><body>
+<div class="top"><b>MTAANI <span>TV</span></b><div class="live">🔴 LIVE</div></div>
 <div class="playerWrap"><div id="player" style="width:100%;height:100%"></div></div>
 
-<!-- RED BOTTOM - IMEANDIKWA INAPAKIA ITEREMSHE CHINI KAMA ULISEMA -->
-<div class="redBottomBox">
-<h3 id="bottomTitle">Inapakia... MTAANI TV 🔴 LIVE 24/7</h3>
-<p id="bottomDesc">Karibu MTAANI TV - TV ya mtaa inacheza 24/7 bila kukatika. Video inaenda na masaa kama TV ya ukweli.</p>
-<div class="meta"><span id="bottomViews">MTAANI TV</span><span id="bottomClock">--:--</span></div>
+<!-- ZOTE ZIKO CHINI, ZIMESHIKANA KAMA ULISEMA -->
+<div class="bottomStack">
+<!-- 1. RED - IBAKI RED -->
+<div class="redBox">
+<h2 id="rTitle">MTAANI TV - LIVE</h2>
+<div class="redMeta">
+<span id="rClock">--:--:--</span>
+<span class="views" id="rViews">👁️ 1,247</span>
 </div>
-
-<!-- AD CHINI NA NAFASI YA VITU ZINGINE -->
-<div class="adArea">
-<div>
-📢 NAFASI YA ADSENSE / APPS<br>
-<small style="color:#666">Hapa chini tumeacha nafasi kama ulisema tutaeka vitu zingine</small>
-<!-- WEKA CODE YAKO YA ADSENSE HAPA -->
+<!-- TICKER ULISEMA IINGIE HAPA NDANI YA RED -->
+<div class="tickerInRed"><span id="rTicker">🔴 MTAANI TV LIVE 24/7 | 📞 MATANGAZO: 0712xxxxxx | 🔥 HABARI ZA MTAA | TV YA MTAA | </span></div>
+</div>
+<!-- 2. BLACK KAMILI -->
+<div class="blackBox">
+<h3 id="bTitle">Inapakia...</h3>
+<p id="bDesc">Karibu MTAANI TV - TV ya mtaa 24/7. Video inaenda na masaa kama TV ya ukweli.</p>
+</div>
+<!-- 3. ADS NA BORDER WHITE -->
+<div class="adBox">
+<div>📢 NAFASI YA ADSENSE<br><small>Hapa weka Ad yako - na border white kama ulisema</small></div>
 </div>
 </div>
-
-<div class="ticker"><span>🔴 MTAANI TV LIVE 24/7 | 📞 Matangazo: 0712xxxxxx | 🔥 Habari za mtaa | 👁️ <b id="tCount">1,247</b> watching | TV YA MTAA | </span></div>
-<div class="pad"></div>
 
 <script>
 let videos=[],ci=0,coff=0,player;
-function updateClocks(){
- let t=new Date().toLocaleTimeString();
- document.getElementById('topClock').innerText=t;
- document.getElementById('bottomClock').innerText='🕒 '+t;
-}
-setInterval(updateClocks,1000); updateClocks();
-
-async function load(){
- try{
-  let r=await fetch('videos.json?v='+Date.now());
-  videos=await r.json();
-  if(!videos.length) throw 0;
-  let total=videos.reduce((a,b)=>a+(b.duration||300),0);
-  let now=Math.floor(Date.now()/1000)%total, acc=0;
-  for(let i=0;i<videos.length;i++){ let d=videos[i].duration||300; if(now<acc+d){ci=i;coff=now-acc;break;} acc+=d; }
-  initYT();
- }catch(e){
-  document.getElementById('topTitle').innerText='MTAANI TV - videos.json bado!';
-  document.getElementById('bottomTitle').innerText='❌ Nenda admin.html > GENERATE > GitHub > videos.json > Save';
- }
-}
-function initYT(){
- if(!window.YT){ let s=document.createElement('script'); s.src="https://www.youtube.com/iframe_api"; document.body.appendChild(s); window.onYouTubeIframeAPIReady=mk; } else mk();
-}
-function mk(){
- let v=videos[ci];
- document.getElementById('topTitle').innerText=v.title;
- document.getElementById('bottomTitle').innerText=v.title;
- document.getElementById('bottomDesc').innerText=v.desc||v.title;
- player=new YT.Player('player',{videoId:v.id,playerVars:{autoplay:1,controls:0,modestbranding:1,rel:0},events:{onReady:e=>{e.target.mute(); if(coff>5) e.target.seekTo(coff,true); e.target.playVideo();},onStateChange:e=>{if(e.data==0){ci=(ci+1)%videos.length;coff=0; player.loadVideoById(videos[ci].id); document.getElementById('topTitle').innerText=videos[ci].title; document.getElementById('bottomTitle').innerText=videos[ci].title; document.getElementById('bottomDesc').innerText=videos[ci].desc;}}}});
-}
+function clk(){let t=new Date().toLocaleTimeString(); document.getElementById('rClock').innerText=t;}
+setInterval(clk,1000); clk();
+async function load(){try{let r=await fetch('videos.json?v='+Date.now()); videos=await r.json(); if(!videos.length) throw 0; let total=videos.reduce((a,b)=>a+(b.duration||300),0); let now=Math.floor(Date.now()/1000)%total, acc=0; for(let i=0;i<videos.length;i++){let d=videos[i].duration||300; if(now<acc+d){ci=i;coff=now-acc;break;} acc+=d;} initYT();}catch(e){document.getElementById('rTitle').innerText='BADO HAKUNA VIDEO - Nenda admin.html';}}
+function initYT(){if(!window.YT){let s=document.createElement('script'); s.src="https://www.youtube.com/iframe_api"; document.body.appendChild(s); window.onYouTubeIframeAPIReady=mk;} else mk();}
+function mk(){let v=videos[ci]; document.getElementById('rTitle').innerText=v.title; document.getElementById('bTitle').innerText=v.title; document.getElementById('bDesc').innerText=v.desc||v.title; document.getElementById('rTicker').innerText='🔴 '+v.title+' | MTAANI TV LIVE 24/7 | 👁️ watching | '; player=new YT.Player('player',{videoId:v.id,playerVars:{autoplay:1,controls:0,modestbranding:1,rel:0},events:{onReady:e=>{e.target.mute(); if(coff>5) e.target.seekTo(coff,true); e.target.playVideo();},onStateChange:e=>{if(e.data==0){ci=(ci+1)%videos.length;coff=0; let nv=videos[ci]; player.loadVideoById(nv.id); document.getElementById('rTitle').innerText=nv.title; document.getElementById('bTitle').innerText=nv.title; document.getElementById('bDesc').innerText=nv.desc;}}}});}
 load();
-let c=1247; setInterval(()=>{c++; document.getElementById('topViews').innerText='👁️ '+c+' watching'; document.getElementById('tCount').innerText=c; document.getElementById('bottomViews').innerText='👁️ '+c+' | MTAANI TV';},3500);
-</script>
-</body>
-</html>
+let c=1247; setInterval(()=>{c++; document.getElementById('rViews').innerText='👁️ '+c;},3000);
+</script></body></html>
