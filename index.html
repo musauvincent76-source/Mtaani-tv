@@ -7,13 +7,13 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#000;overflow:hidden;font-family:Arial Black,Arial;height:100vh;display:flex;flex-direction:column}
-#topBar{height:48px;background:#000;display:flex;justify-content:space-between;align-items:center;padding:0 14px;border-bottom:2px solid #ffcc00}
-#logo{color:#ffcc00;font-size:20px}
+#topBar{height:48px;background:#000;display:flex;justify-content:space-between;align-items:center;padding:0 14px;border-bottom:2px solid #ffcc00;flex-shrink:0;z-index:5}
+#logo{color:#ffcc00;font-size:20px;letter-spacing:1px}
 #clock{color:#fff;font-size:18px}
-#player{flex:1;background:#000;position:relative}
-iframe{width:100%;height:100%;border:0}
-#unmute{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#ffcc00;color:#000;padding:14px 22px;border-radius:30px;font-weight:900;font-size:16px;z-index:20;border:none}
-#bottomTicker{height:42px;background:#0a2a8a;display:flex;align-items:center;overflow:hidden;border-top:2px solid #fff}
+#player{flex:1;background:#000;position:relative;overflow:hidden}
+#player iframe{width:100%;height:100%;border:0;pointer-events:none; /* inazuia mtu kubonyeza YouTube iruke */}
+#unmute{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#ffcc00;color:#000;padding:14px 22px;border-radius:30px;font-weight:900;font-size:16px;z-index:10;border:none;cursor:pointer}
+#bottomTicker{height:42px;background:#0a2a8a;display:flex;align-items:center;overflow:hidden;flex-shrink:0;border-top:2px solid #fff;z-index:5}
 #bottomTicker span{white-space:nowrap;padding-left:100%;animation:scroll 40s linear infinite;color:#fff;font-weight:900;font-size:16px;display:inline-block}
 @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
 </style>
@@ -24,29 +24,30 @@ iframe{width:100%;height:100%;border:0}
   <iframe id="yt" allow="autoplay; encrypted-media" allowfullscreen></iframe>
   <button id="unmute">🔊 BONYEZA KUWASHA SAUTI</button>
 </div>
-<div id="bottomTicker"><span id="tickerText">MTAANI TV LIVE | WhatsApp: 0751768763</span></div>
+<div id="bottomTicker"><span id="tickerText">MTAANI TV LIVE | Karibu Mtaani | WhatsApp: 0751768763</span></div>
 <script>
-let videos=[]; let yt=document.getElementById('yt'); let btn=document.getElementById('unmute');
+let videos=[], yt=document.getElementById('yt'), btn=document.getElementById('unmute');
 async function load(){
- try{let r=await fetch('videos.json?t='+Date.now());let j=await r.json();
-   // inakubali format zote: ["id1","id2"] au [{"id":"..."}]
-   videos=j.map(v=> typeof v==='string'? {id:v,duration:300} : {id:v.id||v.videoId||v.url?.split('v=')[1], duration:v.duration||300}).filter(v=>v.id);
- }catch(e){ console.log('videos.json error',e); videos=[{id:"jNQXAC9IVRw",duration:19}]; }
+ try{
+  let r=await fetch('videos.json?t='+Date.now());
+  let j=await r.json();
+  videos=j.map(v=> typeof v==='string'? {id:v,duration:300} : {id:v.id, duration:v.duration||300}).filter(v=>v.id && v.id!=='jNQXAC9IVRw');
+  if(!videos.length) videos=[{id:"ScMzIvxBSi4",duration:300}]; // default kama yako tupu
+ }catch(e){ videos=[{id:"ScMzIvxBSi4",duration:300}]; }
  playSynced();
  try{let r=await fetch('ticker.json?t='+Date.now());let j=await r.json();if(j.text)document.getElementById('tickerText').innerText=j.text;}catch(e){}
 }
 function playSynced(){
  if(!videos.length) return;
  let total=videos.reduce((s,v)=>s+(v.duration||300),0);
- let nowSec=Math.floor(Date.now()/1000);
- let elapsed=nowSec%total; // TRUE LIVE - ukitoka ukirudi imesonga
+ let elapsed=Math.floor(Date.now()/1000)%total; // TRUE LIVE - ukitoka ukirudi imesonga mbele
  let acc=0;
  for(let i=0;i<videos.length;i++){
   let d=videos[i].duration||300;
   if(elapsed<acc+d){
    let offset=elapsed-acc;
-   yt.src='https://www.youtube.com/embed/'+videos[i].id+'?autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&start='+offset;
-   btn.style.display='block';
+   // controls=0, rel=0, modestbranding=1, iv_load_policy=3 = inaficha title na logo
+   yt.src='https://www.youtube.com/embed/'+videos[i].id+'?autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&playsinline=1&showinfo=0&start='+offset;
    setTimeout(playSynced,(d-offset+1)*1000);
    break;
   }
@@ -54,9 +55,9 @@ function playSynced(){
  }
 }
 btn.onclick=()=>{
-  // unmute bila kuruka
   yt.src=yt.src.replace('mute=1','mute=0');
   btn.style.display='none';
+  yt.style.pointerEvents='auto'; // ruhusu ku-fullscreen baada ya unmute
 };
 setInterval(()=>{document.getElementById('clock').innerText=new Date().toLocaleTimeString('en-KE',{hour12:false});},1000);
 load();
