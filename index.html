@@ -1,67 +1,63 @@
 <!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AZAM ALE TV</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#000;color:#fff;font-family:sans-serif;height:100vh;display:flex;flex-direction:column}
-header{background:#001a4d;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #ff6600}
-header b{font-size:18px}header b span{color:#ff6600}
-.live{background:red;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:900;animation:blink 1s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
-#tv{flex:1;background:#000;position:relative;display:flex;align-items:center;justify-content:center}
-#tv iframe{width:100%;height:100%;border:0;position:absolute;top:0;left:0}
-#bigBtn{position:absolute;z-index:20;background:#ff6600;color:#fff;padding:18px 32px;border-radius:50px;border:3px solid #fff;font-weight:900;font-size:18px;box-shadow:0 0 20px #ff6600}
-#bigBtn:active{transform:scale(.95)}
-.info{padding:12px 16px;background:#0a1430;display:flex;justify-content:space-between;font-size:13px;font-weight:700}
-#ticker{height:38px;background:#0a2a8a;display:flex;align-items:center;overflow:hidden;border-top:2px solid #fff}
-#ticker span{white-space:nowrap;padding-left:100%;animation:scroll 30s linear infinite;font-weight:900;font-size:14px}
-@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
-</style>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#000;color:#fff;font-family:sans-serif;height:100vh;display:flex;flex-direction:column}header{background:#001a4d;padding:14px 16px;display:flex;justify-content:space-between;border-bottom:3px solid #ff6600}header b span{color:#ff6600}.live{background:red;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:900;animation:b 1s infinite}@keyframes b{0%,100%{opacity:1}50%{opacity:.4}}#tv{flex:1;position:relative;background:#111;display:flex;align-items:center;justify-content:center}#tv iframe{width:100%;height:100%;border:0;position:absolute;top:0;left:0}#center{position:absolute;z-index:20;text-align:center;background:rgba(0,0,0,.8);padding:20px;border-radius:15px;border:2px solid #ff6600}#center button{background:#ff6600;color:#fff;padding:14px 28px;border-radius:30px;border:none;font-weight:900;font-size:18px;margin-top:10px}#center p{margin-bottom:8px;font-size:14px}.info{padding:12px 16px;background:#0a1430;display:flex;justify-content:space-between;font-size:13px}#tick{height:38px;background:#0a2a8a;display:flex;align-items:center;overflow:hidden;border-top:2px solid #fff}#tick span{white-space:nowrap;animation:s 25s linear infinite;font-weight:900;padding-left:100%}@keyframes s{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}</style>
 </head><body>
 <header><b>AZAM <span>ALE TV</span></b><span class="live">● LIVE TV</span></header>
-
 <div id="tv">
- <iframe id="player" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
- <button id="bigBtn" onclick="startTV()">📺 WASHA TV - BONGOZA HAPA</button>
+<iframe id="player" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<div id="center">
+<p id="status">📺 TAYARI KUWASHA TV?</p>
+<p style="font-size:12px;color:#aaa" id="vid">Video 1/4</p>
+<button onclick="start()">BONGOZA HAPA - WASHA TV 🔊</button>
+<p style="margin-top:10px;font-size:11px;color:#aaa">Ukiona black, itaruka yenyewe kwa 5 sec</p>
 </div>
-
-<div class="info"><span id="title">MTAANI TV - Inapakia...</span><span id="count">--/--</span></div>
-<div id="ticker"><span>AZAM ALE TV MTAANI | TILL 3624692 | TAZAMA LIVE 24/7 | Hii ni TV yako - Haina Glitch Tena!</span></div>
-
+</div>
+<div class="info"><span id="title">MTAANI TV</span><span id="count">1/4 LIVE</span></div>
+<div id="tick"><span>AZAM ALE TV MTAANI | TILL 3624692 | LIVE 24/7 - Kama moja imekataa itaruka yenyewe!</span></div>
 <script>
-let videos=[], cur=0, timer=null;
-
-async function loadVideos(){
+let list=[], cur=0, failTimer=null;
+async function init(){
  try{
   let r=await fetch('videos.json?v='+Date.now(),{cache:'no-store'});
-  let data=await r.json();
-  videos=data.map(v=>({id:(v.id||v.ytid||'').trim(), title:v.title||'MTAANI TV', dur:300})).filter(v=>v.id.length>=10);
-  if(videos.length===0) throw 'empty';
-  document.getElementById('title').innerText=videos[0].title;
-  document.getElementById('count').innerText='1/'+videos.length;
- }catch(e){
-  videos=[{id:'4EDkfksVFdE',title:'MTAANI TV 1'},{id:'kHc8ELzuIKM',title:'MTAANI TV 2'},{id:'HAQCI_JrycQ',title:'MTAANI TV 3'},{id:'QXm2HdKdZkQ',title:'MTAANI TV 4'}];
+  let d=await r.json();
+  list=d.map(x=>({id:(x.id||'').trim(), title:x.title||'MTAANI TV'})).filter(x=>x.id.length>=10);
+ }catch{}
+ if(list.length===0){
+  list=[
+   {id:'jNQXAC9IVRw',title:'TEST 1 - Inafanya'},
+   {id:'4EDkfksVFdE',title:'MTAANI 1'},
+   {id:'kHc8ELzuIKM',title:'MTAANI 2'},
+   {id:'HAQCI_JrycQ',title:'MTAANI 3'}
+  ];
  }
+ document.getElementById('vid').innerText='Video '+(cur+1)+'/'+list.length+' : '+list[cur].id;
+ document.getElementById('title').innerText=list[0].title;
 }
+function playCurrent(){
+ clearTimeout(failTimer);
+ let v=list[cur];
+ document.getElementById('status').innerText='▶️ Inacheza: '+v.title;
+ document.getElementById('vid').innerText='ID: '+v.id+' ('+(cur+1)+'/'+list.length+')';
+ document.getElementById('title').innerText=v.title+' - '+(cur+1)+'/'+list.length;
+ document.getElementById('count').innerText=(cur+1)+'/'+list.length;
+ // HII NDIO SIRI - tumia youtube-nocookie + origin
+ document.getElementById('player').src='https://www.youtube-nocookie.com/embed/'+v.id+'?autoplay=1&mute=0&controls=1&rel=0&playsinline=1&enablejsapi=1&origin='+location.origin;
 
-function playCur(){
- let v=videos[cur];
- document.getElementById('title').innerText=v.title;
- document.getElementById('count').innerText=(cur+1)+'/'+videos.length;
- document.getElementById('player').src='https://www.youtube.com/embed/'+v.id+'?autoplay=1&mute=0&controls=1&rel=0&modestbranding=1&playsinline=1';
- // Ruka baada ya 90% = 4.5 min (270 sec) - badala ya kusubiri video iishe
- clearInterval(timer);
- timer=setInterval(()=>{ nextVideo(); }, 270000); // 4 min 30 sec = 90% ya 5min
+ // Kama baada ya sec 6 bado black, ruka yenyewe!
+ failTimer=setTimeout(()=>{
+   document.getElementById('status').innerText='⚠️ Hii imekataa Embed ('+v.id+') - Inaruka...';
+   setTimeout(()=>{ next(); }, 2000);
+ }, 6000);
 }
-
-function nextVideo(){
- cur=(cur+1)%videos.length;
- playCur();
+function start(){
+ document.getElementById('center').style.display='none';
+ playCurrent();
+ // Ruka kila 4:30 min = 90%
+ setInterval(()=>{ next(); }, 270000);
 }
-
-function startTV(){
- document.getElementById('bigBtn').style.display='none';
- playCur();
+function next(){
+ cur=(cur+1)%list.length;
+ playCurrent();
 }
-
-loadVideos();
+init();
 </script>
 </body></html>
