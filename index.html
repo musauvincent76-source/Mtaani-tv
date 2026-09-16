@@ -3,34 +3,65 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MTAANI TV</title>
+<title>MTAANI TV LIVE</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#000;overflow:hidden}
-#player{width:100vw;height:100vh}
+body{background:#000;overflow:hidden;font-family:Arial}
+#topSpace{height:20vh;background:#000}
+#player{height:calc(80vh - 38px);background:#000}
 iframe{width:100%;height:100%;border:0}
-#info{position:fixed;bottom:15px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.7);color:#fff;padding:6px 15px;border-radius:20px;font-size:13px;z-index:5}
-#watermark{position:fixed;top:12px;right:12px;background:rgba(0,0,0,0.6);color:#fff;padding:4px 10px;border-radius:5px;font-size:11px;z-index:5}
+#bottomTicker{
+ position:fixed;bottom:0;left:0;right:0;height:38px;
+ background:#cc0000;display:flex;align-items:center;overflow:hidden;
+ animation:colorChange 5s infinite;
+}
+@keyframes colorChange{
+ 0%{background:#cc0000}
+ 33%{background:#0033cc}
+ 66%{background:#ffcc00}
+ 100%{background:#cc0000}
+}
+#bottomTicker span{
+ white-space:nowrap;display:inline-block;
+ padding-left:100%;animation:scroll 35s linear infinite;
+ font-weight:bold;font-size:15px;
+}
+@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
 </style>
 </head>
 <body>
-<div id="watermark">WhatsApp: 0751768763</div>
+<div id="topSpace"></div>
 <div id="player"><iframe id="yt" allowfullscreen allow="autoplay"></iframe></div>
-<div id="info"><span id="title">Loading...</span></div>
+<div id="bottomTicker"><span id="tickerText">MTAANI TV LIVE | Tuma video / matangazo WhatsApp: 0751768763 | MTAANI TV</span></div>
 <script>
-let videos=[],current=0;
+let videos=[];
 async function load(){
- let r=await fetch('videos.json?t='+Date.now());
- videos=await r.json();
- play(0);
+ try{let r=await fetch('ticker.json?t='+Date.now());let j=await r.json();if(j.text)document.getElementById('tickerText').innerText=j.text;}catch(e){}
+ try{let r=await fetch('videos.json?t='+Date.now());videos=await r.json();playSynced();}catch(e){}
 }
-function play(i){
- current=i;
- let v=videos[i];
- document.getElementById('title').innerText=(i+1)+'/'+videos.length+' : '+(v.title||'');
- document.getElementById('yt').src='https://www.youtube.com/embed/'+v.id+'?autoplay=1&mute=0&controls=1&rel=0';
+function playSynced(){
+ if(!videos.length)return;
+ let total=videos.reduce((s,v)=>s+(v.duration||300),0);
+ let elapsed=Math.floor(Date.now()/1000)%total;
+ let acc=0;
+ for(let i=0;i<videos.length;i++){
+  let d=videos[i].duration||300;
+  if(elapsed<acc+d){
+   let offset=elapsed-acc;
+   document.getElementById('yt').src='https://www.youtube.com/embed/'+videos[i].id+'?autoplay=1&mute=0&controls=0&start='+offset;
+   setTimeout(playSynced,(d-offset+1)*1000);
+   break;
+  }
+  acc+=d;
+ }
 }
-setInterval(()=>{ if(videos.length>0){ current=(current+1)%videos.length; play(current);} }, 300000);
+let colors=['#cc0000','#0033cc','#ffcc00'];let ci=0;
+setInterval(()=>{
+ ci=(ci+1)%colors.length;
+ let t=document.getElementById('bottomTicker');
+ t.style.background=colors[ci];
+ document.querySelector('#bottomTicker span').style.color = colors[ci]=='#ffcc00'? '#000' : '#fff';
+},2000);
 load();
 </script>
 </body>
