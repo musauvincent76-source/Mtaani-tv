@@ -1,25 +1,39 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AZAM ALE TV - AUTO PLAY</title>
-<link rel="preconnect" href="https://www.youtube.com"><link rel="preconnect" href="https://i.ytimg.com">
-<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#000;color:#fff;font-family:sans-serif;min-height:100vh;display:flex;flex-direction:column}header{background:#001a4d;padding:10px 14px;display:flex;justify-content:space-between;border-bottom:3px solid #ff6600}header b span{color:#ff6600}.badge{background:red;padding:4px 8px;border-radius:12px;font-size:10px;font-weight:900;animation:b 1s infinite}@keyframes b{50%{opacity:.5}}#wrap{flex:1;position:relative;background:#000;min-height:55vh;overflow:hidden}#player{width:100%;height:100%;position:absolute;top:0;left:0;pointer-events:none}#block{position:absolute;top:0;left:0;width:100%;height:100%;z-index:8;background:transparent;touch-action:none}#vol{position:absolute;bottom:10px;right:10px;z-index:9;background:rgba(0,0,0,0.7);color:#fff;padding:6px 12px;border-radius:20px;border:1px solid #ff6600;font-size:11px;font-weight:900}.bar{padding:10px 16px;background:#0a1430;display:flex;justify-content:space-between;font-size:13px}#tick{height:36px;background:#0a2a8a;display:flex;align-items:center;overflow:hidden;border-top:2px solid #fff;border-bottom:2px solid #ff6600}#tick span{white-space:nowrap;padding-left:100%;animation:s 35s linear infinite;font-weight:900}@keyframes s{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}#ad-box{padding:18px;text-align:center;font-weight:900;min-height:130px;display:flex;flex-direction:column;justify-content:center;align-items:center;border:3px solid #fff;animation:c 4s infinite}@keyframes c{0%{background:linear-gradient(135deg,#ff0000,#ff6600)}25%{background:linear-gradient(135deg,#0066ff,#00ccff)}50%{background:linear-gradient(135deg,#ffcc00,#ffff00);color:#000}75%{background:linear-gradient(135deg,#ff00aa,#ff6600)}100%{background:linear-gradient(135deg,#ff0000,#ff6600)}}
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AZAM ALE TV</title>
+<link rel="preconnect" href="https://www.youtube.com">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#000;color:#fff;font-family:sans-serif;min-height:100vh;display:flex;flex-direction:column}
+header{background:#001a4d;padding:12px 16px;display:flex;justify-content:space-between;border-bottom:3px solid #ff6600}header b span{color:#ff6600}.badge{background:red;padding:5px 10px;border-radius:15px;font-size:10px;font-weight:900;animation:b 1s infinite}@keyframes b{50%{opacity:.5}}
+#wrap{flex:1;position:relative;background:#000;min-height:55vh;overflow:hidden}
+#player{width:100%;height:100%;position:absolute;top:0;left:0;pointer-events:none}
+#block{position:absolute;top:0;left:0;width:100%;height:100%;z-index:5;background:transparent}
+#playBtn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;background:rgba(255,102,0,0.95);color:#fff;width:80px;height:80px;border-radius:50%;border:3px solid #fff;display:flex;justify-content:center;align-items:center;font-size:36px;cursor:pointer;box-shadow:0 0 20px rgba(255,102,0,0.8);animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.1)}}
+.bar{padding:10px 16px;background:#0a1430;display:flex;justify-content:space-between;font-size:13px}
+#tick{height:36px;background:#0a2a8a;display:flex;align-items:center;overflow:hidden;border-top:2px solid #fff;border-bottom:2px solid #ff6600}#tick span{white-space:nowrap;padding-left:100%;animation:s 35s linear infinite;font-weight:900}@keyframes s{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+#ad-box{padding:18px;text-align:center;font-weight:900;min-height:130px;display:flex;flex-direction:column;justify-content:center;align-items:center;border:3px solid #fff;animation:c 4s infinite}@keyframes c{0%{background:linear-gradient(135deg,#ff0000,#ff6600)}25%{background:linear-gradient(135deg,#0066ff,#00ccff)}50%{background:linear-gradient(135deg,#ffcc00,#ffff00);color:#000}75%{background:linear-gradient(135deg,#ff00aa,#ff6600)}100%{background:linear-gradient(135deg,#ff0000,#ff6600)}}
 </style></head><body>
-<header><b>AZAM <span>ALE TV</span></b><span class="badge">● LIVE NOW</span></header>
+<header><b>AZAM <span>ALE TV</span></b><span class="badge">● LIVE</span></header>
+
 <div id="wrap">
 <div id="player"></div>
 <div id="block"></div>
-<div id="vol">🔊 AUTO PLAY</div>
+<div id="playBtn" onclick="playTV()">▶</div>
 </div>
+
 <div class="bar"><span id="title">TRUE LIVE...</span><span id="count">LIVE</span></div>
 <div id="tick"><span>MTAANI TV TRUE LIVE 24/7 | TILL 3624692 | TANGAZA BIASHARA YAKO HAPA!</span></div>
 <div id="ad-box"><h2 id="adT">📢 TANGAZA HAPA!</h2><p id="adM">Watu 1000+ LIVE</p><span id="adC" style="background:#000;color:#ffcc00;padding:5px 12px;border-radius:20px;margin-top:8px;display:inline-block">💰 TILL: 3624692</span></div>
+
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
 function extractID(t){if(!t)return null;t=t.trim();if(/^[a-zA-Z0-9_-]{11}$/.test(t))return t;let m=t.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);if(m)return m[1];try{let u=new URL(t);let v=u.searchParams.get('v');if(v&&v.length===11)return v;}catch{}let m2=t.match(/[a-zA-Z0-9_-]{11}/);return m2?m2[0]:null;}
 let player,list=[];const LOOP_START=new Date('2025-01-01T00:00:00Z').getTime();
-async function getVideos(){let cache=localStorage.getItem('rocket_videos_cache');let ct=localStorage.getItem('rocket_videos_time');if(cache&&ct&&(Date.now()-parseInt(ct))<300000){try{return JSON.parse(cache);}catch{}}try{let r=await fetch('videos.json?v='+Date.now(),{cache:'no-store'});let d=await r.json();let f=d.map(v=>({id:extractID(v.id||v.url||''),dur:parseInt(v.duration)||300,title:v.title||'MTAANI TV'})).filter(v=>v.id&&v.id.length===11);if(f.length>0){localStorage.setItem('rocket_videos_cache',JSON.stringify(f));localStorage.setItem('rocket_videos_time',Date.now().toString());return f;}}catch{}return [{id:'4EDkfksVFdE',dur:300,title:'MTAANI 1'},{id:'kHc8ELzuIKM',dur:300,title:'MTAANI 2'}];}
+async function getVideos(){try{let r=await fetch('videos.json?v='+Date.now(),{cache:'no-store'});let d=await r.json();let f=d.map(v=>({id:extractID(v.id||v.url||''),dur:parseInt(v.duration)||300,title:v.title||'MTAANI TV'})).filter(v=>v.id&&v.id.length===11);if(f.length>0)return f;}catch{}return [{id:'4EDkfksVFdE',dur:300,title:'MTAANI 1'}];}
 function getLivePos(total){return Math.floor((Date.now()-LOOP_START)/1000)%total}function findV(p){let a=0;for(let i=0;i<list.length;i++){if(p<a+list[i].dur)return{index:i,seek:p-a};a+=list[i].dur}return{index:0,seek:0}}
-function onYouTubeIframeAPIReady(){getVideos().then(v=>{list=v;let total=list.reduce((s,x)=>s+x.dur,0);let live=findV(getLivePos(total));document.getElementById('title').innerText=list[live.index].title;document.getElementById('count').innerText=(live.index+1)+'/'+list.length;player=new YT.Player('player',{videoId:list[live.index].id,playerVars:{autoplay:1,mute:0,controls:0,rel:0,modestbranding:1,playsinline:1,fs:0,disablekb:1,iv_load_policy:3,start:live.seek,vq:'small',origin:location.origin},events:{onReady:e=>{e.target.seekTo(live.seek,true);e.target.setVolume(100);e.target.playVideo();document.getElementById('vol').innerText='🔊 LIVE';try{e.target.unMute();}catch{}},onStateChange:e=>{if(e.data===0)goNext();}}});});}
-function goNext(){let total=list.reduce((s,x)=>s+x.dur,0);let live=findV(getLivePos(total));if(player&&player.loadVideoById)player.loadVideoById({videoId:list[live.index].id,startSeconds:live.seek});document.getElementById('title').innerText=list[live.index].title;}
-document.getElementById('block').onclick=function(){try{player.unMute();player.setVolume(100);player.playVideo();document.getElementById('vol').innerText='🔊 LIVE';}catch{}};
+function onYouTubeIframeAPIReady(){getVideos().then(v=>{list=v;let total=list.reduce((s,x)=>s+x.dur,0);let live=findV(getLivePos(total));document.getElementById('title').innerText=list[live.index].title;player=new YT.Player('player',{videoId:list[live.index].id,playerVars:{autoplay:1,mute:1,controls:0,rel:0,modestbranding:1,playsinline:1,fs:0,disablekb:1,start:live.seek,origin:location.origin},events:{onReady:e=>{e.target.seekTo(live.seek,true);e.target.playVideo();},onStateChange:e=>{if(e.data===0)goNext();}}});});}
+function goNext(){let total=list.reduce((s,x)=>s+x.dur,0);let live=findV(getLivePos(total));if(player&&player.loadVideoById)player.loadVideoById({videoId:list[live.index].id,startSeconds:live.seek});document.getElementById('title').innerText=list[live.index].title;document.getElementById('playBtn').style.display='flex';}
+function playTV(){try{player.unMute();player.setVolume(100);player.playVideo();}catch{}document.getElementById('playBtn').style.display='none';}
+document.getElementById('block').onclick=playTV;
 async function loadAds(){let ads=[];try{let r=await fetch('ads.json?v='+Date.now(),{cache:'no-store'});let d=await r.json();if(Array.isArray(d)&&d.length>0)ads=d;}catch{}if(!ads.length)ads=[{title:'📢 TANGAZA HAPA!',msg:'Watu 1000+ LIVE',contact:'💰 TILL: 3624692'}];let i=0;function show(){let a=ads[i%ads.length];document.getElementById('adT').innerText=a.title;document.getElementById('adM').innerText=a.msg;document.getElementById('adC').innerText=a.contact;i++;}show();setInterval(show,5000);}loadAds();
 </script>
 </body></html>
