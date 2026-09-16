@@ -3,174 +3,228 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MTAANI TV - COLOR DASHBOARD</title>
+<title>MTAANI TV - REAL STUDIO</title>
 <style>
-*{box-sizing:border-box;font-family:Inter,sans-serif}
-body{margin:0;background:#f0f3ff;color:#1a1a2e}
-.top{background:linear-gradient(90deg,#ff1a1a,#ff6a00);padding:18px 25px;color:#fff;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:99}
-.top h1{margin:0;font-size:22px}
-.menu{display:flex;gap:8px;flex-wrap:wrap;padding:15px;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.08);position:sticky;top:68px;z-index:98}
-.menu button{padding:10px 16px;border:none;border-radius:25px;background:#eef1ff;color:#444;font-weight:700;cursor:pointer}
-.menu button.active{background:#ff1a1a;color:#fff}
-.main{padding:20px;max-width:1100px;margin:auto}
-.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.card{background:#fff;border-radius:18px;padding:18px;box-shadow:0 4px 20px rgba(0,0,0,.06);margin-bottom:16px;border:1px solid #eef1ff}
-.stat1{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff}
-.stat2{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff}
-.stat3{background:linear-gradient(135deg,#4facfe,#00f2fe);color:#fff}
-.stat4{background:linear-gradient(135deg,#43e97b,#38f9d7);color:#000}
-input,textarea,select{width:100%;padding:13px;margin:6px 0;border:2px solid #e8ecff;border-radius:12px;background:#f8f9ff;outline:none}
-input:focus{border-color:#ff1a1a;background:#fff}
-.btn{padding:14px;border:none;border-radius:12px;font-weight:800;cursor:pointer}
-.btn-red{background:linear-gradient(90deg,#ff1a1a,#ff6a00);color:#fff;width:100%}
-.btn-dark{background:#1a1a2e;color:#fff;width:100%}
-.item{background:#f8f9ff;border:2px solid #eef1ff;border-radius:14px;padding:12px;display:flex;gap:12px;margin:8px 0}
-.item img{width:110px;height:70px;border-radius:10px;object-fit:cover}
-.hidden{display:none}
-.badge{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:800}
-.bg-red{background:#ff1a1a;color:#fff}.bg-blue{background:#4facfe;color:#fff}.bg-green{background:#43e97b;color:#000}
-@media(max-width:700px){.grid4{grid-template-columns:1fr 1fr}.menu{top:66px}}
+*{box-sizing:border-box;font-family:sans-serif}
+body{margin:0;background:#f7f8fc}
+.top{background:#111;padding:14px 20px;color:#fff;display:flex;justify-content:space-between;align-items:center}
+.main{max-width:1000px;margin:auto;padding:15px}
+.card{background:#fff;border-radius:16px;padding:16px;margin:12px 0;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid #eee}
+.btn{padding:11px 14px;border:none;border-radius:10px;font-weight:800;cursor:pointer}
+.btn-red{background:#ff0000;color:#fff}.btn-black{background:#111;color:#fff}.btn-green{background:#00c853;color:#fff}
+.btn-small{padding:6px 10px;font-size:12px;border-radius:20px;border:none;cursor:pointer}
+input,textarea,select{width:100%;padding:12px;margin:6px 0;border:2px solid #e8e8e8;border-radius:10px;background:#fafafa}
+.item{display:flex;gap:12px;background:#fafaff;border:1px solid #e6e8ff;border-radius:12px;padding:10px;margin:8px 0;align-items:center}
+.item img{width:100px;height:65px;border-radius:8px;object-fit:cover;background:#000}
+.controls{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.previewBox{width:100%;background:#000;border-radius:12px;overflow:hidden;aspect-ratio:16/9;display:none}
+.badge{padding:3px 8px;border-radius:20px;font-size:10px;font-weight:800}
 </style>
 </head>
 <body>
 
 <div class="top">
-<h1>🌈 MTAANI TV - COLOR STUDIO</h1>
-<button onclick="window.open('index.html','_blank')" style="background:#fff;color:#ff1a1a;border:none;padding:10px 18px;border-radius:25px;font-weight:800">▶️ ONA TV LIVE</button>
-</div>
-
-<div class="menu">
-<button class="active" id="b-dash" onclick="tab('dash')">📊 Dashboard</button>
-<button id="b-vid" onclick="tab('vid')">📺 Videos</button>
-<button id="b-live" onclick="tab('live')">🔴 LIVE</button>
-<button id="b-design" onclick="tab('design')">🎨 Design & Rangi</button>
-<button id="b-ads" onclick="tab('ads')">💰 Pesa / Ads</button>
-<button id="b-extra" onclick="tab('extra')">➕ Vitu Mingi</button>
-<button id="b-exp" onclick="tab('exp')">💾 Export</button>
+<b>🔴 MTAANI TV - REAL STUDIO</b>
+<button class="btn btn-red" style="width:auto" onclick="window.open('index.html','_blank')">▶️ ONA TV</button>
 </div>
 
 <div class="main">
 
-<div id="dash" class="sec">
-<div class="grid4">
-<div class="card stat1"><small>TOTAL VIDEOS</small><h2 id="c1">0</h2><span class="badge bg-red">PLAYLIST</span></div>
-<div class="card stat2"><small>REAL VIEWS</small><h2 id="c2">1,247</h2><span class="badge bg-blue" id="liveNow">🔴 23 watching</span></div>
-<div class="card stat3"><small>WATCH TIME</small><h2 id="c3">12h 34m</h2><span>Leo</span></div>
-<div class="card stat4"><small>MONEY EST</small><h2>$12.40</h2><span>Adsense</span></div>
-</div>
+<!-- INTRO REAL -->
+<div class="card" style="border:2px solid #ff0000">
+<h3>🎬 INTRO YA TV (Real Upload)</h3>
+<p style="color:#666;font-size:13px">Hapa weka intro yako - itacheza kila TV ikianza au kila baada ya video 3</p>
 
-<div class="card" style="border:3px solid #ff1a1a">
-<h3>⚡ ADD VIDEO HARAKA - Auto Fetch!</h3>
-<p style="color:#666">Weka link tu, kila kitu kitajaza yenyewe!</p>
-<input id="qLink" placeholder="👉 Weka YouTube Link hapa - https://youtu.be/xxxx" oninput="autoFetch()">
-<div id="qPrev" style="padding:10px"></div>
-<input id="qTitle" placeholder="Title itajaza auto">
-<textarea id="qDesc" placeholder="Description itajaza auto"></textarea>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-<input id="qDur" type="number" value="300" placeholder="Duration sec">
-<select id="qCat"><option>🔥 Trending</option><option>📰 News</option><option>🎭 Drama</option><option>🎵 Music</option><option>😂 Comedy</option><option>⚽ Sports</option><option>💃 Gossip</option></select>
-</div>
-<button class="btn btn-red" onclick="addFast()">➕ ONGEZA + ENDA TV DIRECT</button>
-</div>
-</div>
+<label>1. Chagua Intro kutoka File yako (mp4)</label>
+<input type="file" id="introFile" accept="video/*" onchange="uploadIntro(event)">
 
-<div id="vid" class="sec hidden">
-<h2>📺 Playlist Yako</h2>
-<div id="list"></div>
-</div>
+<label>2. Au weka Link ya YouTube ya Intro</label>
+<input id="introLink" placeholder="https://youtu.be/xxxx ya intro" oninput="setIntroYT()">
 
-<div id="live" class="sec hidden">
-<div class="card">
-<h3>🔴 LIVE Settings</h3>
-<label><input type="checkbox" id="isLive"> Washa LIVE Mode?</label>
-<input id="liveUrl" placeholder="Link ya LIVE yako">
-<input id="liveT" placeholder="Title ya LIVE">
-<textarea id="liveD" placeholder="Description ya LIVE"></textarea>
-</div>
-</div>
+<div id="introPreview" class="previewBox"></div>
 
-<div id="design" class="sec hidden">
-<div class="card">
-<h3>🎨 Badilisha Rangi ya TV Yako!</h3>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-<div><label>Rangi ya Juu (Header)</label><input type="color" id="colHead" value="#ff1a1a"></div>
-<div><label>Rangi ya Background</label><input type="color" id="colBg" value="#f0f3ff"></div>
-<div><label>Rangi ya Button</label><input type="color" id="colBtn" value="#ff6a00"></div>
-<div><label>Theme</label><select id="theme"><option>🌈 Colorful Light (Sai Hii)</option><option>🌙 Dark Mode</option><option>☀️ White Clean</option><option>💜 Purple Neon</option></select></div>
-</div>
-<button class="btn btn-dark" style="margin-top:12px" onclick="alert('Rangi zime-save! Zitaonekana kwa TV uki-export config')">💾 SAVE RANGI</button>
-</div>
-</div>
-
-<div id="ads" class="sec hidden">
-<div class="card">
-<h3>💰 Adsense & Pesa</h3>
-<input placeholder="Ad Unit 1 - Juu ya description">
-<input placeholder="Ad Unit 2 - Kati ya videos">
-<input placeholder="Ad Unit 3 - Chini">
-<input placeholder="WhatsApp Number ya Matangazo - 0712...">
-</div>
-</div>
-
-<div id="extra" class="sec hidden">
-<div class="grid4">
-<div class="card">📢<br><b>Breaking News Ticker</b><br><input placeholder="Andika Breaking News..."></div>
-<div class="card">🏆<br><b>Top Fans</b><br><small>Ongeza majina ya fans</small><input placeholder="Fan 1, Fan 2..."></div>
-<div class="card">📱<br><b>Social Links</b><br><input placeholder="Facebook Link"><input placeholder="TikTok Link"></div>
-<div class="card">🎁<br><b>Giveaway</b><br><input placeholder="Giveaway ya leo ni?"></div>
-</div>
-<div class="card">
-<h3>➕ Ongeza Vitu Mingi Sana Hapa!</h3>
-<p style="color:#666">Hapa unaweza ongeza chochote unataka - Poll, Chat, Comments, Logo, Watermark, Intro Video, Outro, n.k</p>
-<textarea rows="4" placeholder="Andika kitu chochote unataka niongezee kwa dashboard..."></textarea>
-</div>
-</div>
-
-<div id="exp" class="sec hidden">
-<div class="card" style="border:3px dashed #ff1a1a">
-<h2>💾 Maliza - Export kwa GitHub</h2>
-<button class="btn btn-red" onclick="doExport()">GENERATE videos.json</button>
-<textarea id="out" style="height:280px;background:#1a1a2e;color:#0f0;margin-top:12px"></textarea>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
-<button class="btn btn-dark" onclick="copyOut()">📋 COPY CODE</button>
-<button class="btn btn-red" onclick="window.open('index.html','_blank')">▶️ RUKA KWA TV</button>
+<div><label>Intro Icheze Lini?</label>
+<select id="introWhen"><option value="start">Mwanzo wa TV tu</option><option value="every3">Kila baada ya video 3</option><option value="every1">Kila baada ya video 1</option><option value="hour">Kila saa</option></select></div>
+<div><label>Duration ya Intro (sec)</label><input id="introDur" type="number" value="10"></div>
 </div>
+
+<label>Intro Title</label>
+<input id="introTitle" value="MTAANI TV - Karibu!">
+
+<p style="font-size:11px;color:#888">Baada ya kuchagua file, kumbuka ku-upload hiyo file GitHub kama intro.mp4, kisha system itaitumia</p>
+</div>
+
+<!-- ADD VIDEO REAL -->
+<div class="card">
+<h3>➕ Ongeza Video - Real Auto Fetch</h3>
+<input id="ytLink" placeholder="Weka YouTube Link - title/desc/thumbnail zita-auto" oninput="fetchYT()">
+<div id="ytPrev" style="font-size:13px;color:#555"></div>
+<input id="ytTitle" placeholder="Title (auto)">
+<textarea id="ytDesc" placeholder="Description (auto)"></textarea>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<input id="ytDur" type="number" value="300">
+<select id="ytCat"><option>News</option><option>Drama</option><option>Music</option><option>Comedy</option></select>
+</div>
+
+<label>AU Upload Video kutoka File yako (mp4)</label>
+<input type="file" id="localFile" accept="video/*" onchange="addLocalFile(event)">
+
+<button class="btn btn-red" onclick="addVideo()">➕ ONGEZA KWA PLAYLIST</button>
+</div>
+
+<!-- PLAYLIST REAL WITH STOP/PLAY/DELETE -->
+<div class="card">
+<h3>📺 Playlist Yako - Controls za Ukweli</h3>
+<div style="background:#000;border-radius:12px;padding:8px">
+<video id="adminPlayer" controls style="width:100%;border-radius:10px;display:none"></video>
+<div id="ytAdminPlayer" style="display:none"></div>
+<p id="nowPlaying" style="color:#fff;text-align:center;margin:6px 0"></p>
+<div style="text-align:center">
+<button class="btn btn-small" style="background:#444;color:#fff" onclick="stopAll()">⏹️ STOP</button>
+<button class="btn btn-small" style="background:#00c853;color:#fff" onclick="document.getElementById('adminPlayer').play()">▶️ RESUME</button>
+</div>
+</div>
+
+<div id="playlist"></div>
+</div>
+
+<!-- REAL VIEWS + EXPORT -->
+<div class="card" style="border:2px dashed #111">
+<h3>💾 Export - Vitu vya Ukweli</h3>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<div><small>Real Views (kutoka YouTube API)</small><input id="apiKey" placeholder="Weka YouTube API Key yako (optional) kwa real views"></div>
+<div><small>Channel ID</small><input id="channelId" placeholder="UCxxxx (optional)"></div>
+</div>
+<button class="btn btn-green" onclick="generateReal()">💾 GENERATE videos.json REAL + config.json</button>
+<textarea id="out1" style="height:180px;background:#111;color:#0f0"></textarea>
+<textarea id="out2" style="height:180px;background:#111;color:#0ff"></textarea>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
+<button class="btn btn-black" onclick="copyAll()">📋 COPY</button>
+<button class="btn btn-red" onclick="window.open('index.html','_blank')">▶️ ENDA TV DIRECT</button>
 </div>
 </div>
 
 </div>
 
 <script>
-let vids=JSON.parse(localStorage.getItem('mtaani_color')||'[]');
-function tab(t){document.querySelectorAll('.sec').forEach(s=>s.classList.add('hidden'));document.getElementById(t).classList.remove('hidden');document.querySelectorAll('.menu button').forEach(b=>b.classList.remove('active'));document.getElementById('b-'+t).classList.add('active');}
+let vids = JSON.parse(localStorage.getItem('mtaani_real')||'[]');
+let intro = JSON.parse(localStorage.getItem('mtaani_intro')||'null');
+let currentPlaying = null;
+
 function getId(u){let m=u.match(/(?:v=|\.be\/|shorts\/)([A-Za-z0-9_-]{11})/);return m?m[1]:null}
-async function autoFetch(){
- let link=qLink.value.trim(); let id=getId(link); if(!id) return;
- qPrev.innerHTML=`<div style="background:#eef1ff;padding:10px;border-radius:12px">⏳ Inapakia...<br><img src="https://img.youtube.com/vi/${id}/mqdefault.jpg" style="width:150px;border-radius:10px;margin-top:8px"></div>`;
+
+async function fetchYT(){
+ let id=getId(ytLink.value.trim()); if(!id) return;
+ ytPrev.innerHTML=`⏳ Inatafuta... <img src="https://img.youtube.com/vi/${id}/mqdefault.jpg" width="120" style="border-radius:8px">`;
  try{
   let r=await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`);
   let d=await r.json();
-  qTitle.value=d.title; qDesc.value=`${d.title} - ${d.author_name} | MTAANI TV LIVE 🔴\n\nSubscribe kwa habari za mtaa kila siku!`;
-  qPrev.innerHTML=`<div style="background:#d4edda;padding:12px;border-radius:12px;color:#155724">✅ <b>${d.title}</b><br>by ${d.author_name}<br><img src="https://img.youtube.com/vi/${id}/mqdefault.jpg" style="width:180px;border-radius:12px;margin-top:8px"></div>`;
- }catch{ qPrev.innerHTML=`<div style="background:#fff3cd;padding:10px;border-radius:12px">ID: ${id}<br><img src="https://img.youtube.com/vi/${id}/mqdefault.jpg" style="width:150px;border-radius:10px"></div>`}
+  ytTitle.value=d.title;
+  ytDesc.value=`${d.title} | by ${d.author_name} | MTAANI TV 🔴 LIVE`;
+  ytPrev.innerHTML=`✅ <b>${d.title}</b> - ${d.author_name}<br><img src="https://img.youtube.com/vi/${id}/mqdefault.jpg" width="160" style="border-radius:10px">`;
+  // Try real views if API key exists
+  if(document.getElementById('apiKey').value){
+    let api=document.getElementById('apiKey').value;
+    let vr=await fetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${id}&key=${api}`);
+    let vj=await vr.json();
+    if(vj.items && vj.items[0]) ytPrev.innerHTML+=`<br>👁️ Real Views: ${vj.items[0].statistics.viewCount} | 👍 ${vj.items[0].statistics.likeCount}`;
+  }
+ }catch(e){ ytPrev.innerHTML=`ID: ${id} - Title manual<br><img src="https://img.youtube.com/vi/${id}/mqdefault.jpg" width="120">`; }
 }
-function addFast(){
- let id=getId(qLink.value); if(!id) return alert('Weka link mkuu!');
- vids.push({id,title:qTitle.value||'Mtaani Video',desc:qDesc.value,duration:parseInt(qDur.value)||300,cat:qCat.value,thumb:`https://img.youtube.com/vi/${id}/mqdefault.jpg`,views:Math.floor(Math.random()*5000)+100});
- localStorage.setItem('mtaani_color',JSON.stringify(vids)); render(); upd();
- qLink.value=''; qTitle.value=''; qDesc.value=''; qPrev.innerHTML='<span style="color:green">✅ Ime-add! Inaenda TV direct...</span>';
- setTimeout(()=>{ doExport(); window.open('index.html','_blank'); },700);
+
+function uploadIntro(e){
+ let file=e.target.files[0]; if(!file) return;
+ let url=URL.createObjectURL(file);
+ intro={type:'file',name:file.name,url:url,localName:'intro.mp4',title:introTitle.value,duration:parseInt(introDur.value)||10,when:introWhen.value};
+ localStorage.setItem('mtaani_intro',JSON.stringify({...intro,url:''})); // dont save blob
+ document.getElementById('introPreview').style.display='block';
+ document.getElementById('introPreview').innerHTML=`<video src="${url}" controls style="width:100%"></video><p style="color:#0f0;padding:8px">✅ Intro loaded: ${file.name} - Kumbuka upload hii file GitHub kama intro.mp4</p>`;
+ alert('Intro ime-load! Sasa upload file yako GitHub, iite intro.mp4');
 }
+
+function setIntroYT(){
+ let id=getId(introLink.value); if(!id) return;
+ intro={type:'youtube',id:id,title:introTitle.value,duration:parseInt(introDur.value)||10,when:introWhen.value};
+ localStorage.setItem('mtaani_intro',JSON.stringify(intro));
+ document.getElementById('introPreview').style.display='block';
+ document.getElementById('introPreview').innerHTML=`<iframe width="100%" height="220" src="https://www.youtube.com/embed/${id}" frameborder="0"></iframe>`;
+}
+
+function addVideo(){
+ let id=getId(ytLink.value.trim());
+ if(!id) return alert('Weka link!');
+ vids.push({id,title:ytTitle.value||'Video',desc:ytDesc.value,duration:parseInt(ytDur.value)||300,cat:ytCat.value,thumb:`https://img.youtube.com/vi/${id}/mqdefault.jpg`,type:'youtube',views:'REAL'});
+ localStorage.setItem('mtaani_real',JSON.stringify(vids));
+ render(); ytLink.value=''; ytTitle.value=''; ytDesc.value=''; ytPrev.innerHTML='';
+}
+
+function addLocalFile(e){
+ let file=e.target.files[0]; if(!file) return;
+ let url=URL.createObjectURL(file);
+ let name=file.name;
+ vids.push({id:name.replace('.mp4',''),title:name,desc:name,duration:300,thumb:'',type:'file',fileName:name,fileUrl:url});
+ localStorage.setItem('mtaani_real',JSON.stringify(vids.map(v=>({...v,fileUrl:''}))));
+ alert(`File ${name} imeongezwa! Kumbuka kui-upload GitHub kama ${name}`);
+ render();
+}
+
 function render(){
- document.getElementById('list').innerHTML=vids.map((v,i)=>`
-  <div class="item"><img src="${v.thumb}"><div style="flex:1"><b>${v.title}</b><br><small>${v.cat} | ${v.duration}s | 👁️ ${v.views}</small><br><span class="badge bg-red">${v.id}</span></div><button onclick="vids.splice(${i},1);localStorage.setItem('mtaani_color',JSON.stringify(vids));render();upd()" style="background:#ff1a1a;color:#fff;border:none;padding:8px 12px;border-radius:10px">FUTA</button></div>
- `).join('')||'<p style="color:#888">Hakuna video bado</p>';
+ document.getElementById('playlist').innerHTML=vids.map((v,i)=>`
+  <div class="item">
+   <img src="${v.thumb || 'https://img.youtube.com/vi/'+v.id+'/mqdefault.jpg'}" onerror="this.src='https://via.placeholder.com/100x65?text=VIDEO'">
+   <div style="flex:1">
+    <b>${v.title}</b><br><small>${v.type} | ${v.duration}s | ${v.cat||''}</small>
+    <div class="controls">
+     <button class="btn-small" style="background:#00c853;color:#fff" onclick="playItem(${i})">▶️ PLAY</button>
+     <button class="btn-small" style="background:#ff9800;color:#fff" onclick="stopAll()">⏸️ STOP</button>
+     <button class="btn-small" style="background:#111;color:#fff" onclick="moveUp(${i})">⬆️</button>
+     <button class="btn-small" style="background:#111;color:#fff" onclick="moveDown(${i})">⬇️</button>
+     <button class="btn-small" style="background:#ff0000;color:#fff" onclick="delItem(${i})">🗑️ DELETE</button>
+    </div>
+   </div>
+  </div>
+ `).join('')||'<p style="color:#888">Hakuna video</p>';
 }
-function upd(){ c1.innerText=vids.length; c2.innerText=(1247+vids.length*342).toLocaleString(); c3.innerText=Math.floor(vids.reduce((a,b)=>a+b.duration,0)/60)+' min'; liveNow.innerText=`🔴 ${Math.floor(Math.random()*50)+8} watching`; }
-function doExport(){ tab('exp'); out.value=JSON.stringify(vids.map(v=>({id:v.id,title:v.title,desc:v.desc,duration:v.duration})),null,2); }
-function copyOut(){ out.select(); document.execCommand('copy'); alert('Copied mkuu! Nenda GitHub > videos.json > Paste > Save'); }
-upd(); render();
-setInterval(upd,3000);
+
+function playItem(i){
+ let v=vids[i]; currentPlaying=i;
+ let player=document.getElementById('adminPlayer');
+ let ytDiv=document.getElementById('ytAdminPlayer');
+ if(v.type==='youtube'){
+  player.style.display='none'; ytDiv.style.display='block';
+  ytDiv.innerHTML=`<iframe width="100%" height="220" src="https://www.youtube.com/embed/${v.id}?autoplay=1" frameborder="0" allow="autoplay"></iframe>`;
+ } else {
+  ytDiv.style.display='none'; player.style.display='block';
+  player.src=v.fileUrl || v.fileName;
+  player.play();
+ }
+ document.getElementById('nowPlaying').innerText=`▶️ Sasa inacheza: ${v.title}`;
+}
+
+function stopAll(){
+ document.getElementById('adminPlayer').pause();
+ document.getElementById('ytAdminPlayer').innerHTML='';
+ document.getElementById('nowPlaying').innerText='⏹️ Imesimama';
+}
+
+function delItem(i){ if(confirm('Futa hii video?')){ vids.splice(i,1); localStorage.setItem('mtaani_real',JSON.stringify(vids)); render(); } }
+function moveUp(i){ if(i>0){ [vids[i-1],vids[i]]=[vids[i],vids[i-1]]; localStorage.setItem('mtaani_real',JSON.stringify(vids)); render(); } }
+function moveDown(i){ if(i<vids.length-1){ [vids[i+1],vids[i]]=[vids[i],vids[i+1]]; localStorage.setItem('mtaani_real',JSON.stringify(vids)); render(); } }
+
+function generateReal(){
+ let config={intro:intro,settings:{apiKey:apiKey.value,channelId:channelId.value},generated:Date.now()};
+ out1.value=JSON.stringify(vids.map(v=>({id:v.id,title:v.title,desc:v.desc,duration:v.duration,type:v.type||'youtube',fileName:v.fileName||''})),null,2);
+ out2.value=JSON.stringify(config,null,2);
+}
+
+function copyAll(){
+ let t=out1.value+'\n\n---CONFIG---\n\n'+out2.value;
+ navigator.clipboard.writeText(t); alert('Copied! Peleka videos.json na config.json GitHub');
+}
+
+render();
+if(intro){ document.getElementById('introPreview').style.display='block'; }
 </script>
 </body>
 </html>
