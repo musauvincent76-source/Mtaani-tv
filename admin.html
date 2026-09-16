@@ -1,64 +1,71 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MTAANI ADMIN</title>
-<style>
-body{background:#111;color:#fff;font-family:Arial;padding:20px}
-input{width:100%;padding:12px;margin:8px 0;background:#222;color:#fff;border:1px solid #444;border-radius:6px}
-button{background:#ffcc00;color:#000;padding:12px 20px;border:none;border-radius:6px;font-weight:900;cursor:pointer;width:100%;margin-top:10px}
-#list div{background:#222;padding:10px;margin:5px 0;border-radius:6px;display:flex;justify-content:space-between}
-textarea{width:100%;height:120px;background:#000;color:#0f0;padding:10px}
-</style>
-</head>
-<body>
-<h2 style="color:#ffcc00">MTAANI TV - ADMIN</h2>
-<input id="ytlink" placeholder="Weka Link ya YouTube hapa...">
-<button onclick="addVideo()">+ ONGEZA VIDEO</button>
-<input id="ticker" placeholder="Andika matangazo ya chini...">
-<button onclick="saveTicker()">SAVE MATANGAZO</button>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MTAANI ADMIN</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0a0a0a;color:#fff;font-family:sans-serif;padding:20px}h1{color:#ff6600;margin-bottom:20px}.box{background:#1a1a1a;padding:20px;border-radius:10px;margin-bottom:20px;border:1px solid #333}input{width:100%;padding:12px;margin:8px 0;background:#000;border:1px solid #ff6600;border-radius:8px;color:#fff}button{width:100%;padding:12px;background:#ff6600;border:none;border-radius:8px;color:#fff;font-weight:900;cursor:pointer;margin-top:10px}button:hover{background:#ff8800}.video-item{background:#000;padding:12px;border-radius:8px;margin:8px 0;display:flex;justify-content:space-between;align-items:center;border-left:4px solid #ff6600}.del{background:red;padding:6px 12px;border-radius:5px;width:auto}</style>
+</head><body>
+<h1>🔥 MTAANI TV ADMIN - DASHBOARD</h1>
+
+<div class="box">
+<h3>Ongeza Video Mpya (Iko na 4)</h3>
+<input id="ytlink" placeholder="Weka YouTube Link (https://youtube.com/watch?v=...)">
+<input id="ytitle" placeholder="Weka Title (mfano: HABARI ZA JIONI)">
+<input id="ydur" type="number" value="300" placeholder="Duration sec (300 = 5min)">
+<button onclick="addVideo()">➕ ADD VIDEO</button>
+<button onclick="saveAll()" style="background:#00aa00">💾 SAVE KWENYE videos.json (GitHub)</button>
+</div>
+
+<div class="box">
+<h3>Videos Zako (<span id="count">0</span>/4)</h3>
 <div id="list"></div>
-<h3>Copy hii uende ui-paste kwenye videos.json:</h3>
-<textarea id="jsonOut" readonly></textarea>
-<button onclick="copyJson()">COPY JSON</button>
-<a href="index.html" style="display:block;margin-top:20px;color:#ffcc00">→ RUDI LIVE TV</a>
+</div>
 
 <script>
-let vids = JSON.parse(localStorage.getItem('mtaani_vids') || '[]');
-let tickerText = localStorage.getItem('mtaani_ticker') || 'MTAANI TV LIVE | WhatsApp: 0751768763';
-document.getElementById('ticker').value = tickerText;
-
-function getId(url){
-  let m=url.match(/(?:v=|youtu\.be\/|embed\/)([a-zA-Z0-9_-]{11})/);
-  return m?m[1]:url;
-}
-function addVideo(){
-  let link=document.getElementById('ytlink').value.trim();
-  if(!link) return;
-  let id=getId(link);
-  vids.push({id:id, duration:300});
-  localStorage.setItem('mtaani_vids', JSON.stringify(vids));
-  document.getElementById('ytlink').value='';
+let videos=[];
+const TOKEN_KEY='mtaani_token';
+async function load(){
+ try{
+  let r=await fetch('videos.json?v='+Date.now(),{cache:'no-store'});
+  videos=await r.json();
   render();
+ }catch{videos=[];render();}
 }
 function render(){
-  let list=document.getElementById('list');
-  list.innerHTML='';
-  vids.forEach((v,i)=>{
-    let d=document.createElement('div');
-    d.innerHTML=`<span>${i+1}. ${v.id}</span><span style="color:red;cursor:pointer" onclick="del(${i})">FUTA</span>`;
-    list.appendChild(d);
-  });
-  document.getElementById('jsonOut').value=JSON.stringify(vids, null, 2);
+ document.getElementById('count').innerText=videos.length;
+ let html='';
+ videos.forEach((v,i)=>{
+  html+=`<div class="video-item"><div><b>${i+1}. ${v.title||'MTAANI TV'}</b><br><small>${v.id} | ${v.duration||300}s</small></div><button class="del" onclick="del(${i})">Futa</button></div>`;
+ });
+ document.getElementById('list').innerHTML=html||'Hakuna video';
 }
-function del(i){ vids.splice(i,1); localStorage.setItem('mtaani_vids', JSON.stringify(vids)); render(); }
-function saveTicker(){
-  let t=document.getElementById('ticker').value;
-  localStorage.setItem('mtaani_ticker', t);
-  alert('Matangazo yamehifadhiwa! Yataonekana LIVE mara moja.');
+function getIdFromUrl(url){
+ let m=url.match(/(?:v=|youtu\.be\/|shorts\/)([A-Za-z0-9_-]{11})/);
+ return m?m[1]:url.trim();
 }
-function copyJson(){ navigator.clipboard.writeText(document.getElementById('jsonOut').value); alert('Copied! Nenda GitHub > videos.json > Paste > Commit'); }
-render();
+function addVideo(){
+ let link=document.getElementById('ytlink').value;
+ let title=document.getElementById('ytitle').value||'MTAANI TV';
+ let dur=parseInt(document.getElementById('ydur').value)||300;
+ if(!link)return alert('Weka link!');
+ let id=getIdFromUrl(link);
+ if(id.length<5)return alert('Link sio sawa!');
+ videos.push({id:id, title:title, duration:dur});
+ document.getElementById('ytlink').value='';document.getElementById('ytitle').value='';
+ render();
+}
+function del(i){if(confirm('Futa?')){videos.splice(i,1);render();}}
+
+async function saveAll(){
+ let token=localStorage.getItem(TOKEN_KEY)||prompt('Weka GitHub Token yako (ghp_...):');
+ if(!token)return;
+ localStorage.setItem(TOKEN_KEY,token);
+ let content=btoa(unescape(encodeURIComponent(JSON.stringify(videos,null,2))));
+ let r=await fetch('https://api.github.com/repos/musauvincent76-source/Mtaani-tv/contents/videos.json');
+ let j=await r.json();
+ let res=await fetch('https://api.github.com/repos/musauvincent76-source/Mtaani-tv/contents/videos.json',{
+  method:'PUT',
+  headers:{'Authorization':'token '+token,'Content-Type':'application/json'},
+  body:JSON.stringify({message:'Update 4 videos na title',content:content,sha:j.sha})
+ });
+ if(res.ok){alert('✅ Ime-save! Sasa TV itaonyesha Title!');}else{alert('❌ Imeshindikana - Token?');localStorage.removeItem(TOKEN_KEY);}
+}
+load();
 </script>
-</body>
-</html>
+</body></html>
