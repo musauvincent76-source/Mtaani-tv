@@ -1,68 +1,38 @@
-<!DOCTYPE html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>MTAANI TV LIVE</title>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ALE TV KE LIVE - Azam Style</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#000;height:100vh;display:flex;flex-direction:column;overflow:hidden;font-family:Arial Black,Arial}
-#topBar{height:48px;background:#000;display:flex;justify-content:space-between;align-items:center;padding:0 14px;border-bottom:2px solid #ffcc00;flex-shrink:0}
-#logo{color:#ffcc00;font-size:20px}#clock{color:#fff;font-size:16px}
-#player{flex:1;background:#000;position:relative;overflow:hidden}
-#player iframe{width:100%;height:100%;border:0}
-#unmute{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#ffcc00;color:#000;padding:14px 22px;border-radius:30px;font-weight:900;border:none;z-index:10;cursor:pointer}
-#bottomTicker{height:42px;background:#0a2a8a;display:flex;align-items:center;overflow:hidden;border-top:2px solid #fff;flex-shrink:0}
-#bottomTicker span{white-space:nowrap;padding-left:100%;animation:scroll 40s linear infinite;color:#fff;font-weight:900;display:inline-block}
-@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
-#msg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#ffcc00;text-align:center;z-index:5}
-</style></head>
-<body>
-<div id="topBar"><span id="logo">MTAANI TV</span><span id="clock">--:--:--</span></div>
-<div id="player">
-  <iframe id="yt" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-  <button id="unmute">🔊 WASHA SAUTI</button>
-  <div id="msg" style="display:none">Nenda ADMIN<br><br><a href="admin.html" style="background:#ffcc00;color:#000;padding:10px 15px;border-radius:20px;text-decoration:none;font-weight:900">FUNGUA ADMIN</a></div>
-</div>
-<div id="bottomTicker"><span id="tickerText">MTAANI TV LIVE | TILL 3624692 | Karibu Mtaani!</span></div>
+body{background:#050a14;color:#fff;font-family:'Segoe UI',sans-serif}
+header{background:linear-gradient(90deg,#001a4d,#002a7a);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #ff6600;position:sticky;top:0;z-index:99}
+header b{letter-spacing:1px}
+header b span{color:#ff6600}
+.badge{background:#ff0033;color:#fff;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:900;animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.6}}
+#playerWrap{width:100%;aspect-ratio:16/9;background:#000;position:relative;overflow:hidden}
+#playerWrap iframe{width:100%;height:100%;border:0;position:absolute;top:0;left:0}
+#msg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:#888}
+.info{padding:16px;background:linear-gradient(180deg,#0a1430,#050a14)}
+.title{font-size:18px;font-weight:900}
+.meta{font-size:11px;opacity:.6;margin-top:4px}
+.btn-join{background:linear-gradient(90deg,#ff6600,#ff8800);color:#fff;border:0;padding:14px;width:100%;border-radius:30px;font-weight:900;margin-top:14px}
+</style></head><body>
+<header><b>AZAM <span>ALE TV</span></b><span class="badge">● LIVE</span></header>
+<div id="playerWrap"><div id="msg">📺 Hakuna matangazo<br><span style="font-size:11px">Subiri Admin awek e video</span></div><iframe id="yt" style="display:none" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe></div>
+<div class="info"><div class="title" id="vTitle">Karibu ALE TV KE LIVE</div><div class="meta" id="vMeta">Azam TV Experience • Fresh System - Hakuna kujificha</div><button class="btn-join" onclick="location.reload()">🔄 Refresh TV</button></div>
 <script>
 const KEY='azamtv_ale_final_2026';
-let yt=document.getElementById('yt'), btn=document.getElementById('unmute'), msg=document.getElementById('msg');
-let list=[];
-
-async function load(){
-  // 1. Jaribu localStorage (Azam admin yako)
-  try{
-    let s=localStorage.getItem(KEY);
-    if(s){let o=JSON.parse(s); if(o.playlist && o.playlist.length) list=o.playlist;}
-  }catch(e){}
-  // 2. Kama bado tupu, jaribu videos.json kutoka GitHub (kwa watu wengine)
-  if(!list.length){
-    try{
-      let r=await fetch('videos.json?v='+Date.now());
-      let j=await r.json();
-      list=j.map(v=> typeof v==='string'? {ytid:v, id:v} : {ytid:v.id||v.ytid, id:v.id||v.ytid, title:v.title||v.ytid}).filter(v=>v.ytid && v.ytid!=='jNQXAC9IVRw');
-    }catch(e){}
-  }
-  // 3. Kama bado tupu - cheza video ya default ya Mtaani ili isiwe black
-  if(!list.length){
-    list=[{ytid:'ScMzIvxBSi4', title:'Mtaani Default'}]; // video ya sample - itaonekana
-    msg.style.display='block';
-  } else {
-    msg.style.display='none';
-  }
-
-  // TRUE LIVE
-  let total=list.length*300;
-  let elapsed=Math.floor(Date.now()/1000)%total;
-  let idx=Math.floor(elapsed/300)%list.length;
-  let offset=elapsed%300;
-  let ytid=list[idx].ytid;
-
-  yt.src=`https://www.youtube.com/embed/${ytid}?autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&playsinline=1&start=${offset}`;
-  btn.style.display='block';
-  let left=300-offset;
-  setTimeout(load, (left+2)*1000);
+function getYtId(u){if(!u)return'';if(u.includes('youtu.be/'))return u.split('youtu.be/')[1].split('?')[0];try{return new URL(u).searchParams.get('v')||'';}catch{let m=u.match(/v=([^&]+)/);return m?m[1]:'';}}
+function loadTV(){
+ let cur=null; try{cur=JSON.parse(localStorage.getItem('aletv_live_now')||'null');}catch{}
+ let st=null; try{st=JSON.parse(localStorage.getItem(KEY)||'null');}catch{}
+ if(!cur && st && st.playlist) cur=st.playlist.find(p=>p.status==='now')||st.playlist[0];
+ let msg=document.getElementById('msg'), yt=document.getElementById('yt');
+ if(!cur ||!cur.url){ msg.style.display='block'; yt.style.display='none'; return; }
+ let id=cur.ytid||getYtId(cur.url);
+ document.getElementById('vTitle').innerText=cur.title;
+ document.getElementById('vMeta').innerText='● LIVE NOW: '+cur.title+' • '+(cur.cat||'Live')+' • Quality: Data Saver (haikatiki)';
+ msg.style.display='none'; yt.style.display='block';
+ // Azam stable player - tiny quality + nocookie
+ yt.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&playsinline=1&rel=0&modestbranding=1&vq=tiny&enablejsapi=1';
 }
-btn.onclick=()=>{ yt.src=yt.src.replace('mute=1','mute=0'); btn.style.display='none'; };
-setInterval(()=>{document.getElementById('clock').innerText=new Date().toLocaleTimeString('en-KE',{hour12:false});},1000);
-load();
-</script>
-</body></html>
+loadTV(); setInterval(loadTV,4000);
+</script></body></html>
