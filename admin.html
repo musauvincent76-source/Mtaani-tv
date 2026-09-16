@@ -1,66 +1,90 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ADMIN + TV PREVIEW</title>
-<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0a0a0a;color:#fff;font-family:sans-serif;padding:12px}h1{color:#ff6600;font-size:20px;margin-bottom:12px}.top{display:flex;gap:10px;margin-bottom:12px}.top a{flex:1;text-align:center;padding:12px;background:#001a4d;border:2px solid #ff6600;border-radius:10px;color:#fff;text-decoration:none;font-weight:900}.box{background:#1a1a1a;padding:14px;border-radius:10px;margin-bottom:12px;border:1px solid #333}input,textarea{width:100%;padding:12px;margin:6px 0;background:#000;border:1px solid #ff6600;border-radius:8px;color:#fff}textarea{height:60px}button{width:100%;padding:12px;background:#ff6600;border:none;border-radius:8px;color:#fff;font-weight:900;margin-top:8px}button.g{background:#00aa00}.video{background:#000;padding:10px;border-radius:8px;margin:6px 0;display:flex;justify-content:space-between;border-left:4px solid #ff6600}.del{background:red;width:auto;padding:6px 12px}#preview{width:100%;height:200px;background:#000;border:2px solid #ff6600;border-radius:10px;margin-top:10px}#preview iframe{width:100%;height:100%;border:0;border-radius:8px}</style>
-</head><body>
-<h1>🔥 MTAANI ADMIN</h1>
-<div class="top">
-<a href="https://musauvincent76-source.github.io/Mtaani-tv/" target="_blank">📺 FUNGUA TV LIVE</a>
-<a href="https://musauvincent76-source.github.io/Mtaani-tv/" target="_blank" style="background:#ff6600">▶️ WATCH TV</a>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ADMIN EDIT - TV + RADIO</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0a1430;color:#fff;font-family:sans-serif;padding:10px}h2{color:#ff6600}.tabs{display:flex;gap:6px;margin:10px 0}.tabs button{flex:1;padding:12px;border:none;border-radius:10px;font-weight:900;cursor:pointer}.tabs.on{background:#ff6600;color:#fff}.tabs.off{background:#222;color:#aaa}.card{background:#111f4a;padding:12px;border-radius:12px;border:2px solid #ff6600;margin-top:8px} #tv{width:100%;height:300px;border:3px solid #ff6600;border-radius:10px;background:#000} input,textarea{width:100%;padding:10px;margin:5px 0;border-radius:8px;border:none;font-weight:700} button.act{background:#ff6600;color:#fff;padding:12px;border:none;border-radius:10px;font-weight:900;width:100%;cursor:pointer;margin-top:6px} button.green{background:#00aa00} pre{background:#000;padding:10px;border-radius:8px;font-size:11px;overflow:auto;white-space:pre-wrap;margin-top:8px;border:1px solid #333} small{color:#aaa}</style></head><body>
+
+<h2>📺 ADMIN YA AZAM ALE TV</h2>
+
+<div class="tabs">
+<button id="btnTV" class="on" onclick="showTab('tv')">📺 TV MODE</button>
+<button id="btnRadio" class="off" onclick="showTab('radio')">📻 RADIO MODE</button>
+<button id="btnAds" class="off" onclick="showTab('ads')">📢 ADS EDIT</button>
 </div>
 
-<div class="box">
-<b>Ongeza Video Mpya (Iko na <span id="cnt">0</span>/4)</b>
-<input id="link" placeholder="YouTube Link (https://youtu.be/...)">
-<input id="title" placeholder="Title - itaonekana juu ya TV (mf: HABARI)">
-<textarea id="desc" placeholder="Description - itaonekana chini kwa Ticker (mf: Habari za Mtaani leo...)"></textarea>
-<input id="dur" type="number" value="300" placeholder="300 = 5min">
-<button onclick="add()">➕ ADD VIDEO + AUTO SAVE</button>
-<button class="g" onclick="save()">💾 SAVE KWENYE videos.json</button>
-<div style="margin-top:10px;font-size:12px;color:#0f0" id="msg"></div>
+<div class="card">
+<b id="previewTitle">📺 TV PREVIEW - LIVE</b>
+<iframe id="tv" src="index.html"></iframe>
+<button class="act" onclick="document.getElementById('tv').src=document.getElementById('tv').src.split('?')[0]+'?v='+Date.now()">🔄 REFRESH PREVIEW</button>
+<small>Hapa ndio unaona TV/Radio vile watu wanaiona. Ukibonyeza TV au Radio juu, preview inabadilika!</small>
 </div>
 
-<div class="box">
-<b>Preview ya TV (Utaona hapa chini vile ina-play)</b>
-<div id="preview"><iframe id="play"></iframe></div>
+<!-- TV EDIT -->
+<div id="tab-tv" class="card">
+<h3>📺 EDIT TV - Videos</h3>
+<small>Weka YouTube ID moja kwa line (mfano: 4EDkfksVFdE)</small>
+<textarea id="tvList" rows="6" placeholder="4EDkfksVFdE&#10;kHc8ELzuIKM&#10;HAQCI_JrycQ"></textarea>
+<button class="act" onclick="saveTV()">💾 SAVE TV LIST</button>
 </div>
 
-<div class="box">
-<b>Videos Zako</b>
-<div id="list"></div>
+<!-- RADIO EDIT -->
+<div id="tab-radio" class="card" style="display:none">
+<h3>📻 EDIT RADIO - Audios</h3>
+<small>Weka YouTube ID za Radio (nyimbo za radio / audio)</small>
+<textarea id="radioList" rows="6" placeholder="dQw4w9WgXcQ&#10;..."></textarea>
+<button class="act" onclick="saveRadio()">💾 SAVE RADIO LIST</button>
+</div>
+
+<!-- ADS EDIT -->
+<div id="tab-ads" class="card" style="display:none">
+<h3>📢 EDIT ADS - Matangazo</h3>
+<input id="adT" placeholder="Jina: HOTELI YA MAMA">
+<textarea id="adM" rows="2" placeholder="Ujumbe: Chakula tamu..."></textarea>
+<input id="adC" placeholder="Contact: TILL 3624692">
+<button class="act" onclick="addAd()">➕ ONGEZA AD</button>
+<div id="adList" style="margin-top:8px"></div>
+<pre id="outAds"></pre>
+<button class="act green" onclick="publishAds()">🚀 PUBLISH ADS - COPY NA WEKA GitHub</button>
+</div>
+
+<!-- PUBLISH SECTION -->
+<div class="card" style="border-color:#00ff00">
+<h3>🚀 PUBLISH KWA TV YOTE</h3>
+<small>Ukimaliza EDIT TV au RADIO, bonyeza hapa kuchukua JSON</small>
+<pre id="outTV"></pre>
+<button class="act green" onclick="publishTV()">🚀 PUBLISH TV - COPY JSON KWA videos.json</button>
+<pre id="outRadio" style="margin-top:8px"></pre>
+<button class="act green" style="background:#6600cc" onclick="publishRadio()">🚀 PUBLISH RADIO - COPY JSON KWA radio.json</button>
+<small style="color:#ffcc00">1. Bonyeza PUBLISH 2. Ime-copy! 3. Nenda GitHub > videos.json/ads.json > Paste > Commit = LIVE!</small>
 </div>
 
 <script>
-let vids=[];
-async function load(){
- let r=await fetch('videos.json?v='+Date.now(),{cache:'no-store'}); vids=await r.json(); render();
+let tvData=JSON.parse(localStorage.getItem('tv_videos')||'["4EDkfksVFdE","kHc8ELzuIKM","HAQCI_JrycQ","QXm2HdKdZkQ"]');
+let radioData=JSON.parse(localStorage.getItem('radio_videos')||'["4EDkfksVFdE"]');
+let ads=JSON.parse(localStorage.getItem('mtaani_ads')||'[{"title":"📢 TANGAZA HAPA!","msg":"Watu 1000+ wanaangalia LIVE","contact":"TILL 3624692"}]');
+
+function showTab(t){
+ document.getElementById('tab-tv').style.display=t==='tv'?'block':'none';
+ document.getElementById('tab-radio').style.display=t==='radio'?'block':'none';
+ document.getElementById('tab-ads').style.display=t==='ads'?'block':'none';
+ document.getElementById('btnTV').className=t==='tv'?'on':'off';
+ document.getElementById('btnRadio').className=t==='radio'?'on':'off';
+ document.getElementById('btnAds').className=t==='ads'?'on':'off';
+ let iframe=document.getElementById('tv');
+ if(t==='tv'){document.getElementById('previewTitle').innerText='📺 TV PREVIEW - LIVE'; iframe.src='index.html?v='+Date.now();}
+ if(t==='radio'){document.getElementById('previewTitle').innerText='📻 RADIO PREVIEW - AUDIO ONLY'; iframe.src='index.html?radio=1&v='+Date.now();}
+ if(t==='ads'){document.getElementById('previewTitle').innerText='📢 ADS PREVIEW - RANGI ZINABADILIKA'; iframe.src='index.html?v='+Date.now();}
 }
-function render(){
- document.getElementById('cnt').innerText=vids.length;
- let h=''; vids.forEach((v,i)=>{
-  h+=`<div class="video"><div><b>${i+1}. ${v.title||'MTAANI'}</b><br><small>${v.id} | ${v.description||'Hakuna desc'}</small></div><button class="del" onclick="del(${i})">Futa</button></div>`;
- }); document.getElementById('list').innerHTML=h;
- if(vids[0]) document.getElementById('play').src='https://www.youtube.com/embed/'+vids[0].id+'?mute=1';
-}
-function getId(u){let m=u.match(/(?:v=|be\/|shorts\/)([A-Za-z0-9_-]{11})/);return m?m[1]:u.trim();}
-function add(){
- let id=getId(document.getElementById('link').value); if(!id||id.length<10)return alert('Link mbaya!');
- vids.push({id:id, title:document.getElementById('title').value||'MTAANI TV', description:document.getElementById('desc').value||'MTAANI TV LIVE', duration:parseInt(document.getElementById('dur').value)||300});
- document.getElementById('link').value='';document.getElementById('title').value='';document.getElementById('desc').value='';
- render(); save(); // AUTO SAVE!
-}
-function del(i){vids.splice(i,1);render();save();}
-async function save(){
- document.getElementById('msg').innerText='⏳ Inasave...';
- let token=localStorage.getItem('tk')||prompt('Weka GitHub Token ghp_...'); if(!token)return;
- localStorage.setItem('tk',token);
- let r=await fetch('https://api.github.com/repos/musauvincent76-source/Mtaani-tv/contents/videos.json');
- let j=await r.json();
- let res=await fetch('https://api.github.com/repos/musauvincent76-source/Mtaani-tv/contents/videos.json',{
-  method:'PUT',headers:{'Authorization':'token '+token,'Content-Type':'application/json'},
-  body:JSON.stringify({message:'update with desc',content:btoa(unescape(encodeURIComponent(JSON.stringify(vids,null,2)))),sha:j.sha})
- });
- document.getElementById('msg').innerText=res.ok?'✅ Ime-save! Sasa fungua TV uone Description chini!':'❌ Token mbaya';
- if(vids[0]) document.getElementById('play').src='https://www.youtube.com/embed/'+vids[0].id+'?autoplay=1&mute=1';
-}
-load();
+document.getElementById('tvList').value=tvData.join('\n');
+document.getElementById('radioList').value=radioData.join('\n');
+
+function saveTV(){tvData=document.getElementById('tvList').value.split('\n').map(s=>s.trim()).filter(s=>s.length>5);localStorage.setItem('tv_videos',JSON.stringify(tvData));renderTV();document.getElementById('tv').src='index.html?v='+Date.now();alert('TV Saved ndani ya Admin! Bonyeza PUBLISH ili watu wote waone!')}
+function saveRadio(){radioData=document.getElementById('radioList').value.split('\n').map(s=>s.trim()).filter(s=>s.length>5);localStorage.setItem('radio_videos',JSON.stringify(radioData));renderRadio();alert('Radio Saved! Bonyeza PUBLISH!')}
+function addAd(){let t=document.getElementById('adT').value.trim(),m=document.getElementById('adM').value.trim(),c=document.getElementById('adC').value.trim()||'TILL 3624692';if(!t||!m)return alert('Weka jina na ujumbe');ads.unshift({title:t,msg:m,contact:c});document.getElementById('adT').value='';document.getElementById('adM').value='';document.getElementById('adC').value='';saveAds()}
+function saveAds(){localStorage.setItem('mtaani_ads',JSON.stringify(ads));renderAds();document.getElementById('tv').src='index.html?v='+Date.now();}
+function renderAds(){let h='';ads.forEach((a,i)=>{h+=`<div style="background:#000;padding:6px;margin:3px 0;border-radius:6px;border-left:3px solid #ff6600"><b>${a.title}</b> <span style="float:right;color:red;cursor:pointer" onclick="ads.splice(${i},1);saveAds()">X</span><br><small>${a.msg}</small><br><small style="color:#ff0">${a.contact}</small></div>`});document.getElementById('adList').innerHTML=h;document.getElementById('outAds').textContent=JSON.stringify(ads,null,2)}
+function renderTV(){let arr=tvData.map(id=>({id:id,title:'MTAANI TV',duration:300}));document.getElementById('outTV').textContent=JSON.stringify(arr,null,2)}
+function renderRadio(){let arr=radioData.map(id=>({id:id,title:'RADIO MTAANI',duration:300}));document.getElementById('outRadio').textContent=JSON.stringify(arr,null,2)}
+function publishTV(){navigator.clipboard.writeText(document.getElementById('outTV').textContent);alert('✅ TV JSON Ime-copy! Nenda GitHub > videos.json > Edit > Paste > Commit!')}
+function publishRadio(){navigator.clipboard.writeText(document.getElementById('outRadio').textContent);alert('✅ RADIO JSON Ime-copy! Tengeneza file mpya GitHub inaitwa radio.json > Paste > Commit!')}
+function publishAds(){navigator.clipboard.writeText(document.getElementById('outAds').textContent);alert('✅ ADS JSON Ime-copy! Nenda GitHub > ads.json > Edit > Paste > Commit! Ads zitaonekana na rangi zinabadilika!')}
+renderAds();renderTV();renderRadio();
 </script>
 </body></html>
