@@ -1,38 +1,71 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ALE TV KE LIVE - Azam Style</title>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>ALE TV KE LIVE - Azam Style</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#050a14;color:#fff;font-family:'Segoe UI',sans-serif}
 header{background:linear-gradient(90deg,#001a4d,#002a7a);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #ff6600;position:sticky;top:0;z-index:99}
-header b{letter-spacing:1px}
-header b span{color:#ff6600}
+header b{letter-spacing:1px} header b span{color:#ff6600}
 .badge{background:#ff0033;color:#fff;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:900;animation:blink 1s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.6}}
 #playerWrap{width:100%;aspect-ratio:16/9;background:#000;position:relative;overflow:hidden}
 #playerWrap iframe{width:100%;height:100%;border:0;position:absolute;top:0;left:0}
-#msg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:#888}
+#msg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:#888;width:80%}
 .info{padding:16px;background:linear-gradient(180deg,#0a1430,#050a14)}
 .title{font-size:18px;font-weight:900}
 .meta{font-size:11px;opacity:.6;margin-top:4px}
-.btn-join{background:linear-gradient(90deg,#ff6600,#ff8800);color:#fff;border:0;padding:14px;width:100%;border-radius:30px;font-weight:900;margin-top:14px}
+.btn-join{background:linear-gradient(90deg,#ff6600,#ff8800);color:#fff;border:0;padding:14px;width:100%;border-radius:30px;font-weight:900;margin-top:14px;cursor:pointer}
+#unmute{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#ff6600;color:#fff;padding:12px 20px;border-radius:30px;font-weight:900;border:none;z-index:20;cursor:pointer;display:none}
 </style></head><body>
 <header><b>AZAM <span>ALE TV</span></b><span class="badge">● LIVE</span></header>
-<div id="playerWrap"><div id="msg">📺 Hakuna matangazo<br><span style="font-size:11px">Subiri Admin awek e video</span></div><iframe id="yt" style="display:none" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe></div>
-<div class="info"><div class="title" id="vTitle">Karibu ALE TV KE LIVE</div><div class="meta" id="vMeta">Azam TV Experience • Fresh System - Hakuna kujificha</div><button class="btn-join" onclick="location.reload()">🔄 Refresh TV</button></div>
+<div id="playerWrap">
+  <div id="msg">📺 Hakuna matangazo<br><span style="font-size:11px">Subiri Admin aweke video<br><br><a href="admin.html" style="color:#ff6600;text-decoration:none;border:1px solid #ff6600;padding:6px 12px;border-radius:15px">FUNGUA ADMIN</a></span></div>
+  <iframe id="yt" style="display:none" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
+  <button id="unmute">🔊 WASHA SAUTI</button>
+</div>
+<div class="info"><div class="title" id="vTitle">Karibu ALE TV KE LIVE</div><div class="meta" id="vMeta">Azam TV Experience • Fresh System</div><button class="btn-join" onclick="location.reload()">🔄 Refresh TV</button></div>
 <script>
 const KEY='azamtv_ale_final_2026';
 function getYtId(u){if(!u)return'';if(u.includes('youtu.be/'))return u.split('youtu.be/')[1].split('?')[0];try{return new URL(u).searchParams.get('v')||'';}catch{let m=u.match(/v=([^&]+)/);return m?m[1]:'';}}
-function loadTV(){
- let cur=null; try{cur=JSON.parse(localStorage.getItem('aletv_live_now')||'null');}catch{}
- let st=null; try{st=JSON.parse(localStorage.getItem(KEY)||'null');}catch{}
- if(!cur && st && st.playlist) cur=st.playlist.find(p=>p.status==='now')||st.playlist[0];
- let msg=document.getElementById('msg'), yt=document.getElementById('yt');
- if(!cur ||!cur.url){ msg.style.display='block'; yt.style.display='none'; return; }
+
+async function loadTV(){
+ let cur=null;
+ try{cur=JSON.parse(localStorage.getItem('aletv_live_now')||'null');}catch{}
+ let st=null;
+ try{st=JSON.parse(localStorage.getItem(KEY)||'null');}catch{}
+ if(!cur && st && st.playlist && st.playlist.length) cur=st.playlist.find(p=>p.status==='now')||st.playlist[0];
+
+ // FALLBACK: Kama localStorage tupu, soma videos.json ya GitHub kwa ajili ya wateja wengine
+ if(!cur){
+   try{
+     let r=await fetch('videos.json?v='+Date.now());
+     let j=await r.json();
+     let filtered=j.filter(v=> (v.id||v.ytid)!=='jNQXAC9IVRw');
+     if(filtered.length){
+       let v=filtered[0];
+       cur={title: v.title||'MTAANI TV LIVE', url:'https://youtube.com/watch?v='+(v.id||v.ytid), ytid: v.id||v.ytid, cat: v.cat||'Live'};
+     }
+   }catch(e){}
+ }
+
+ let msg=document.getElementById('msg'), yt=document.getElementById('yt'), unmute=document.getElementById('unmute');
+ if(!cur ||!cur.url){ msg.style.display='block'; yt.style.display='none'; unmute.style.display='none'; return; }
+
  let id=cur.ytid||getYtId(cur.url);
+ if(!id){ msg.style.display='block'; yt.style.display='none'; return; }
+
  document.getElementById('vTitle').innerText=cur.title;
- document.getElementById('vMeta').innerText='● LIVE NOW: '+cur.title+' • '+(cur.cat||'Live')+' • Quality: Data Saver (haikatiki)';
- msg.style.display='none'; yt.style.display='block';
- // Azam stable player - tiny quality + nocookie
- yt.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&playsinline=1&rel=0&modestbranding=1&vq=tiny&enablejsapi=1';
+ document.getElementById('vMeta').innerText='● LIVE NOW: '+cur.title+' • '+(cur.cat||'Live')+' • Data Saver';
+ msg.style.display='none'; yt.style.display='block'; unmute.style.display='block';
+
+ // Player bila YouTube UI nyingi + autoplay na mute
+ yt.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1&controls=0&iv_load_policy=3&vq=tiny&enablejsapi=1';
+
+ unmute.onclick=()=>{
+   yt.src=yt.src.replace('mute=1','mute=0');
+   unmute.style.display='none';
+   yt.style.pointerEvents='auto';
+ };
 }
-loadTV(); setInterval(loadTV,4000);
+loadTV();
+// Usireload kila 4 sec ovyo - inafanya ikuame
+setInterval(()=>{ /* check tu kama admin amebadilisha */ let old=localStorage.getItem('aletv_live_now'); loadTV(); }, 15000);
 </script></body></html>
