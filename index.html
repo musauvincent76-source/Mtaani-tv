@@ -1,9 +1,112 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MTAANI TV LIVE</title>
-<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#000;color:#fff;height:100vh;display:flex;flex-direction:column;font-family:sans-serif}#top{height:56px;background:linear-gradient(90deg,#ff0000,#ff6600);display:flex;align-items:center;justify-content:space-between;padding:0 16px}#logo{font-weight:900;font-size:20px}#logo span{background:#fff;color:#f00;padding:2px 6px;border-radius:4px}#live{background:#000;color:#fff;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:900;animation:b 1s infinite}#clock{background:rgba(0,0,0,.5);padding:6px 14px;border-radius:20px;font-size:12px;border:1px solid #ffffff44}#player{flex:1;position:relative;background:#000}#player iframe{width:100%;height:100%;border:0}#no{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#666;text-align:center}#ticker{height:48px;background:#ffcc00;color:#000;font-weight:900;display:flex;align-items:center;overflow:hidden;white-space:nowrap;font-size:15px;border-top:3px solid #f00}#ticker div{padding-left:100%;animation:s 25s linear infinite}@keyframes s{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}@keyframes b{0%,100%{opacity:1}50%{opacity:.3}}</style></head><body>
-<div id="top"><div id="logo">MTAANI <span>TV</span></div><div style="display:flex;gap:8px"><div id="live">● LIVE</div><div id="clock">00:00:00</div></div></div>
-<div id="player"><iframe id="yt" allow="autoplay; fullscreen"></iframe><div id="no">📺 MTAANI TV<br><small>Hakuna video - weka admin</small></div></div>
-<div id="ticker"><div id="tick">MTAANI TV LIVE - MTAANI KWA MTAANI - HABARI ZA MTAANI - TILL 3624692</div></div>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MTAANI TV 🔴 LIVE</title>
+<style>
+body{margin:0;background:#000;color:#fff;font-family:sans-serif}
+.header{background:#c00;padding:10px;text-align:center;font-weight:bold}
+#player{width:100%;aspect-ratio:16/9;background:#000}
+.info{padding:12px;background:#111}
+.live{color:red;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:0}}
+.ad-box{background:#222;margin:10px 0;padding:8px;text-align:center;border:1px dashed #555}
+.desc{color:#ccc;font-size:14px;margin-top:8px}
+</style>
+</head>
+<body>
+
+<div class="header">MTAANI TV <span class="live">🔴 LIVE</span> - <span id="clock"></span></div>
+
+<div id="player"></div>
+
+<div class="info">
+  <h3 id="v-title">Inapakia...</h3>
+  <div id="v-desc" class="desc"></div>
+
+  <div class="ad-box">
+    <!-- WEKA CODE YAKO YA ADSENSE HAPA CHINI -->
+    <p style="font-size:12px;color:#888">Adsense itaonekana hapa juu ya description</p>
+    <!-- <script> adsense yako </script> -->
+  </div>
+
+  <p style="font-size:12px">Watazamaji wote mnaona kitu kimoja same time | Linear TV</p>
+</div>
+
 <script>
-function load(){let v=JSON.parse(localStorage.getItem('mtaani_videos_2026')||'[]');let id=localStorage.getItem('mtaani_live_id')||v[v.length-1]?.id||'';let t=localStorage.getItem('mtaani_ticker')||v[v.length-1]?.desc||'MTAANI TV LIVE - MTAANI KWA MTAANI';document.getElementById('tick').innerText=t+' • '+t;let f=document.getElementById('yt');if(!id){document.getElementById('no').style.display='block';f.src='';return}document.getElementById('no').style.display='none';if(!f.src.includes(id)) f.src='https://www.youtube.com/embed/'+id+'?autoplay=1&mute=0&controls=1';}
-load();setInterval(()=>{document.getElementById('clock').innerText=new Date().toLocaleTimeString('en-KE',{hour12:false});load()},2000);
-</script></body></html>
+let videos = [];
+let player;
+let currentIndex = 0;
+
+async function loadVideos(){
+  let res = await fetch('videos.json?t='+Date.now());
+  videos = await res.json();
+  initPlayer();
+}
+
+function getSyncedVideo(){
+  let total = videos.reduce((a,b)=>a+b.duration,0);
+  let now = Math.floor(Date.now()/1000);
+  let daySec = now % 86400; // seconds leo
+  let secInLoop = daySec % total;
+
+  let acc=0;
+  for(let i=0;i<videos.length;i++){
+    if(secInLoop < acc + videos[i].duration){
+      return {index:i, seek: secInLoop - acc};
+    }
+    acc+=videos[i].duration;
+  }
+  return {index:0, seek:0};
+}
+
+function initPlayer(){
+  let sync = getSyncedVideo();
+  currentIndex = sync.index;
+  showInfo(currentIndex);
+
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.body.appendChild(tag);
+
+  window.onYouTubeIframeAPIReady = function(){
+    player = new YT.Player('player', {
+      videoId: videos[currentIndex].id,
+      playerVars:{autoplay:1, controls:1, rel:0, modestbranding:1},
+      events:{
+        'onReady': e=>{
+          e.target.seekTo(sync.seek, true);
+          e.target.playVideo();
+          setTimeout(checkSync, videos[currentIndex].duration*1000 - sync.seek*1000);
+        }
+      }
+    });
+  }
+}
+
+function showInfo(i){
+  document.getElementById('v-title').innerText = videos[i].title;
+  document.getElementById('v-desc').innerText = videos[i].desc;
+}
+
+function checkSync(){
+  let sync = getSyncedVideo();
+  currentIndex = sync.index;
+  showInfo(currentIndex);
+  if(player){
+    player.loadVideoById(videos[currentIndex].id, sync.seek);
+  }
+  setTimeout(checkSync, videos[currentIndex].duration*1000);
+}
+
+function updateClock(){
+  let n=new Date();
+  document.getElementById('clock').innerText=n.toLocaleTimeString();
+}
+setInterval(updateClock,1000);
+
+loadVideos();
+</script>
+</body>
+</html>
