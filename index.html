@@ -1,66 +1,64 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>MTAANI TV LIVE</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#000;overflow:hidden;font-family:Arial Black,Arial;height:100vh;display:flex;flex-direction:column}
-#topBar{height:48px;background:#000;display:flex;justify-content:space-between;align-items:center;padding:0 14px;border-bottom:2px solid #ffcc00;flex-shrink:0;z-index:5}
-#logo{color:#ffcc00;font-size:20px;letter-spacing:1px}
-#clock{color:#fff;font-size:18px}
+body{background:#000;height:100vh;display:flex;flex-direction:column;overflow:hidden;font-family:Arial Black,Arial}
+#topBar{height:48px;background:#000;display:flex;justify-content:space-between;align-items:center;padding:0 14px;border-bottom:2px solid #ff6600;flex-shrink:0}
+#logo{color:#ff6600;font-size:20px;letter-spacing:1px}#clock{color:#fff;font-size:16px}
 #player{flex:1;background:#000;position:relative;overflow:hidden}
-#player iframe{width:100%;height:100%;border:0;pointer-events:none; /* inazuia mtu kubonyeza YouTube iruke */}
-#unmute{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#ffcc00;color:#000;padding:14px 22px;border-radius:30px;font-weight:900;font-size:16px;z-index:10;border:none;cursor:pointer}
-#bottomTicker{height:42px;background:#0a2a8a;display:flex;align-items:center;overflow:hidden;flex-shrink:0;border-top:2px solid #fff;z-index:5}
-#bottomTicker span{white-space:nowrap;padding-left:100%;animation:scroll 40s linear infinite;color:#fff;font-weight:900;font-size:16px;display:inline-block}
+#player iframe{width:100%;height:100%;border:0;pointer-events:none}
+#unmute{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#ff6600;color:#fff;padding:14px 22px;border-radius:30px;font-weight:900;border:none;z-index:10;cursor:pointer}
+#bottomTicker{height:42px;background:#0a2a8a;display:flex;align-items:center;overflow:hidden;border-top:2px solid #fff;flex-shrink:0}
+#bottomTicker span{white-space:nowrap;padding-left:100%;animation:scroll 40s linear infinite;color:#fff;font-weight:900;display:inline-block}
 @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
-</style>
-</head>
+#noVideo{display:flex;align-items:center;justify-content:center;height:100%;color:#ff6600;font-size:18px}
+</style></head>
 <body>
-<div id="topBar"><span id="logo">MTAANI TV</span><span id="clock">00:00:00</span></div>
+<div id="topBar"><span id="logo">MTAANI TV</span><span id="clock">--:--:--</span></div>
 <div id="player">
-  <iframe id="yt" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-  <button id="unmute">🔊 BONYEZA KUWASHA SAUTI</button>
+  <iframe id="yt" allow="autoplay; encrypted-media"></iframe>
+  <button id="unmute">🔊 WASHA SAUTI</button>
+  <div id="noVideo" style="display:none">Nenda ADMIN ukaweke video</div>
 </div>
-<div id="bottomTicker"><span id="tickerText">MTAANI TV LIVE | Karibu Mtaani | WhatsApp: 0751768763</span></div>
+<div id="bottomTicker"><span id="tickerText">MTAANI TV LIVE | TILL 3624692 | Karibu Mtaani!</span></div>
 <script>
-let videos=[], yt=document.getElementById('yt'), btn=document.getElementById('unmute');
-async function load(){
- try{
-  let r=await fetch('videos.json?t='+Date.now());
-  let j=await r.json();
-  videos=j.map(v=> typeof v==='string'? {id:v,duration:300} : {id:v.id, duration:v.duration||300}).filter(v=>v.id && v.id!=='jNQXAC9IVRw');
-  if(!videos.length) videos=[{id:"ScMzIvxBSi4",duration:300}]; // default kama yako tupu
- }catch(e){ videos=[{id:"ScMzIvxBSi4",duration:300}]; }
- playSynced();
- try{let r=await fetch('ticker.json?t='+Date.now());let j=await r.json();if(j.text)document.getElementById('tickerText').innerText=j.text;}catch(e){}
+const KEY='azamtv_ale_final_2026';
+let yt=document.getElementById('yt'), btn=document.getElementById('unmute'), noV=document.getElementById('noVideo');
+function getPlaylist(){
+  try{
+    let s=localStorage.getItem(KEY);
+    if(s){let st=JSON.parse(s); if(st.playlist && st.playlist.length) return st.playlist;}
+    let s2=localStorage.getItem('aletv_state_v2');
+    if(s2){let st=JSON.parse(s2); if(st.playlist && st.playlist.length) return st.playlist;}
+  }catch(e){}
+  return [];
 }
-function playSynced(){
- if(!videos.length) return;
- let total=videos.reduce((s,v)=>s+(v.duration||300),0);
- let elapsed=Math.floor(Date.now()/1000)%total; // TRUE LIVE - ukitoka ukirudi imesonga mbele
- let acc=0;
- for(let i=0;i<videos.length;i++){
-  let d=videos[i].duration||300;
-  if(elapsed<acc+d){
-   let offset=elapsed-acc;
-   // controls=0, rel=0, modestbranding=1, iv_load_policy=3 = inaficha title na logo
-   yt.src='https://www.youtube.com/embed/'+videos[i].id+'?autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&playsinline=1&showinfo=0&start='+offset;
-   setTimeout(playSynced,(d-offset+1)*1000);
-   break;
+function play(){
+  let list=getPlaylist();
+  if(!list.length){
+    noV.style.display='flex'; yt.style.display='none'; btn.style.display='none';
+    let t=localStorage.getItem('mtaani_ticker') || localStorage.getItem('aletv_ticker');
+    if(t) document.getElementById('tickerText').innerText=t;
+    return;
   }
-  acc+=d;
- }
+  noV.style.display='none'; yt.style.display='block'; btn.style.display='block';
+  let now=list.find(p=>p.status==='now') || list[0];
+  let idx=list.indexOf(now);
+  let total=list.reduce((s,v)=>s+300,0); // kila video 5min kwa true live
+  let elapsed=Math.floor(Date.now()/1000)%total;
+  let curIdx=Math.floor(elapsed/300)%list.length;
+  let current=list[curIdx] || now;
+  let offset=elapsed%300;
+  yt.src=`https://www.youtube.com/embed/${current.ytid||current.id}?autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&playsinline=1&start=${offset}`;
+  setTimeout(play, 10000); // angalia kila 10 sec kama admin amebadilisha
 }
-btn.onclick=()=>{
-  yt.src=yt.src.replace('mute=1','mute=0');
-  btn.style.display='none';
-  yt.style.pointerEvents='auto'; // ruhusu ku-fullscreen baada ya unmute
-};
+btn.onclick=()=>{ yt.src=yt.src.replace('mute=1','mute=0'); btn.style.display='none'; yt.style.pointerEvents='auto'; };
 setInterval(()=>{document.getElementById('clock').innerText=new Date().toLocaleTimeString('en-KE',{hour12:false});},1000);
-load();
+// fungua ticker kutoka localStorage
+let tk=localStorage.getItem('mtaani_ticker')||localStorage.getItem('aletv_ticker');
+if(tk) document.getElementById('tickerText').innerText=tk;
+play();
+window.addEventListener('storage', play);
 </script>
-</body>
-</html>
+</body></html>
