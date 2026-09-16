@@ -1,8 +1,14 @@
 [
-  {"id": "4C_RYef4fXM", "title": "WENDO USU"},
-  {"id": "4EDkfksVFdE", "title": "KICHOME KEIYO"},
-  {"id": "dQw4w9WgXcQ", "title": "Habari za Mtaani"},
-  {"id": "jNQXAC9IVRw", "title": "Mtaani Episode"},
-  {"id": "9bZkp7q19f0", "title": "Mtaani News"},
-  {"id": "kJQP7kiw5Fk", "title": "Mtaani Live"}
+  {
+    "id": "ibO67gimwfY",
+    "duration": 300
+  },
+  {
+    "id": "HA0CI_JrycQ",
+    "duration": 300
+  },
+  {
+    "id": "kHc8ELzuIKM",
+    "duration": 300
+  }
 ]
