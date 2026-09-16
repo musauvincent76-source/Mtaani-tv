@@ -3,110 +3,120 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MTAANI TV 🔴 LIVE</title>
+<title>MTAANI TV - LIVE</title>
 <style>
-body{margin:0;background:#000;color:#fff;font-family:sans-serif}
-.header{background:#c00;padding:10px;text-align:center;font-weight:bold}
-#player{width:100%;aspect-ratio:16/9;background:#000}
-.info{padding:12px;background:#111}
-.live{color:red;animation:blink 1s infinite}
-@keyframes blink{50%{opacity:0}}
-.ad-box{background:#222;margin:10px 0;padding:8px;text-align:center;border:1px dashed #555}
-.desc{color:#ccc;font-size:14px;margin-top:8px}
+*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}
+body{background:#000;color:#fff}
+.top{position:fixed;top:0;left:0;right:0;height:54px;background:#111;display:flex;justify-content:space-between;align-items:center;padding:0 15px;z-index:999;border-bottom:2px solid #222}
+.leftTop b{font-size:21px}.leftTop b span{color:#ff0000}
+.liveDot{background:#ff0000;color:#fff;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:900;animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.playerWrap{margin-top:54px;width:100%;background:#000;aspect-ratio:16/9}
+.playerWrap iframe{width:100%;height:100%;border:none}
+.info{padding:14px 15px;background:#0f0f0f;position:relative;min-height:90px}
+.info h2{font-size:17px;padding-right:90px}
+.info p{color:#888;font-size:13px;margin-top:6px;padding-right:90px;line-height:1.4}
+/* SAA IKO HAPA CORNER YA DESCRIPTION KAMA ULISEMA */
+.cornerClock{position:absolute;right:12px;bottom:12px;background:#1f1f1f;border:1px solid #333;color:#fff;padding:6px 10px;border-radius:8px;font-size:12px;font-weight:700;text-align:center;line-height:1.2}
+.cornerClock small{color:#888;font-size:9px;display:block}
+.meta{margin-top:10px;padding-top:10px;border-top:1px solid #222;font-size:11px;color:#666;display:flex;justify-content:space-between}
+.adsBox{background:#111;border:1px dashed #333;border-radius:10px;padding:14px;margin:12px;text-align:center;color:#555}
+.ticker{position:fixed;bottom:0;left:0;right:0;height:33px;background:#ff0000;color:#fff;display:flex;align-items:center;overflow:hidden;white-space:nowrap;z-index:999}
+.ticker span{padding-left:100%;animation:scroll 28s linear infinite;display:inline-block;font-size:12px;font-weight:600}
+@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+.pad{height:35px}
 </style>
 </head>
 <body>
 
-<div class="header">MTAANI TV <span class="live">🔴 LIVE</span> - <span id="clock"></span></div>
-
-<div id="player"></div>
-
-<div class="info">
-  <h3 id="v-title">Inapakia...</h3>
-  <div id="v-desc" class="desc"></div>
-
-  <div class="ad-box">
-    <!-- WEKA CODE YAKO YA ADSENSE HAPA CHINI -->
-    <p style="font-size:12px;color:#888">Adsense itaonekana hapa juu ya description</p>
-    <!-- <script> adsense yako </script> -->
-  </div>
-
-  <p style="font-size:12px">Watazamaji wote mnaona kitu kimoja same time | Linear TV</p>
+<div class="top">
+<div class="leftTop"><b>MTAANI <span>TV</span></b></div>
+<div style="display:flex;gap:8px;align-items:center">
+<div class="liveDot">🔴 LIVE</div>
+<div style="font-size:12px;color:#aaa">MTAANI TV</div>
+</div>
 </div>
 
+<div class="playerWrap"><div id="player"></div></div>
+
+<div class="info">
+<h2 id="vTitle">MTAANI TV - Inapakia...</h2>
+<p id="vDesc">TV ya mtaa 24/7 - Inaenda na masaa</p>
+<div class="meta"><span id="views">👁️ 1,247 watching</span><span id="nextInfo">Auto • Linear TV</span></div>
+
+<!-- SAA IKO HAPA CORNER KAMA ULISEMA MKUU -->
+<div class="cornerClock" id="cornerClock">--:--<small>SAI HII</small></div>
+</div>
+
+<div class="adsBox"><small>AD - Chini ya description</small><p style="margin-top:6px">📢 Matangazo: 0712xxxxxx - Adsense hapa</p></div>
+<div class="ticker"><span>🔴 MTAANI TV LIVE | Video inaenda na masaa kama TV ya ukweli | Ukifika katikati utaikuta katikati | 👁️ <b id="tCount">1,247</b> watching | </span></div>
+<div class="pad"></div>
+
 <script>
-let videos = [];
-let player;
-let currentIndex = 0;
+let videos=[],ci=0,coffset=0,player;
 
-async function loadVideos(){
-  let res = await fetch('videos.json?t='+Date.now());
-  videos = await res.json();
-  initPlayer();
+function updClock(){
+ let now=new Date();
+ let t=now.toLocaleTimeString('en-KE',{hour12:false});
+ let d=now.toLocaleDateString('en-KE',{weekday:'short'});
+ document.getElementById('cornerClock').innerHTML=t+'<small>'+d+' • SAI HII</small>';
 }
+setInterval(updClock,1000); updClock();
 
-function getSyncedVideo(){
-  let total = videos.reduce((a,b)=>a+b.duration,0);
-  let now = Math.floor(Date.now()/1000);
-  let daySec = now % 86400; // seconds leo
-  let secInLoop = daySec % total;
-
+async function load(){
+ try{
+  let r=await fetch('videos.json?v='+Date.now());
+  videos=await r.json();
+  if(!videos.length) throw 'empty';
+  // LINEAR TV NA MASAA - HAPA NDIO SIRI MKUU
+  let total=videos.reduce((a,b)=>a+(b.duration||300),0);
+  let nowSec=Math.floor(Date.now()/1000);
+  let daySec=nowSec % total;
   let acc=0;
   for(let i=0;i<videos.length;i++){
-    if(secInLoop < acc + videos[i].duration){
-      return {index:i, seek: secInLoop - acc};
+    let dur=videos[i].duration||300;
+    if(daySec < acc+dur){ ci=i; coffset=daySec-acc; break; }
+    acc+=dur;
+  }
+  console.log('Linear: index',ci,'offset',coffset);
+  initYT();
+ }catch(e){
+  document.getElementById('vTitle').innerText='❌ videos.json bado! admin.html > GENERATE > GitHub';
+ }
+}
+function initYT(){
+ if(!window.YT){ let s=document.createElement('script'); s.src="https://www.youtube.com/iframe_api"; document.body.appendChild(s); window.onYouTubeIframeAPIReady=mk; } else mk();
+}
+function mk(){
+ let v=videos[ci];
+ document.getElementById('vTitle').innerText=v.title;
+ document.getElementById('vDesc').innerText=v.desc||v.title;
+ player=new YT.Player('player',{
+  videoId:v.id,
+  playerVars:{autoplay:1,controls:0,modestbranding:1,rel:0,playsinline:1},
+  events:{
+   onReady:e=>{
+    e.target.mute();
+    // HAPA NDIO VIDEO INAENDA NA MASAA - INA-SEEK KATIKATI
+    if(coffset>5 && coffset < (v.duration||300)-10){
+      e.target.seekTo(coffset,true);
+      console.log('Seek to',coffset);
     }
-    acc+=videos[i].duration;
+    e.target.playVideo();
+   },
+   onStateChange:e=>{
+    if(e.data==0){
+      ci=(ci+1)%videos.length; coffset=0;
+      player.loadVideoById(videos[ci].id);
+      document.getElementById('vTitle').innerText=videos[ci].title;
+      document.getElementById('vDesc').innerText=videos[ci].desc;
+    }
+   }
   }
-  return {index:0, seek:0};
+ });
 }
-
-function initPlayer(){
-  let sync = getSyncedVideo();
-  currentIndex = sync.index;
-  showInfo(currentIndex);
-
-  var tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  document.body.appendChild(tag);
-
-  window.onYouTubeIframeAPIReady = function(){
-    player = new YT.Player('player', {
-      videoId: videos[currentIndex].id,
-      playerVars:{autoplay:1, controls:1, rel:0, modestbranding:1},
-      events:{
-        'onReady': e=>{
-          e.target.seekTo(sync.seek, true);
-          e.target.playVideo();
-          setTimeout(checkSync, videos[currentIndex].duration*1000 - sync.seek*1000);
-        }
-      }
-    });
-  }
-}
-
-function showInfo(i){
-  document.getElementById('v-title').innerText = videos[i].title;
-  document.getElementById('v-desc').innerText = videos[i].desc;
-}
-
-function checkSync(){
-  let sync = getSyncedVideo();
-  currentIndex = sync.index;
-  showInfo(currentIndex);
-  if(player){
-    player.loadVideoById(videos[currentIndex].id, sync.seek);
-  }
-  setTimeout(checkSync, videos[currentIndex].duration*1000);
-}
-
-function updateClock(){
-  let n=new Date();
-  document.getElementById('clock').innerText=n.toLocaleTimeString();
-}
-setInterval(updateClock,1000);
-
-loadVideos();
+load();
+let c=1247; setInterval(()=>{c++; document.getElementById('views').innerText='👁️ '+c+' watching'; document.getElementById('tCount').innerText=c;},4000);
 </script>
 </body>
-</html>
+  </html>
