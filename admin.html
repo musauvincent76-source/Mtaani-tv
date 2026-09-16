@@ -3,52 +3,147 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mtaani Admin</title>
+<title>Mtaani TV - Dashboard</title>
 <style>
-body{margin:0;background:#0f0f0f;color:#fff;font-family:sans-serif;padding:15px}
-h2{color:#ff0000;text-align:center}
-input,textarea{width:100%;box-sizing:border-box;padding:12px;margin:6px 0;background:#222;border:1px solid #444;color:#fff;border-radius:6px}
-button{width:100%;padding:13px;margin:8px 0;border:none;border-radius:6px;font-weight:bold}
-.btn-add{background:#cc0000;color:#fff}
-.btn-gen{background:#00aa00;color:#fff;font-size:16px}
-.item{background:#1e1e1e;padding:10px;margin:6px 0;border-left:3px solid red}
-#out{background:#000;color:#0f0;height:300px;font-size:12px}
+*{box-sizing:border-box} body{margin:0;background:#0a0a0a;color:#fff;font-family:sans-serif}
+.sidebar{position:fixed;width:220px;height:100vh;background:#111;padding:15px;border-right:1px solid #222}
+.sidebar h2{color:red;margin:0 0 20px 0}
+.sidebar button{width:100%;text-align:left;padding:12px;background:transparent;color:#aaa;border:none;margin:2px 0;border-radius:6px}
+.sidebar button.active{background:#cc0000;color:#fff}
+.main{margin-left:220px;padding:20px}
+.card{background:#161616;border:1px solid #222;padding:15px;border-radius:10px;margin-bottom:15px}
+input,textarea,select{width:100%;padding:11px;margin:6px 0;background:#222;border:1px solid #333;color:#fff;border-radius:6px}
+label{font-size:12px;color:#888}
+.btn{padding:12px;border:none;border-radius:8px;font-weight:bold;cursor:pointer}
+.btn-red{background:#cc0000;color:#fff}.btn-green{background:#00a651;color:#fff;width:100%;font-size:16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.item{background:#1e1e1e;padding:10px;border-radius:8px;border-left:3px solid red;margin:6px 0}
+.hidden{display:none}
+@media(max-width:700px){.sidebar{width:100%;height:auto;position:relative}.main{margin:0}.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<h2>MTAANI TV - ADMIN 🔴</h2>
+<div class="sidebar">
+<h2>MTAANI TV</h2>
+<button class="active" onclick="tab('videos')" id="b-videos">📺 Videos Playlist</button>
+<button onclick="tab('live')" id="b-live">🔴 LIVE Settings</button>
+<button onclick="tab('tvbtn')" id="b-tvbtn">📡 TV Button</button>
+<button onclick="tab('ads')" id="b-ads">💰 Adsense / Ads</button>
+<button onclick="tab('settings')" id="b-settings">⚙️ Settings Mingi</button>
+<button onclick="tab('export')" id="b-export">💾 Generate Files</button>
+</div>
 
-<input id="link" placeholder="1. Weka LINK ya YouTube">
-<input id="title" placeholder="2. Title - mf Mtaani News Leo">
-<textarea id="desc" placeholder="3. Description (itaonekana JUU ya Adsense)"></textarea>
-<input id="dur" type="number" value="300" placeholder="4. Duration 300 = 5min">
+<div class="main">
+<!-- VIDEOS -->
+<div id="videos" class="sec">
+<h3>Videos Playlist</h3>
+<div class="card">
+<input id="ytlink" placeholder="YouTube Link - https://youtu.be/xxxx">
+<input id="yttitle" placeholder="Title">
+<textarea id="ytdesc" placeholder="Description (itaonekana juu ya Adsense)"></textarea>
+<div class="grid"><input id="ytdur" type="number" value="300" placeholder="Duration sec"><select id="ytcat"><option>News</option><option>Drama</option><option>Music</option><option>Gossip</option><option>Live</option></select></div>
+<button class="btn btn-red" onclick="addVid()">+ Ongeza Video</button>
+</div>
+<div id="vlist"></div>
+</div>
 
-<button class="btn-add" onclick="addVideo()">+ ONGEZA KWENYE LIST</button>
+<!-- LIVE -->
+<div id="live" class="sec hidden">
+<h3>LIVE Settings</h3>
+<div class="card">
+<label>Enable Live Mode?</label><select id="liveOn"><option value="0">OFF - Playlist tu</option><option value="1">ON - Kuna Live Saa Hii</option></select>
+<label>YouTube LIVE Video ID / Link</label><input id="liveId" placeholder="Link ya Live yako - mf https://youtu.be/xxxx">
+<label>Live Title</label><input id="liveTitle" value="MTAANI TV 🔴 LIVE">
+<label>Live Description</label><textarea id="liveDesc">Tuko LIVE mtaani sai hii!</textarea>
+<label>LIVE itaisha saa ngapi? (auto rudi playlist)</label><input id="liveEnd" type="datetime-local">
+</div>
+</div>
 
-<div id="list" style="margin-top:15px"></div>
+<!-- TV BUTTON -->
+<div id="tvbtn" class="sec hidden">
+<h3>TV Button Settings</h3>
+<div class="card">
+<label>Button Text</label><input id="btnText" value="WATCH LIVE TV">
+<label>Button Link (inaenda wapi mtu akibonyeza?)</label><input id="btnLink" value="index.html">
+<label>Button Color</label><input id="btnColor" type="color" value="#cc0000">
+<label>Onyesha Button Wapi?</label><select id="btnShow"><option value="1">Onyesha Kila Mahali</option><option value="0">Ficha</option></select>
+<label>TV Button Animation</label><select id="btnAnim"><option>Blink</option><option>Pulse</option><option>None</option></select>
+</div>
+</div>
 
-<button class="btn-gen" onclick="make()">✅ GENERATE videos.json</button>
-<textarea id="out" readonly placeholder="Code ya videos.json itatokea hapa..."></textarea>
-<button onclick="copy()" style="background:#333;color:#fff">COPY CODE</button>
+<!-- ADS -->
+<div id="ads" class="sec hidden">
+<h3>Ads Settings</h3>
+<div class="card">
+<label>Adsense Code Juu ya Description</label><textarea id="ad1" rows="4" placeholder="Weka code yako ya Adsense hapa"></textarea>
+<label>Ads Kati ya Videos</label><textarea id="ad2" rows="3" placeholder="Ads ya katikati"></textarea>
+<label>Ads Chini</label><textarea id="ad3" rows="3" placeholder="Ads ya chini"></textarea>
+<label>Ads Interval (kila video ngapi?)</label><input id="adInt" type="number" value="2">
+</div>
+</div>
+
+<!-- SETTINGS -->
+<div id="settings" class="sec hidden">
+<h3>Settings Mingi Sana</h3>
+<div class="card grid">
+<div><label>Site Name</label><input id="siteName" value="MTAANI TV"></div>
+<div><label>Tagline</label><input id="tagline" value="TV ya Mtaa - LIVE 24/7"></div>
+<div><label>Primary Color</label><input id="pColor" type="color" value="#cc0000"></div>
+<div><label>Background Color</label><input id="bgColor" type="color" value="#000000"></div>
+<div><label>Logo URL (optional)</label><input id="logo" placeholder="https://..."></div>
+<div><label>Autoplay?</label><select id="autoplay"><option value="1">ON</option><option value="0">OFF</option></select></div>
+<div><label>Loop Playlist?</label><select id="loop"><option value="1">YES - Rudi mwanzo</option><option value="0">NO</option></select></div>
+<div><label>Show Clock?</label><select id="showClock"><option value="1">YES</option><option value="0">NO</option></select></div>
+<div><label>Show Viewers Count (fake)?</label><select id="showView"><option value="1">YES</option><option value="0">NO</option></select></div>
+<div><label>Default Volume</label><input id="vol" type="number" value="100"></div>
+</div>
+</div>
+
+<!-- EXPORT -->
+<div id="export" class="sec hidden">
+<h3>Generate Files</h3>
+<div class="card">
+<p>Bonyeza hapa ku-generate files zote mbili:</p>
+<button class="btn btn-green" onclick="generateAll()">💾 GENERATE videos.json + config.json</button>
+<label>videos.json (copy upeleke GitHub)</label><textarea id="out1" style="height:200px;color:#0f0;background:#000"></textarea>
+<label>config.json (copy upeleke GitHub pia)</label><textarea id="out2" style="height:250px;color:#0ff;background:#000"></textarea>
+</div>
+</div>
+
+</div>
 
 <script>
-let videos = [];
-function getId(u){
-  let m = u.match(/(?:youtube\.com\/.*v=|youtu\.be\/)([^&? ]{11})/);
-  return m? m[1] : u.trim();
+let vids = JSON.parse(localStorage.getItem('mtaani_vids')||'[]');
+function tab(t){
+ document.querySelectorAll('.sec').forEach(s=>s.classList.add('hidden'));
+ document.getElementById(t).classList.remove('hidden');
+ document.querySelectorAll('.sidebar button').forEach(b=>b.classList.remove('active'));
+ document.getElementById('b-'+t).classList.add('active');
 }
-function addVideo(){
-  let l = document.getElementById('link').value;
-  let t = document.getElementById('title').value;
-  let d = document.getElementById('desc').value;
-  let du = document.getElementById('dur').value;
-  if(!l ||!t) return alert('Weka Link na Title mkuu!');
-  videos.push({id:getId(l), title:t, desc:d, duration:parseInt(du)||300});
-  document.getElementById('link').value='';
-  document.getElementById('title').value='';
-  document.getElementById('desc').value='';
-  show();
+function getId(u){let m=u.match(/(?:v=|\.be\/)([^&? ]{11})/); return m?m[1]:u.trim()}
+function addVid(){
+ let id=getId(ytlink.value); if(!id||!yttitle.value) return alert('Weka link na title!');
+ vids.push({id,title:yttitle.value,desc:ytdesc.value,duration:parseInt(ytdur.value)||300,cat:ytcat.value});
+ localStorage.setItem('mtaani_vids',JSON.stringify(vids)); ytlink.value=''; yttitle.value=''; ytdesc.value=''; render();
 }
-function show(){
-  document.getElementById('list').innerHTML = videos.map((v,i)=>
+function render(){
+ vlist.innerHTML=vids.map((v,i)=>`<div class="item">${i+1}. <b>${v.title}</b> [${v.cat}]<br><small>${v.id} | ${v.duration}s</small><br><button onclick="vids.splice(${i},1);localStorage.setItem('mtaani_vids',JSON.stringify(vids));render()" style="width:auto;padding:4px 10px;background:#333;color:#fff;border:none;border-radius:4px;margin-top:4px">Futa</button></div>`).join('');
+}
+function generateAll(){
+ let config = {
+  siteName:siteName.value, tagline:tagline.value, logo:logo.value,
+  colors:{primary:pColor.value,bg:bgColor.value},
+  player:{autoplay:autoplay.value,loop:loop.value,volume:vol.value,showClock:showClock.value,showView:showView.value},
+  live:{enabled:liveOn.value, id:getId(liveId.value), title:liveTitle.value, desc:liveDesc.value, end:liveEnd.value},
+  tvButton:{text:btnText.value,link:btnLink.value,color:btnColor.value,show:btnShow.value,anim:btnAnim.value},
+  ads:{top:ad1.value,mid:ad2.value,bottom:ad3.value,interval:adInt.value}
+ };
+ out1.value=JSON.stringify(vids,null,2);
+ out2.value=JSON.stringify(config,null,2);
+ alert('Imetengenezwa mkuu! Sasa copy videos.json na config.json zote mbili upeleke GitHub!');
+}
+render();
+</script>
+</body>
+  </html>
