@@ -17,55 +17,67 @@ header b{letter-spacing:1px} header b span{color:#ff6600}
 </style></head><body>
 <header><b>AZAM <span>ALE TV</span></b><span class="badge">● LIVE</span></header>
 <div id="playerWrap">
-  <div id="msg">📺 Hakuna matangazo<br><span style="font-size:11px">Subiri Admin aweke video<br><br><a href="admin.html" style="color:#ff6600;text-decoration:none;border:1px solid #ff6600;padding:6px 12px;border-radius:15px">FUNGUA ADMIN</a></span></div>
-  <iframe id="yt" style="display:none" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
+  <div id="msg">📺 Inapakia...<br><span style="font-size:11px">Tafadhali subiri</span></div>
+  <div id="player"></div>
   <button id="unmute">🔊 WASHA SAUTI</button>
 </div>
-<div class="info"><div class="title" id="vTitle">Karibu ALE TV KE LIVE</div><div class="meta" id="vMeta">Azam TV Experience • Fresh System</div><button class="btn-join" onclick="location.reload()">🔄 Refresh TV</button></div>
+<div class="info"><div class="title" id="vTitle">Karibu ALE TV KE LIVE</div><div class="meta" id="vMeta">Azam TV Experience</div><button class="btn-join" onclick="location.reload()">🔄 Refresh</button></div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
 <script>
 const KEY='azamtv_ale_final_2026';
-function getYtId(u){if(!u)return'';if(u.includes('youtu.be/'))return u.split('youtu.be/')[1].split('?')[0];try{return new URL(u).searchParams.get('v')||'';}catch{let m=u.match(/v=([^&]+)/);return m?m[1]:'';}}
+let ytPlayer, currentList=[], currentIdx=0;
 
-async function loadTV(){
- let cur=null;
- try{cur=JSON.parse(localStorage.getItem('aletv_live_now')||'null');}catch{}
- let st=null;
- try{st=JSON.parse(localStorage.getItem(KEY)||'null');}catch{}
- if(!cur && st && st.playlist && st.playlist.length) cur=st.playlist.find(p=>p.status==='now')||st.playlist[0];
-
- // FALLBACK: Kama localStorage tupu, soma videos.json ya GitHub kwa ajili ya wateja wengine
- if(!cur){
-   try{
-     let r=await fetch('videos.json?v='+Date.now());
-     let j=await r.json();
-     let filtered=j.filter(v=> (v.id||v.ytid)!=='jNQXAC9IVRw');
-     if(filtered.length){
-       let v=filtered[0];
-       cur={title: v.title||'MTAANI TV LIVE', url:'https://youtube.com/watch?v='+(v.id||v.ytid), ytid: v.id||v.ytid, cat: v.cat||'Live'};
-     }
-   }catch(e){}
- }
-
- let msg=document.getElementById('msg'), yt=document.getElementById('yt'), unmute=document.getElementById('unmute');
- if(!cur ||!cur.url){ msg.style.display='block'; yt.style.display='none'; unmute.style.display='none'; return; }
-
- let id=cur.ytid||getYtId(cur.url);
- if(!id){ msg.style.display='block'; yt.style.display='none'; return; }
-
- document.getElementById('vTitle').innerText=cur.title;
- document.getElementById('vMeta').innerText='● LIVE NOW: '+cur.title+' • '+(cur.cat||'Live')+' • Data Saver';
- msg.style.display='none'; yt.style.display='block'; unmute.style.display='block';
-
- // Player bila YouTube UI nyingi + autoplay na mute
- yt.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1&controls=0&iv_load_policy=3&vq=tiny&enablejsapi=1';
-
- unmute.onclick=()=>{
-   yt.src=yt.src.replace('mute=1','mute=0');
-   unmute.style.display='none';
-   yt.style.pointerEvents='auto';
- };
+function getPlaylist(){
+  try{
+    let s=localStorage.getItem(KEY);
+    if(s){let o=JSON.parse(s); if(o.playlist && o.playlist.length) return o.playlist;}
+    let s2=localStorage.getItem('aletv_state_v2');
+    if(s2){let o=JSON.parse(s2); if(o.playlist && o.playlist.length) return o.playlist;}
+  }catch(e){}
+  return [];
 }
-loadTV();
-// Usireload kila 4 sec ovyo - inafanya ikuame
-setInterval(()=>{ /* check tu kama admin amebadilisha */ let old=localStorage.getItem('aletv_live_now'); loadTV(); }, 15000);
+
+async function getFinalList(){
+  let list=getPlaylist();
+  if(!list.length){
+    try{
+      let r=await fetch('videos.json?v='+Date.now());
+      let j=await r.json();
+      list=j.map(v=>({ytid:v.id||v.ytid, title:v.title||v.ytid, cat:v.cat||'Live'})).filter(v=>v.ytid && v.ytid!=='jNQXAC9IVRw');
+    }catch(e){}
+  }
+  if(!list.length) list=[{ytid:'ScMzIvxBSi4', title:'MTAANI TV - Karibu'}];
+  return list;
+}
+
+function onYouTubeIframeAPIReady(){
+  getFinalList().then(list=>{
+    currentList=list;
+    document.getElementById('msg').style.display='none';
+    let first=list[0];
+    document.getElementById('vTitle').innerText=first.title;
+    document.getElementById('vMeta').innerText='● LIVE: '+first.title;
+    ytPlayer=new YT.Player('player',{
+      width:'100%', height:'100%',
+      videoId:first.ytid,
+      playerVars:{autoplay:1, mute:1, controls:0, rel:0, modestbranding:1, playsinline:1, iv_load_policy:3, vq:'tiny'},
+      events:{'onReady':e=>{e.target.playVideo(); document.getElementById('unmute').style.display='block';}, 'onStateChange':onState}
+    });
+  });
+}
+
+function onState(e){
+  if(e.data===0){ // video imeisha - enda ya pili, hakuna kurudi nyuma ya 3 sec
+    currentIdx=(currentIdx+1)%currentList.length;
+    let next=currentList[currentIdx];
+    document.getElementById('vTitle').innerText=next.title;
+    document.getElementById('vMeta').innerText='● LIVE: '+next.title;
+    ytPlayer.loadVideoById({videoId:next.ytid});
+  }
+}
+
+document.getElementById('unmute').onclick=function(){
+  ytPlayer.unMute(); ytPlayer.setVolume(100); this.style.display='none';
+};
 </script></body></html>
