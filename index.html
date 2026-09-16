@@ -1,83 +1,92 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>ALE TV KE LIVE - Azam Style</title>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>ALE TV KE LIVE - TRUE LIVE</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#050a14;color:#fff;font-family:'Segoe UI',sans-serif}
-header{background:linear-gradient(90deg,#001a4d,#002a7a);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #ff6600;position:sticky;top:0;z-index:99}
+body{background:#050a14;color:#fff;font-family:'Segoe UI',sans-serif;overflow:hidden;height:100vh;display:flex;flex-direction:column}
+header{background:linear-gradient(90deg,#001a4d,#002a7a);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #ff6600}
 header b{letter-spacing:1px} header b span{color:#ff6600}
 .badge{background:#ff0033;color:#fff;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:900;animation:blink 1s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.6}}
-#playerWrap{width:100%;aspect-ratio:16/9;background:#000;position:relative;overflow:hidden}
-#playerWrap iframe{width:100%;height:100%;border:0;position:absolute;top:0;left:0}
-#msg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:#888;width:80%}
-.info{padding:16px;background:linear-gradient(180deg,#0a1430,#050a14)}
-.title{font-size:18px;font-weight:900}
-.meta{font-size:11px;opacity:.6;margin-top:4px}
-.btn-join{background:linear-gradient(90deg,#ff6600,#ff8800);color:#fff;border:0;padding:14px;width:100%;border-radius:30px;font-weight:900;margin-top:14px;cursor:pointer}
-#unmute{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#ff6600;color:#fff;padding:12px 20px;border-radius:30px;font-weight:900;border:none;z-index:20;cursor:pointer;display:none}
+#playerWrap{flex:1;background:#000;position:relative}
+#playerWrap iframe{width:100%;height:100%;border:0;position:absolute;top:0;left:0;pointer-events:none}
+#unmute{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#ff6600;color:#fff;padding:14px 22px;border-radius:30px;font-weight:900;border:none;z-index:20;cursor:pointer;box-shadow:0 4px 20px rgba(255,102,0,.6)}
+.info{padding:10px 16px;background:#0a1430;display:flex;justify-content:space-between;align-items:center}
+.title{font-size:14px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.liveDot{width:8px;height:8px;background:#00ff88;border-radius:50%;display:inline-block;margin-right:6px;animation:blink 1s infinite}
+#ticker{height:38px;background:#0a2a8a;display:flex;align-items:center;overflow:hidden;border-top:2px solid #fff}
+#ticker span{white-space:nowrap;padding-left:100%;animation:scroll 40s linear infinite;color:#fff;font-weight:900;display:inline-block;font-size:13px}
+@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
 </style></head><body>
-<header><b>AZAM <span>ALE TV</span></b><span class="badge">● LIVE</span></header>
+<header><b>AZAM <span>ALE TV</span></b><span class="badge">● TRUE LIVE</span></header>
 <div id="playerWrap">
-  <div id="msg">📺 Inapakia...<br><span style="font-size:11px">Tafadhali subiri</span></div>
   <div id="player"></div>
   <button id="unmute">🔊 WASHA SAUTI</button>
 </div>
-<div class="info"><div class="title" id="vTitle">Karibu ALE TV KE LIVE</div><div class="meta" id="vMeta">Azam TV Experience</div><button class="btn-join" onclick="location.reload()">🔄 Refresh</button></div>
+<div class="info">
+  <div class="title"><span class="liveDot"></span><span id="vTitle">Inapakia...</span></div>
+  <div style="font-size:11px;opacity:.6" id="vTime">--:--</div>
+</div>
+<div id="ticker"><span id="tickerText">MTAANI TV TRUE LIVE | TILL 3624692 | Kila mtu anaona kitu kimoja - Ukizima simu ukirudi inaendelea!</span></div>
 
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
-const KEY='azamtv_ale_final_2026';
-let ytPlayer, currentList=[], currentIdx=0;
+// ===== TRUE LIVE SYNC - KILA MTU ANAONA KITU KIMOJA =====
+const START_EPOCH = 1704067200; // Jan 1 2024 00:00:00 - TV ilianza hapa, haiwahi simama
+const VIDEO_DURATION = 300; // 5 min kila video - unaweza badilisha
 
-function getPlaylist(){
+let ytPlayer, playlist=[], currentIdx=0;
+
+async function getPlaylist(){
   try{
-    let s=localStorage.getItem(KEY);
-    if(s){let o=JSON.parse(s); if(o.playlist && o.playlist.length) return o.playlist;}
-    let s2=localStorage.getItem('aletv_state_v2');
-    if(s2){let o=JSON.parse(s2); if(o.playlist && o.playlist.length) return o.playlist;}
-  }catch(e){}
-  return [];
+    let r=await fetch('videos.json?v='+Date.now());
+    let j=await r.json();
+    // toa Me at the zoo
+    return j.map(v=>({id:v.id||v.ytid, title:v.title||'MTAANI LIVE'})).filter(v=>v.id && v.id!=='jNQXAC9IVRw' && v.id!=='ScMzIvxBSi4');
+  }catch(e){ return []; }
 }
 
-async function getFinalList(){
-  let list=getPlaylist();
-  if(!list.length){
-    try{
-      let r=await fetch('videos.json?v='+Date.now());
-      let j=await r.json();
-      list=j.map(v=>({ytid:v.id||v.ytid, title:v.title||v.ytid, cat:v.cat||'Live'})).filter(v=>v.ytid && v.ytid!=='jNQXAC9IVRw');
-    }catch(e){}
-  }
-  if(!list.length) list=[{ytid:'ScMzIvxBSi4', title:'MTAANI TV - Karibu'}];
-  return list;
+function getTrueLivePosition(){
+  let now = Math.floor(Date.now()/1000);
+  let elapsed = now - START_EPOCH;
+  let total = playlist.length * VIDEO_DURATION;
+  if(total===0) return {idx:0, offset:0};
+  let posInLoop = elapsed % total;
+  let idx = Math.floor(posInLoop / VIDEO_DURATION);
+  let offset = posInLoop % VIDEO_DURATION;
+  return {idx, offset};
 }
 
 function onYouTubeIframeAPIReady(){
-  getFinalList().then(list=>{
-    currentList=list;
-    document.getElementById('msg').style.display='none';
-    let first=list[0];
-    document.getElementById('vTitle').innerText=first.title;
-    document.getElementById('vMeta').innerText='● LIVE: '+first.title;
+  getPlaylist().then(list=>{
+    if(!list.length){
+      list=[{id:'dQw4w9WgXcQ', title:'Karibu MTAANI TV - Weka video kwenye videos.json'}];
+    }
+    playlist=list;
+    let pos=getTrueLivePosition();
+    currentIdx=pos.idx;
+    let video=list[pos.idx];
+    document.getElementById('vTitle').innerText=video.title;
     ytPlayer=new YT.Player('player',{
       width:'100%', height:'100%',
-      videoId:first.ytid,
-      playerVars:{autoplay:1, mute:1, controls:0, rel:0, modestbranding:1, playsinline:1, iv_load_policy:3, vq:'tiny'},
-      events:{'onReady':e=>{e.target.playVideo(); document.getElementById('unmute').style.display='block';}, 'onStateChange':onState}
+      videoId:video.id,
+      playerVars:{autoplay:1, mute:1, controls:0, rel:0, modestbranding:1, playsinline:1, iv_load_policy:3, vq:'tiny', start:pos.offset},
+      events:{'onReady':e=>{
+        e.target.seekTo(pos.offset, true);
+        e.target.playVideo();
+        document.getElementById('unmute').style.display='block';
+        // Update offset kila sekunde ili uone time inaenda
+        setInterval(()=>{
+          let p=getTrueLivePosition();
+          document.getElementById('vTime').innerText=Math.floor(p.offset/60)+':'+String(p.offset%60).padStart(2,'0')+' / 5:00';
+        },1000);
+      }, 'onStateChange':onState}
     });
   });
 }
 
 function onState(e){
-  if(e.data===0){ // video imeisha - enda ya pili, hakuna kurudi nyuma ya 3 sec
-    currentIdx=(currentIdx+1)%currentList.length;
-    let next=currentList[currentIdx];
-    document.getElementById('vTitle').innerText=next.title;
-    document.getElementById('vMeta').innerText='● LIVE: '+next.title;
-    ytPlayer.loadVideoById({videoId:next.ytid});
-  }
-}
-
-document.getElementById('unmute').onclick=function(){
-  ytPlayer.unMute(); ytPlayer.setVolume(100); this.style.display='none';
-};
-</script></body></html>
+  // Kama video imefika mwisho, TRUE LIVE itaamua ya pili, sio kurudi mwanzo
+  if(e.data===0 || e.data===YT.PlayerState.ENDED){
+    let pos=getTrueLivePosition();
+    if(pos.idx!==currentIdx){
+      currentIdx=pos.idx;
+      let video=playlist
