@@ -1,26 +1,37 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MTAANI TV - ADMIN SMART</title>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MTAANI TV ADMIN</title>
 <style>
 *{box-sizing:border-box}body{background:#0a1430;color:#fff;font-family:sans-serif;padding:15px}
-h1{color:#ffcc00;text-align:center} .card{background:#111c44;padding:15px;border-radius:10px;margin:15px 0;border:1px solid #ff6600}
-input{width:100%;padding:12px;border-radius:8px;border:none;margin:6px 0;font-size:16px} button{width:100%;padding:12px;background:#ff6600;color:#fff;border:none;border-radius:8px;font-weight:900;font-size:16px;margin-top:10px;cursor:pointer}
-#list div{background:#000;padding:10px;margin:8px 0;border-radius:8px;display:flex;justify-content:space-between;align-items:center}
-.small{font-size:12px;color:#aaa}
+h1{color:#ffcc00;text-align:center;margin:10px} .card{background:#111c44;padding:15px;border-radius:12px;margin:15px 0;border:2px solid #ff6600}
+input,textarea{width:100%;padding:12px;border-radius:8px;border:none;margin:6px 0;font-size:15px}
+button{width:100%;padding:12px;background:#ff6600;color:#fff;border:none;border-radius:8px;font-weight:900;font-size:16px;margin-top:10px;cursor:pointer}
+button.green{background:#00b300} button.blue{background:#0066ff} button.red{background:red;width:auto;padding:6px 12px}
+#list div{background:#000;padding:10px;margin:8px 0;border-radius:8px;display:flex;justify-content:space-between;align-items:center;border-left:4px solid #ffcc00}
+.small{font-size:12px;color:#aaa} .ok{color:#00ff00} .warn{color:#ffcc00}
+textarea{height:180px;background:#000;color:#00ff00;font-family:monospace;font-size:12px}
 </style></head><body>
-<h1>MTAANI TV - ADMIN SMART</h1>
+<h1>📺 MTAANI TV - ADMIN YA KITAMBO</h1>
 
 <div class="card">
-<h3>➕ Ongeza Video</h3>
-<input id="link" placeholder="Weka Link ya YouTube hapa..." onpaste="setTimeout(autoTitle,100)" oninput="autoTitle()" >
-<input id="title" placeholder="Jina la Wimbo / Msanii - litajijaza yenyewe...">
-<div id="status" class="small"></div>
-<button onclick="addVideo()">💾 HIFADHI VIDEO</button>
-<button onclick="testLive()" style="background:#0066ff">🔴 JARIBU KAMA NI LIVE</button>
+<h3>➕ WEKA VIDEO MPYA</h3>
+<input id="link" placeholder="1. Weka Link ya YouTube hapa (paste)..." onpaste="setTimeout(fetchTitle,200)" oninput="fetchTitle()">
+<input id="title" placeholder="2. Jina la Wimbo / Msanii - litajijaza yenyewe...">
+<div id="status" class="small">Subiri u-paste link...</div>
+<button onclick="addVideo()">💾 ONGEZA KWA LIST</button>
 </div>
 
 <div class="card">
-<h3>📋 Videos Zangu (<span id="count">0</span>)</h3>
-<div id="list">Inapakia...</div>
-<button onclick="saveAll()" style="background:green">⬆️ TUMA KWA TV (SAVE)</button>
+<h3>📋 LIST YAKO (<span id="count">0</span> videos)</h3>
+<div id="list">Inapakia videos.json...</div>
+</div>
+
+<div class="card">
+<h3>📤 PELEKA KWA TV (PUBLIC)</h3>
+<p class="small">Ukimaliza kuongeza, bonyeza hapa u-copy, kisha nenda GitHub u-paste kwa <b>videos.json</b></p>
+<textarea id="output" readonly placeholder="JSON itatokea hapa..."></textarea>
+<button class="blue" onclick="generateJSON()">1. GENERATE JSON YA KU-COPY</button>
+<button class="green" onclick="copyJSON()">2. COPY YOTE (Bonyeza hapa)</button>
+<a href="https://github.com/musauvincent76-source/Mtaani-tv/edit/main/videos.json" target="_blank"><button class="green" style="background:#ffcc00;color:#000">3. FUNGUA videos.json KWA GITHUB</button></a>
+<div id="copyStatus" class="small"></div>
 </div>
 
 <script>
@@ -37,81 +48,78 @@ function extractID(t){
   return m2?m2[0]:null;
 }
 
-async function autoTitle(){
+async function fetchTitle(){
   let link = document.getElementById('link').value.trim();
-  if(link.length < 5) return;
+  if(link.length < 8) return;
   let id = extractID(link);
-  if(!id) return;
-  document.getElementById('status').innerText = "⏳ Nachukua jina la video...";
+  if(!id) {document.getElementById('status').innerHTML='<span class="warn">⚠️ Link si sawa</span>'; return;}
+  document.getElementById('status').innerHTML='⏳ Nachukua jina kutoka YouTube...';
+  // Jaribu njia 2
   try{
-    // Njia ya haraka ya kuchukua title bila API key
-    let res = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`);
-    let data = await res.json();
-    if(data.title){
-      document.getElementById('title').value = data.title;
-      document.getElementById('status').innerText = "✅ Jina limepatikana: " + data.title;
+    let r = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${id}`);
+    let d = await r.json();
+    if(d.title){
+      document.getElementById('title').value = d.title;
+      document.getElementById('status').innerHTML='<span class="ok">✅ Jina limepatikana: '+d.title+'</span>';
+      return;
+    }
+  }catch(e){}
+  try{
+    let r2 = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`);
+    let d2 = await r2.json();
+    if(d2.title){
+      document.getElementById('title').value = d2.title;
+      document.getElementById('status').innerHTML='<span class="ok">✅ Jina limepatikana: '+d2.title+'</span>';
+      return;
     }
   }catch(e){
-    // fallback - kama oembed imekataa (CORS)
-    try{
-      let res2 = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${id}`);
-      let data2 = await res2.json();
-      if(data2.title){
-        document.getElementById('title').value = data2.title;
-        document.getElementById('status').innerText = "✅ Jina limepatikana: " + data2.title;
-      }
-    }catch{
-      document.getElementById('status').innerText = "⚠️ Andika jina mwenyewe, YouTube imelock";
-    }
+    document.getElementById('status').innerHTML='<span class="warn">⚠️ Andika jina mwenyewe, YouTube imelock kidogo</span>';
   }
-}
-
-function testLive(){
-  let link = document.getElementById('link').value;
-  let id = extractID(link);
-  if(!id){alert("Weka link kwanza"); return;}
-  alert("Hii link ID ni: " + id + "\nKama ni LIVE, itachukua sekunde 5-10 ku-load kwa TV juu YouTube inalock LIVE. Si kosa lako.");
 }
 
 function render(){
   let html="";
   videos.forEach((v,i)=>{
-    html+=`<div><span><b>${v.title}</b><br><span class="small">${v.id}</span></span><button onclick="removeVid(${i})" style="width:auto;background:red;padding:6px 10px">X</button></div>`;
+    html+=`<div><span><b>${v.title}</b><br><span class="small">${v.id} | ${v.duration}s</span></span><button class="red" onclick="removeVid(${i})">X</button></div>`;
   });
-  document.getElementById('list').innerHTML = html || "Hakuna video";
+  document.getElementById('list').innerHTML = html || "Hakuna video bado";
   document.getElementById('count').innerText = videos.length;
+  generateJSON();
 }
 
 function addVideo(){
-  let link = document.getElementById('link').value;
-  let title = document.getElementById('title').value;
+  let link = document.getElementById('link').value.trim();
+  let title = document.getElementById('title').value.trim();
   let id = extractID(link);
-  if(!id){alert("Link si sawa!"); return;}
-  if(!title) title = "MTAANI TV - " + id;
+  if(!id){alert("Weka link ya YouTube kwanza!"); return;}
+  if(!title) title = "MTAANI TV - "+id;
   videos.push({id:id, url:link, title:title, duration:300});
   document.getElementById('link').value="";
   document.getElementById('title').value="";
-  document.getElementById('status').innerText="";
+  document.getElementById('status').innerText="Imeongezwa! Weka ingine...";
   render();
 }
-
 function removeVid(i){videos.splice(i,1); render();}
-
+function generateJSON(){
+  document.getElementById('output').value = JSON.stringify(videos, null, 2);
+}
+function copyJSON(){
+  let txt = document.getElementById('output').value;
+  if(!txt){alert("Hakuna kitu ya ku-copy, ongeza video kwanza"); return;}
+  navigator.clipboard.writeText(txt).then(()=>{
+    document.getElementById('copyStatus').innerHTML='<span class="ok">✅ IMECOPYWA! Sasa fungua videos.json kwa GitHub na u-paste, kisha SAVE</span>';
+  });
+}
 async function loadExisting(){
   try{
-    let r = await fetch('videos.json?v='+Date.now());
+    let r = await fetch('videos.json?v='+Date.now(),{cache:'no-store'});
     let d = await r.json();
-    if(Array.isArray(d)) videos = d.map(v=>({id:extractID(v.id||v.url||'')||v.id, title:v.title||"MTAANI TV", url:v.url||v.id, duration:v.duration||300})).filter(v=>v.id);
+    if(Array.isArray(d)){
+      videos = d.map(v=>({id:extractID(v.id||v.url||'')||v.id, title:v.title||"MTAANI TV", url:v.url||v.id, duration:v.duration||300})).filter(v=>v.id);
+    }
     render();
   }catch{render();}
 }
 loadExisting();
-
-async function saveAll(){
-  if(videos.length==0){alert("Ongeza video kwanza"); return;}
-  let content = JSON.stringify(videos, null, 2);
-  alert("Nakili hii na uweke kwa videos.json kwa GitHub:\n\n" + content + "\n\nKama uko na token ya GitHub, hii inge-save direct - but kwa sasa copy paste kwa videos.json");
-  // Ukiona hii, unaenda GitHub videos.json, una-paste na una-save
-}
 </script>
 </body></html>
