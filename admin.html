@@ -26,6 +26,13 @@ button.red{background:#cc0000;width:auto;padding:6px 12px;border-radius:6px}
 .tab.active{display:block}
 .live-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
 .live-card{background:#000;padding:8px;border-radius:8px;border:1px solid #333;text-align:center}
+/* MPYA - FULL SCREEN */
+#live.fullscreen{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:99999;overflow:auto;border:none;border-radius:0;margin:0;background:#000}
+#studioWrap{position:relative;width:100%;height:62vh;background:#000;border-radius:12px;overflow:hidden;border:3px solid #ffcc00}
+#bgLayer{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;background:linear-gradient(45deg,#050a1f,#ff6600,#ffcc00,#111c44);background-size:400% 400%;animation:grad 8s infinite}
+@keyframes grad{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+#jitsiContainer{position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;display:none}
+.lobby-card{border:2px solid #ffcc00;background:#221a00}
 </style>
 </head>
 <body>
@@ -38,7 +45,6 @@ button.red{background:#cc0000;width:auto;padding:6px 12px;border-radius:6px}
 </button>
 </a>
 
-<!-- BUTTON YA LIVE STUDIO NIMEONGEZA HAPA TU -->
 <a href="#live" onclick="showTab('live');document.querySelectorAll('.tabs button')[4].classList.add('active')" style="text-decoration:none">
 <button class="blue" style="font-size:16px;background:#cc00cc;padding:15px;border:2px solid #ffcc00">
 🔴 ANZA LIVE STUDIO - DIRECTOR
@@ -104,32 +110,46 @@ button.red{background:#cc0000;width:auto;padding:6px 12px;border-radius:6px}
 <button onclick="copyOut()">📋 COPY MANUAL</button>
 </div>
 
-<!-- TAB MPYA YA LIVE - HII TU NDIO NIMEONGEZA -->
+<!-- LIVE STUDIO - SASA NA FULL SCREEN + ACCEPT/REJECT -->
 <div id="live" class="tab card" style="border:2px solid #ff00ff">
-<h3>🔴 MTAANI TV - LIVE STUDIO DIRECTOR</h3>
-<p class="small">Hapa ndio uta-direct LIVE kama Citizen TV. Unaweza ficha mtu, rudisha, toa.</p>
+<h3>🔴 MTAANI TV - LIVE STUDIO FULL SCREEN DIRECTOR</h3>
+<p class="small">Button ya kwanza itafungua screen kubwa. Controls ziko chini kwako pekee - mgeni hazioni. Wageni wataomba kuingia - wewe uta-ACCEPT.</p>
 <input id="liveRoom" value="MtaaniTV-Live-Show" placeholder="Jina la Room">
+<div style="display:flex;gap:5px;flex-wrap:wrap">
+<button class="green" onclick="startLive()" style="background:#ff0000;flex:1">🔴 ANZA LIVE - SCREEN KUBWA</button>
+<button class="blue" onclick="toggleFull()" style="flex:1">🔳 FULL SCREEN ON/OFF</button>
+</div>
 <div style="display:flex;gap:5px">
-<button class="green" onclick="startLive()" style="background:#ff0000">🔴 ANZA LIVE</button>
 <button class="blue" onclick="copyLiveLink()">🔗 COPY INVITE LINK</button>
+<button class="green" onclick="publishLiveNow()" style="background:#00cc66">📤 TUMA LIVE KWA PUBLIC TV</button>
 </div>
 <div style="display:flex;gap:5px">
 <button onclick="toggleHideMe()" style="background:#555">🙈 JIFICHE / JITokeze WEWE</button>
 <button onclick="stopLive()" class="red" style="width:100%">⏹️ MALIZA LIVE</button>
 </div>
 <div id="liveLinkStatus" class="small" style="margin-top:8px;color:#ffcc00"></div>
-<div id="jitsiContainer" style="height:400px;background:#000;border-radius:12px;margin-top:10px;display:none"></div>
 
-<h4 style="margin-top:12px">🎬 DIRECTOR PANEL - Ficha/Rudisha Wageni</h4>
-<p class="small">Hapa ndio una-control nani anaonekana kwa TV ya public. Hii ita-save na public TV itasoma.</p>
+<!-- SCREEN KUBWA - HAPA NDIPO MNAONANA -->
+<div id="studioWrap">
+<div id="bgLayer"></div>
+<div id="jitsiContainer"></div>
+<div style="position:absolute;bottom:0;left:0;width:100%;padding:6px;background:linear-gradient(transparent,rgba(0,0,0,0.9));z-index:3;color:#ffcc00;font-weight:900">📺 MTAANI TV LIVE | DIRECTOR PEKEE ANAONA CONTROLS</div>
+</div>
+
+<h4 style="margin-top:12px;color:#ffcc00">🙋 WAGENI WANAOMBA KUINGIA - ACCEPT / REJECT (Wao hawajui)</h4>
+<p class="small">Hii ndio lobby - mgeni akibonyeza link yako anaingia hapa kwanza, wewe unamkubali.</p>
+<div id="lobbyPanel" class="live-grid"></div>
+
+<h4 style="margin-top:12px">🎬 WATU NDANI YA STUDIO - Ficha / Toa (Hii pia mgeni haioni)</h4>
 <div id="directorPanel" class="live-grid"></div>
+
 <button class="green" onclick="saveLiveState()" style="margin-top:10px">💾 HIFADHI DIRECTOR STATE KWA TV PUBLIC</button>
 <div id="livePushStatus" class="small"></div>
 </div>
 
 <script>
 let videos=[], ads=[], ownerData={};
-let jitsiApi=null, myHidden=false, guests=[];
+let jitsiApi=null, myHidden=false, guests=[], lobby=[];
 
 function showTab(id){
 document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
@@ -201,42 +221,52 @@ document.getElementById('pushStatus').innerText="⏳ Inatuma yote...";
 let ok1=await pushFile('videos.json', JSON.stringify(videos,null,2));
 let ok2=await pushFile('ads.json', JSON.stringify(ads,null,2));
 let ok3=await pushFile('owner.json', JSON.stringify(ownerData,null,2));
-if(ok1){document.getElementById('pushStatus').innerHTML='<span class="ok">✅ IMEENDA PUBLIC! TV itabadilika kwa 1 min. Video hazitapotea tena juu ziko kwa simu pia.</span>';}
+if(ok1){document.getElementById('pushStatus').innerHTML='<span class="ok">✅ IMEENDA PUBLIC! TV itabadilika kwa 1 min.</span>';}
 }
-function copyOut(){navigator.clipboard.writeText(document.getElementById('out').value).then(()=>{document.getElementById('pushStatus').innerHTML='<span class="ok">✅ Copied! Kama AUTO inagoma, peleka GitHub manually</span>';})}
+function copyOut(){navigator.clipboard.writeText(document.getElementById('out').value).then(()=>{document.getElementById('pushStatus').innerHTML='<span class="ok">✅ Copied!</span>';})}
 
-// ========= LIVE STUDIO FUNCTIONS - MPYA =========
+// ========= LIVE STUDIO - MPYA FULL + LOBBY ACCEPT/REJECT =========
+function toggleFull(){
+let el=document.getElementById('live');
+el.classList.toggle('fullscreen');
+if(el.classList.contains('fullscreen')) window.scrollTo(0,0);
+}
 function startLive(){
 let room=document.getElementById('liveRoom').value.trim()||"MtaaniTV-Live-Show";
 document.getElementById('jitsiContainer').style.display='block';
-if(jitsiApi) jitsiApi.dispose();
-let domain="meet.jit.si";
+if(jitsiApi) try{jitsiApi.dispose();}catch{}
 let options={
 roomName: room,
 width:"100%",
-height:400,
+height:document.getElementById('live').classList.contains('fullscreen')?window.innerHeight*0.62:400,
 parentNode: document.getElementById('jitsiContainer'),
-configOverwrite:{prejoinPageEnabled:false, backgroundAlpha:0},
-interfaceConfigOverwrite:{SHOW_JITSI_WATERMARK:false},
-userInfo:{displayName:"MTAANI TV - DIRECTOR"}
+configOverwrite:{prejoinPageEnabled:false, lobby:{enabled:false}},
+interfaceConfigOverwrite:{SHOW_JITSI_WATERMARK:false,TOOLBAR_BUTTONS:['microphone','camera','hangup','tileview']},
+userInfo:{displayName:"DIRECTOR - MTAANI TV"}
 };
-jitsiApi=new JitsiMeetExternalAPI(domain, options);
+jitsiApi=new JitsiMeetExternalAPI("meet.jit.si", options);
+// Wageni wakiingia wanaingia LOBBY kwanza
 jitsiApi.addListener('participantJoined', (p)=>{
-let id=p.id;
-if(!guests.find(g=>g.id===id)){
-guests.push({id:id, name:p.displayName||"Guest", hidden:false});
-renderDirector();
+if(!lobby.find(g=>g.id===p.id) &&!guests.find(g=>g.id===p.id)){
+lobby.push({id:p.id, name:p.displayName||"Guest", joinedAt:Date.now()});
+renderLobby();
 }
 });
-document.getElementById('liveLinkStatus').innerHTML=`<span class="ok">✅ LIVE IKO ON! Room: ${room} <br> Link ya mgeni: https://meet.jit.si/${room}</span>`;
+jitsiApi.addListener('participantLeft', (p)=>{
+lobby=lobby.filter(g=>g.id!==p.id);
+guests=guests.filter(g=>g.id!==p.id);
+renderLobby(); renderDirector();
+});
+document.getElementById('liveLinkStatus').innerHTML=`<span class="ok">✅ LIVE FULL SCREEN IKO ON! Room: ${room} <br> Link: https://meet.jit.si/${room}</span>`;
 localStorage.setItem('mtaani_live_room', room);
 localStorage.setItem('mtaani_live_active', '1');
+document.getElementById('live').classList.add('fullscreen');
 }
 function copyLiveLink(){
 let room=document.getElementById('liveRoom').value.trim()||"MtaaniTV-Live-Show";
 let link=`https://meet.jit.si/${room}`;
 navigator.clipboard.writeText(link).then(()=>{
-document.getElementById('liveLinkStatus').innerHTML=`<span class="ok">✅ Link imecopiwa: ${link} - Tuma WhatsApp</span>`;
+document.getElementById('liveLinkStatus').innerHTML=`<span class="ok">✅ Link imecopiwa: ${link} - Mgeni ataingia LOBBY, wewe uta-ACCEPT chini</span>`;
 });
 }
 function toggleHideMe(){
@@ -245,31 +275,57 @@ if(jitsiApi){
 if(myHidden) jitsiApi.executeCommand('setVideoMuted', true);
 else jitsiApi.executeCommand('setVideoMuted', false);
 }
-document.getElementById('liveLinkStatus').innerHTML=myHidden?'<span class="warn">🙈 UMEJIFICHA - Hauonekani kwa TV</span>':'<span class="ok">✅ UMEJITokeza - Unaonekana kwa TV</span>';
+document.getElementById('liveLinkStatus').innerHTML=myHidden?'<span class="warn">🙈 UMEJIFICHA</span>':'<span class="ok">✅ UMEJITokeza</span>';
 saveLiveState();
 }
 function stopLive(){
-if(jitsiApi){jitsiApi.dispose(); jitsiApi=null;}
+if(jitsiApi){try{jitsiApi.dispose();}catch{} jitsiApi=null;}
 document.getElementById('jitsiContainer').style.display='none';
+document.getElementById('jitsiContainer').innerHTML="";
 document.getElementById('liveLinkStatus').innerHTML='<span class="small">LIVE Imefungwa</span>';
+document.getElementById('live').classList.remove('fullscreen');
 localStorage.setItem('mtaani_live_active', '0');
-guests=[];
-renderDirector();
+guests=[]; lobby=[]; renderLobby(); renderDirector();
+}
+function renderLobby(){
+let h="";
+if(lobby.length==0) h="<span class='small'>Hakuna anaomba - tuma link ya mgeni</span>";
+lobby.forEach((g,i)=>{
+h+=`<div class="live-card lobby-card">
+<b>${g.name}</b><br><span class="small">Anaomba kuingia LIVE</span><br>
+<button class="green" style="width:100%;padding:8px" onclick="acceptGuest(${i})">✅ ACCEPT - Mruhusu Aingie</button>
+<button class="red" style="width:100%;padding:6px;margin-top:4px" onclick="rejectGuest(${i})">❌ REJECT - Kataa</button>
+</div>`;
+});
+document.getElementById('lobbyPanel').innerHTML=h;
 }
 function renderDirector(){
 let h="";
-if(guests.length==0) h="<span class='small'>Hakuna wageni bado - tuma link</span>";
+if(guests.length==0) h="<span class='small'>Hakuna mtu ndani bado - accept kutoka lobby</span>";
 guests.forEach((g,i)=>{
-let btnText=g.hidden?"👁️ ONESHA":"🙈 FICHA";
-let color=g.hidden?"#555":"#111c44";
+let btnText=g.hidden?"👁️ ONESHA KWA TV":"🙈 FICHA KWA TV";
+let color=g.hidden?"#330000":"#000";
 h+=`<div class="live-card" style="background:${color};border-color:${g.hidden?'#f00':'#0f0'}">
 <b>${g.name}</b><br><span class="small">${g.id.substr(0,6)}</span><br>
-<button class="blue" style="padding:6px;margin-top:4px" onclick="toggleGuest(${i})">${btnText} KWA TV</button>
-<button class="red" style="padding:6px" onclick="removeGuest(${i})">❌ TOA</button>
+<button class="blue" style="padding:6px;margin-top:4px;width:100%" onclick="toggleGuest(${i})">${btnText}</button>
+<button class="red" style="padding:6px;width:100%;margin-top:4px" onclick="removeGuest(${i})">❌ TOA STUDIO</button>
 </div>`;
 });
 document.getElementById('directorPanel').innerHTML=h;
 localStorage.setItem('mtaani_live_guests', JSON.stringify(guests));
+}
+function acceptGuest(i){
+let g=lobby[i];
+guests.push({id:g.id, name:g.name, hidden:false});
+lobby.splice(i,1);
+renderLobby(); renderDirector();
+saveLiveState();
+}
+function rejectGuest(i){
+let g=lobby[i];
+if(jitsiApi){try{jitsiApi.executeCommand('kickParticipant', g.id);}catch{}}
+lobby.splice(i,1);
+renderLobby();
 }
 function toggleGuest(i){
 guests[i].hidden=!guests[i].hidden;
@@ -277,27 +333,20 @@ renderDirector();
 saveLiveState();
 }
 function removeGuest(i){
-if(jitsiApi){
-try{jitsiApi.executeCommand('kickParticipant', guests[i].id);}catch{}
-}
+if(jitsiApi){try{jitsiApi.executeCommand('kickParticipant', guests[i].id);}catch{}}
 guests.splice(i,1);
 renderDirector();
 saveLiveState();
 }
 async function saveLiveState(){
 let room=document.getElementById('liveRoom').value.trim()||"MtaaniTV-Live-Show";
-let liveData={
-active: localStorage.getItem('mtaani_live_active')||'0',
-room: room,
-directorHidden: myHidden,
-guests: guests,
-timestamp: Date.now()
-};
+let liveData={active: localStorage.getItem('mtaani_live_active')||'0', room: room, directorHidden: myHidden, guests: guests, lobbyCount:lobby.length, timestamp: Date.now()};
 localStorage.setItem('mtaani_live_data', JSON.stringify(liveData));
-document.getElementById('livePushStatus').innerText="⏳ Inatuma LIVE state kwa PUBLIC TV...";
+document.getElementById('livePushStatus').innerText="⏳ Inatuma LIVE state...";
 let ok=await pushFile('live.json', JSON.stringify(liveData,null,2));
-if(ok) document.getElementById('livePushStatus').innerHTML='<span class="ok">✅ LIVE state imeenda PUBLIC! index.html itaona nani afichwe</span>';
+if(ok) document.getElementById('livePushStatus').innerHTML='<span class="ok">✅ LIVE state imeenda PUBLIC!</span>';
 }
+async function publishLiveNow(){ await saveLiveState(); document.getElementById('livePushStatus').innerHTML='<span class="ok">✅ LIVE IMETUMWA KWA PUBLIC TV - Watu wanaiona sasa</span>'; }
 </script>
 </body>
 </html>
