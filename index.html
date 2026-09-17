@@ -1,76 +1,106 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MTAANI TV - NORMAL PLAY</title>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MTAANI TV - TRUE LIVE</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}body{background:#000;color:#fff;font-family:sans-serif;min-height:100vh;display:flex;flex-direction:column}
 header{background:#001a4d;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #ff6600}header b{font-size:26px;letter-spacing:2px;font-weight:900}header b span{color:#ff6600}.badge{background:red;padding:6px 12px;border-radius:15px;font-size:11px;font-weight:900}
 #wrap{flex:1;position:relative;background:#000;min-height:60vh}
 #player{width:100%;height:100%;position:absolute;top:0;left:0}
-.bar{padding:12px 16px;background:#0a1430;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #ff6600}#title{font-weight:900;font-size:15px;color:#ffcc00}
+/* SAA HAPA CHINI RIGHT */
+#clock{position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,0.75);padding:6px 12px;border-radius:6px;font-weight:900;font-size:14px;z-index:10;border:1px solid #ff6600;color:#ffcc00;letter-spacing:1px}
+.bar{padding:12px 16px;background:#0a1430;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #ff6600}#title{font-weight:900;font-size:15px;color:#ffcc00;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60%}
 #tick{height:36px;background:#0a2a8a;display:flex;align-items:center;overflow:hidden;border-top:2px solid #fff;border-bottom:2px solid #ff6600}#tick span{white-space:nowrap;padding-left:100%;animation:s 35s linear infinite;font-weight:900}@keyframes s{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
 #ad-box{padding:18px;text-align:center;font-weight:900;min-height:130px;display:flex;flex-direction:column;justify-content:center;align-items:center;border:3px solid #000;background:#ffcc00;color:#000}
+#progress{height:8px;background:#222;position:relative}#progress div{height:100%;background:linear-gradient(90deg,#ff6600,#ffcc00);width:0%;transition:width 1s linear}
+#progress b{position:absolute;right:6px;top:-18px;font-size:10px;color:#ffcc00}
 </style></head><body>
 <header><b>MTAANI <span>TV</span></b><span class="badge">● LIVE</span></header>
-<div id="wrap"><div id="player"></div></div>
-<div class="bar"><span id="title">Inapakia...</span><span id="count">LIVE</span></div>
-<div id="tick"><span id="ticker">MTAANI TV TRUE LIVE 24/7 | TILL 3624692</span></div>
+<div id="wrap">
+<div id="player"></div>
+<div id="clock">00:00:00</div>
+</div>
+<div id="progress"><b id="ptext">0%</b><div id="pbar"></div></div>
+<div class="bar"><span id="title">MTAANI TV LIVE...</span><span id="count">LIVE</span></div>
+<div id="tick"><span id="ticker">MTAANI TV TRUE LIVE 24/7 | TILL 3624692 | TANGAZA BIASHARA YAKO HAPA!</span></div>
 <div id="ad-box"><h2 id="adT">📢 TANGAZA HAPA!</h2><p id="adM">Watu 1000+ LIVE</p><span id="adC" style="background:#000;color:#ffcc00;padding:5px 12px;border-radius:20px;margin-top:8px;display:inline-block">💰 TILL: 3624692</span></div>
 
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
 function extractID(t){if(!t)return null;t=t.trim();if(/^[a-zA-Z0-9_-]{11}$/.test(t))return t;let m=t.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);if(m)return m[1];try{let u=new URL(t);let v=u.searchParams.get('v');if(v&&v.length===11)return v;}catch{}let m2=t.match(/[a-zA-Z0-9_-]{11}/);return m2?m2[0]:null;}
 
-let player, list=[], currentIndex = 0;
+let player,list=[];const LOOP_START=new Date('2025-01-01T00:00:00Z').getTime();
 
-async function getVideos(){
-  try{
-    let r=await fetch('videos.json?v='+Date.now(),{cache:'no-store'});
-    let d=await r.json();
-    let f=d.map(v=>({id:extractID(v.id||v.url||''), title:v.title||'MTAANI TV'})).filter(v=>v.id);
-    if(f.length>0) return f;
-  }catch{}
-  return [{id:'4EDkfksVFdE', title:'MTAANI TV'}];
-}
+async function getVideos(){try{let r=await fetch('videos.json?v='+Date.now(),{cache:'no-store'});let d=await r.json();let f=d.map(v=>({id:extractID(v.id||v.url||''),dur:parseInt(v.duration)||300,title:v.title||'MTAANI TV'})).filter(v=>v.id&&v.id.length===11);if(f.length>0)return f;}catch{}return [{id:'4EDkfksVFdE',dur:300,title:'MTAANI TV'}];}
 
-function playVideo(index){
-  currentIndex = index;
-  if(currentIndex >= list.length) currentIndex = 0;
-  if(currentIndex < 0) currentIndex = 0;
-  let v = list[currentIndex];
-  document.getElementById('title').innerText = v.title;
-  document.getElementById('ticker').innerText = v.title.toUpperCase() + " | MTAANI TV LIVE 24/7 | TILL 3624692";
-  document.getElementById('count').innerText = (currentIndex+1)+"/"+list.length;
-  if(player && player.loadVideoById){
-    player.loadVideoById(v.id);
-  }
+function getLivePos(total){return Math.floor((Date.now()-LOOP_START)/1000)%total}
+function findV(pos){let a=0;for(let i=0;i<list.length;i++){if(pos<a+list[i].dur)return{index:i,seek:pos-a,start:a};a+=list[i].dur}return{index:0,seek:0,start:0}}
+
+function updateUI(idx){
+  if(!list[idx]) return;
+  document.getElementById('title').innerText=list[idx].title;
+  document.getElementById('ticker').innerText=list[idx].title.toUpperCase()+" | MTAANI TV TRUE LIVE 24/7 | TILL 3624692";
 }
 
 function onYouTubeIframeAPIReady(){
   getVideos().then(v=>{
     list=v;
+    let total=list.reduce((s,x)=>s+x.dur,0);
+    let live=findV(getLivePos(total));
+    updateUI(live.index);
+    document.getElementById('count').innerText=(live.index+1)+"/"+list.length;
+
     player=new YT.Player('player',{
-      videoId:list[0].id,
-      playerVars:{autoplay:1,mute:0,controls:0,rel:0,modestbranding:1,playsinline:1,fs:0,disablekb:1},
+      videoId:list[live.index].id,
+      playerVars:{autoplay:1,mute:0,controls:0,rel:0,modestbranding:1,playsinline:1,fs:0,disablekb:1,start:live.seek,vq:'small'},
       events:{
         onReady:e=>{
+          e.target.seekTo(live.seek,true);
           e.target.setVolume(100);
           e.target.unMute();
           e.target.playVideo();
-          document.getElementById('title').innerText = list[0].title;
+          setTimeout(()=>{try{e.target.unMute();e.target.setVolume(100);}catch{}},800);
         },
-        onStateChange:e=>{
-          // 0 = video imeisha
-          if(e.data===0){
-            playVideo(currentIndex+1);
-          }
-        }
+        onStateChange:e=>{ if(e.data===0) goNext(); }
       }
     });
+
+    // Progress 90% na clock update
+    setInterval(()=>{
+      let total=list.reduce((s,x)=>s+x.dur,0);
+      let pos=getLivePos(total);
+      let cur=findV(pos);
+      if(cur.index!==window._lastIdx){
+        window._lastIdx=cur.index;
+        updateUI(cur.index);
+        document.getElementById('count').innerText=(cur.index+1)+"/"+list.length;
+        if(player&&player.loadVideoById){
+          player.loadVideoById({videoId:list[cur.index].id, startSeconds:cur.seek});
+        }
+      }
+      let pct = Math.floor((cur.seek / list[cur.index].dur) * 100);
+      if(pct>90) pct=90; // kama ulivyotaka 90%
+      document.getElementById('pbar').style.width=pct+'%';
+      document.getElementById('ptext').innerText=pct+'%';
+    },1000);
   });
 }
 
-// sauti iwake ukigusa popote
-document.addEventListener('click',()=>{try{player.unMute();player.setVolume(100);player.playVideo();}catch{}});
-document.addEventListener('touchstart',()=>{try{player.unMute();player.setVolume(100);}catch{}});
+function goNext(){
+  let total=list.reduce((s,x)=>s+x.dur,0);
+  let live=findV(getLivePos(total));
+  if(player&&player.loadVideoById) player.loadVideoById({videoId:list[live.index].id,startSeconds:live.seek});
+  updateUI(live.index);
+}
 
+// saa
+function updateClock(){
+  let now=new Date();
+  let h=String(now.getHours()).padStart(2,'0');
+  let m=String(now.getMinutes()).padStart(2,'0');
+  let s=String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('clock').innerText=h+":"+m+":"+s;
+}
+setInterval(updateClock,1000); updateClock();
+
+document.addEventListener('click',()=>{try{player.unMute();player.setVolume(100);player.playVideo();}catch{}});
 async function loadAds(){let ads=[];try{let r=await fetch('ads.json?v='+Date.now(),{cache:'no-store'});let d=await r.json();if(Array.isArray(d)&&d.length>0)ads=d;}catch{}if(!ads.length)ads=[{title:'📢 TANGAZA HAPA!',msg:'Watu 1000+ LIVE',contact:'💰 TILL: 3624692'}];let i=0;function show(){let a=ads[i%ads.length];document.getElementById('adT').innerText=a.title;document.getElementById('adM').innerText=a.msg;document.getElementById('adC').innerText=a.contact;i++;}show();setInterval(show,5000);}loadAds();
 </script>
 </body></html>
