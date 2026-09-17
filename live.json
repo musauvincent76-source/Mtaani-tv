@@ -1,12 +1,10 @@
 {
   "active": "0",
   "room": "MtaaniTV-Live-Show",
-  "directorHidden": false,
-  "guests": [],
-  "featured": [],
-  "featureMode": 0,
-  "background": "city4",
-  "backgroundUrl": "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1200",
+  "background": "city1",
+  "backgroundUrl": "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=1200",
+  "framed": false,
+  "folded": false,
   "adVideo": "",
-  "timestamp": 1789631022615
+  "timestamp": 1789633075629
 }
