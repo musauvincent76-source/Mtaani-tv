@@ -1,26 +1,117 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OWNER DASHBOARD</title>
-<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0a1430;color:#fff;font-family:sans-serif;padding:10px}h2{color:#ff6600}.tabs{display:flex;gap:5px;margin:10px 0}.tabs button{flex:1;padding:12px;border:none;border-radius:10px;font-weight:900}.on{background:#ff6600;color:#fff}.off{background:#222;color:#aaa}.card{background:#111f4a;padding:12px;border-radius:12px;border:2px solid #ff6600;margin-top:8px}#tv{width:100%;height:280px;border:3px solid #ff6600;border-radius:10px;background:#000}input,textarea{width:100%;padding:12px;margin:5px 0;border-radius:8px;border:none;font-weight:700}button.act{background:#ff6600;color:#fff;padding:12px;border:none;border-radius:10px;font-weight:900;width:100%;margin-top:6px}pre{background:#000;padding:10px;border-radius:8px;font-size:11px;white-space:pre-wrap;border:1px solid #333;margin-top:8px}</style></head><body>
-<h2>👑 OWNER DASHBOARD - AZAM ALE TV</h2>
-<div class="tabs"><button id="b1" class="on" onclick="tab('tv')">📺 TV</button><button id="b2" class="off" onclick="tab('live')">🔴 LIVE</button><button id="b3" class="off" onclick="tab('ads')">📢 ADS</button><button id="b4" class="off" onclick="tab('owner')">👑 OWNER</button></div>
-<div class="card"><b>📺 PREVIEW</b><iframe id="tv" src="index.html" style="width:100%;height:300px;border:3px solid #ff6600;border-radius:10px;background:#000"></iframe><button class="act" style="background:#0066ff" onclick="document.getElementById('tv').src='index.html?v='+Date.now()">🔄 REFRESH</button></div>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MTAANI TV - ADMIN SMART</title>
+<style>
+*{box-sizing:border-box}body{background:#0a1430;color:#fff;font-family:sans-serif;padding:15px}
+h1{color:#ffcc00;text-align:center} .card{background:#111c44;padding:15px;border-radius:10px;margin:15px 0;border:1px solid #ff6600}
+input{width:100%;padding:12px;border-radius:8px;border:none;margin:6px 0;font-size:16px} button{width:100%;padding:12px;background:#ff6600;color:#fff;border:none;border-radius:8px;font-weight:900;font-size:16px;margin-top:10px;cursor:pointer}
+#list div{background:#000;padding:10px;margin:8px 0;border-radius:8px;display:flex;justify-content:space-between;align-items:center}
+.small{font-size:12px;color:#aaa}
+</style></head><body>
+<h1>MTAANI TV - ADMIN SMART</h1>
 
-<div id="t-tv" class="card"><h3>📺 WEKA LINK YA YOUTUBE (Inajitrim yenyewe!)</h3><small>Weka link yote kama https://youtu.be/xxxx - system inatoa ID yenyewe!</small><input id="tvIn" placeholder="https://youtu.be/4EDkfksVFdE"><button class="act" onclick="addTV()">➕ ONGEZA</button><div id="tvList"></div><pre id="outTV"></pre><button class="act" style="background:#00aa00;font-size:16px" onclick="publish('outTV','videos.json')">🚀 PUBLISH TV - Bonyeza Hapa!</button></div>
+<div class="card">
+<h3>➕ Ongeza Video</h3>
+<input id="link" placeholder="Weka Link ya YouTube hapa..." onpaste="setTimeout(autoTitle,100)" oninput="autoTitle()" >
+<input id="title" placeholder="Jina la Wimbo / Msanii - litajijaza yenyewe...">
+<div id="status" class="small"></div>
+<button onclick="addVideo()">💾 HIFADHI VIDEO</button>
+<button onclick="testLive()" style="background:#0066ff">🔴 JARIBU KAMA NI LIVE</button>
+</div>
 
-<div id="t-live" class="card" style="display:none"><h3>🔴 YOUTUBE LIVE STREAM</h3><input id="liveIn" placeholder="Weka LINK ya LIVE: https://www.youtube.com/live/xxxx"><button class="act" style="background:red" onclick="addLive()">🔴 ONGEZA LIVE</button><div id="liveList"></div></div>
-
-<div id="t-ads" class="card" style="display:none;border-color:#ffcc00"><h3>📢 ANDIKA MANENO YA AD + PUBLISH</h3><input id="adT" placeholder="Jina la Biashara"><textarea id="adM" rows="3" placeholder="Andika ujumbe wa tangazo hapa..."></textarea><input id="adC" placeholder="Till / Namba: 3624692"><button class="act" style="background:#ffcc00;color:#000" onclick="addAd()">➕ ONGEZA AD</button><div id="adList"></div><pre id="outAds"></pre><button class="act" style="background:#00aa00;font-size:18px;padding:16px" onclick="publish('outAds','ads.json')">🚀 PUBLISH ADS - IENDE KWA TV!</button></div>
-
-<div id="t-owner" class="card" style="display:none;border-color:#00ff00;background:#002200"><h3>👑 OWNER TV</h3><p>Till: 3624692</p><p>TV: AZAM ALE TV</p><p>Status: TRUE LIVE 24/7</p><button class="act" onclick="window.open('index.html','_blank')">📺 FUNGUA TV</button></div>
+<div class="card">
+<h3>📋 Videos Zangu (<span id="count">0</span>)</h3>
+<div id="list">Inapakia...</div>
+<button onclick="saveAll()" style="background:green">⬆️ TUMA KWA TV (SAVE)</button>
+</div>
 
 <script>
-function extractID(t){if(!t)return null;t=t.trim();if(/^[a-zA-Z0-9_-]{11}$/.test(t))return t;let m=t.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);if(m)return m[1];try{let u=new URL(t);let v=u.searchParams.get('v');if(v&&v.length===11)return v;}catch{}let m2=t.match(/[a-zA-Z0-9_-]{11}/);return m2?m2[0]:null;}
-let tv=JSON.parse(localStorage.getItem('tv_videos')||'["4EDkfksVFdE","kHc8ELzuIKM","HAQCI_JrycQ","QXm2HdKdZkQ"]');let ads=JSON.parse(localStorage.getItem('mtaani_ads')||'[]');
-function tab(t){['tv','live','ads','owner'].forEach(x=>{document.getElementById('t-'+x).style.display=x===t?'block':'none';document.getElementById('b'+({tv:1,live:2,ads:3,owner:4}[x])).className=x===t?'on':'off';});let ifr=document.getElementById('tv');ifr.src=t==='owner'?'index.html':'index.html?v='+Date.now();}
-function addTV(){let id=extractID(document.getElementById('tvIn').value);if(!id)return alert('Weka LINK sahihi!');tv.push(id);document.getElementById('tvIn').value='';localStorage.setItem('tv_videos',JSON.stringify(tv));renderTV();}function addLive(){let id=extractID(document.getElementById('liveIn').value);if(!id)return alert('Weka LINK ya LIVE sahihi!');tv.unshift(id);document.getElementById('liveIn').value='';localStorage.setItem('tv_videos',JSON.stringify(tv));renderTV();alert('LIVE imeongezwa mbele!');}
-function renderTV(){let h='';tv.forEach((id,i)=>{h+=`<div style="background:#000;padding:6px;margin:3px 0;border-radius:6px">${i+1}. ${id} <span style="float:right;color:red;cursor:pointer" onclick="tv.splice(${i},1);localStorage.setItem('tv_videos',JSON.stringify(tv));renderTV()">X</span></div>`});document.getElementById('tvList').innerHTML=h;document.getElementById('outTV').textContent=JSON.stringify(tv.map(id=>({id:id,title:'MTAANI TV',duration:300})),null,2);}
-function addAd(){let t=document.getElementById('adT').value.trim(),m=document.getElementById('adM').value.trim(),c=document.getElementById('adC').value.trim()||'TILL 3624692';if(!t||!m)return alert('Weka jina na ujumbe');ads.unshift({title:t,msg:m,contact:c});document.getElementById('adT').value='';document.getElementById('adM').value='';document.getElementById('adC').value='';localStorage.setItem('mtaani_ads',JSON.stringify(ads));renderAds();}
-function renderAds(){let h='';ads.forEach((a,i)=>{h+=`<div style="background:#000;padding:6px;margin:3px 0;border-radius:6px;border-left:3px solid #ff0"><b>${a.title}</b> <span style="float:right;color:red;cursor:pointer" onclick="ads.splice(${i},1);localStorage.setItem('mtaani_ads',JSON.stringify(ads));renderAds()">X</span><br><small>${a.msg}</small><br><small style="color:#ff0">${a.contact}</small></div>`});document.getElementById('adList').innerHTML=h;document.getElementById('outAds').textContent=JSON.stringify(ads,null,2);}
-function publish(id,file){navigator.clipboard.writeText(document.getElementById(id).textContent);alert('✅ Ime-copy! Sasa nenda GitHub > '+file+' > Edit (penseli) > Futa yote > Paste > Commit changes = LIVE!');}
-renderTV();renderAds();
+let videos = [];
+
+function extractID(t){
+  if(!t) return null;
+  t=t.trim();
+  if(/^[a-zA-Z0-9_-]{11}$/.test(t)) return t;
+  let m=t.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);
+  if(m) return m[1];
+  try{let u=new URL(t); let v=u.searchParams.get('v'); if(v&&v.length===11) return v;}catch{}
+  let m2=t.match(/[a-zA-Z0-9_-]{11}/);
+  return m2?m2[0]:null;
+}
+
+async function autoTitle(){
+  let link = document.getElementById('link').value.trim();
+  if(link.length < 5) return;
+  let id = extractID(link);
+  if(!id) return;
+  document.getElementById('status').innerText = "⏳ Nachukua jina la video...";
+  try{
+    // Njia ya haraka ya kuchukua title bila API key
+    let res = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`);
+    let data = await res.json();
+    if(data.title){
+      document.getElementById('title').value = data.title;
+      document.getElementById('status').innerText = "✅ Jina limepatikana: " + data.title;
+    }
+  }catch(e){
+    // fallback - kama oembed imekataa (CORS)
+    try{
+      let res2 = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${id}`);
+      let data2 = await res2.json();
+      if(data2.title){
+        document.getElementById('title').value = data2.title;
+        document.getElementById('status').innerText = "✅ Jina limepatikana: " + data2.title;
+      }
+    }catch{
+      document.getElementById('status').innerText = "⚠️ Andika jina mwenyewe, YouTube imelock";
+    }
+  }
+}
+
+function testLive(){
+  let link = document.getElementById('link').value;
+  let id = extractID(link);
+  if(!id){alert("Weka link kwanza"); return;}
+  alert("Hii link ID ni: " + id + "\nKama ni LIVE, itachukua sekunde 5-10 ku-load kwa TV juu YouTube inalock LIVE. Si kosa lako.");
+}
+
+function render(){
+  let html="";
+  videos.forEach((v,i)=>{
+    html+=`<div><span><b>${v.title}</b><br><span class="small">${v.id}</span></span><button onclick="removeVid(${i})" style="width:auto;background:red;padding:6px 10px">X</button></div>`;
+  });
+  document.getElementById('list').innerHTML = html || "Hakuna video";
+  document.getElementById('count').innerText = videos.length;
+}
+
+function addVideo(){
+  let link = document.getElementById('link').value;
+  let title = document.getElementById('title').value;
+  let id = extractID(link);
+  if(!id){alert("Link si sawa!"); return;}
+  if(!title) title = "MTAANI TV - " + id;
+  videos.push({id:id, url:link, title:title, duration:300});
+  document.getElementById('link').value="";
+  document.getElementById('title').value="";
+  document.getElementById('status').innerText="";
+  render();
+}
+
+function removeVid(i){videos.splice(i,1); render();}
+
+async function loadExisting(){
+  try{
+    let r = await fetch('videos.json?v='+Date.now());
+    let d = await r.json();
+    if(Array.isArray(d)) videos = d.map(v=>({id:extractID(v.id||v.url||'')||v.id, title:v.title||"MTAANI TV", url:v.url||v.id, duration:v.duration||300})).filter(v=>v.id);
+    render();
+  }catch{render();}
+}
+loadExisting();
+
+async function saveAll(){
+  if(videos.length==0){alert("Ongeza video kwanza"); return;}
+  let content = JSON.stringify(videos, null, 2);
+  alert("Nakili hii na uweke kwa videos.json kwa GitHub:\n\n" + content + "\n\nKama uko na token ya GitHub, hii inge-save direct - but kwa sasa copy paste kwa videos.json");
+  // Ukiona hii, unaenda GitHub videos.json, una-paste na una-save
+}
 </script>
 </body></html>
