@@ -12,7 +12,7 @@ button.green{background:#00b300} button.blue{background:#0066ff} button.red{back
 .tab{display:none} .tab.active{display:block}
 </style></head><body>
 <h1>📺 MTAANI TV ADMIN</h1>
-<a href="index.html" target="_blank" style="text-decoration:none"><button class="green" style="font-size:16px">📺 TAZAMA TV LIVE - BONyeZA HAPA KUONA TV</button></a>
+<a href="index.html" target="_blank" style="text-decoration:none"><button class="green" style="font-size:18px;padding:15px;background:#00b300">📺 TAZAMA TV LIVE - BONyeZA HAPA KUONA TV</button></a>
 
 <div class="card" style="border:2px solid #00ff00">
 <h3>🔑 TOKEN (Mara moja tu)</h3>
@@ -48,20 +48,17 @@ button.green{background:#00b300} button.blue{background:#0066ff} button.red{back
 </div>
 
 <div id="o" class="tab card">
-<h3>👑 OWNER TV - IMERUDI!</h3>
-<label class="small">Jina la TV</label>
+<h3>👑 OWNER TV</h3>
 <input id="tvName" value="MTAANI TV">
-<label class="small">Owner</label>
 <input id="ownerName" value="ALEX MUSAU KATOYO USU">
-<label class="small">TICKER KALI INAYOSONGA CHINI (Nimekuwekea tayari)</label>
-<input id="ticker" value="🔴 MTAANI TV - TRUE LIVE 24/7 | HABARI ZA MTAANI, MUSIC & BURUDANI NON-STOP | TANGAZA BIASHARA YAKO HAPA - TILL: 3624692 | OWNER: ALEX MUSAU KATOYO USU | SUBSCRIBE SASA!">
+<input id="ticker" value="🔴 MTAANI TV - TRUE LIVE 24/7 | HABARI ZA MTAANI, MUSIC & BURUDANI | TANGAZA HAPA TILL: 3624692 | OWNER: ALEX MUSAU KATOYO USU">
 <button class="green" onclick="saveOwner()">💾 HIFADHI OWNER & TICKER</button>
 <div id="ownerStatus" class="small"></div>
 </div>
 
 <div id="s" class="tab card">
 <h3>🚀 TUMA KWA TV PUBLIC</h3>
-<button class="green" style="font-size:16px;padding:15px" onclick="pushAll()">📤 TUMA YOTE KWA TV PUBLIC SASA (AUTO)</button>
+<button class="green" style="font-size:16px;padding:15px" onclick="pushAll()">📤 TUMA YOTE KWA TV PUBLIC SASA</button>
 <div id="pushStatus" class="small" style="margin-top:10px"></div>
 <textarea id="out" style="height:100px;background:#000;color:#0f0;font-size:11px;margin-top:10px" readonly></textarea>
 </div>
@@ -72,5 +69,4 @@ function showTab(id,btn){document.querySelectorAll('.tab').forEach(t=>t.classLis
 function extractID(t){if(!t)return null;t=t.trim();if(/^[a-zA-Z0-9_-]{11}$/.test(t))return t;let m=t.match(/(?:watch\?v=|youtu\.be\/|live\/|embed\/|shorts\/)([a-zA-Z0-9_-]{11})/);if(m)return m[1];try{let u=new URL(t);let v=u.searchParams.get('v');if(v)return v;}catch{}return null;}
 async function getTitle(){let link=document.getElementById('link').value.trim();let id=extractID(link);if(!id)return;document.getElementById('status').innerText='⏳ Nachukua jina...';try{let r=await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${id}`);let d=await r.json();if(d.title){document.getElementById('title').value=d.title;document.getElementById('status').innerHTML='<span class=ok>✅ '+d.title+'</span>';}}catch{}}
 function saveToken(){localStorage.setItem('gh_token',document.getElementById('token').value.trim());localStorage.setItem('gh_owner',document.getElementById('owner').value.trim());localStorage.setItem('gh_repo',document.getElementById('repo').value.trim());document.getElementById('tokenStatus').innerHTML='<span class=ok>✅ Token imehifadhiwa!</span>';}
-function saveLocal(){localStorage.setItem('mtaani_videos',JSON.stringify(videos));localStorage.setItem('mtaani_ads',JSON.stringify(ads));localStorage.setItem('mtaani_owner',JSON.stringify(ownerData));document.getElementById('out').value=JSON.stringify(videos,null,2);}
-function renderVideos(){let h='';videos.forEach((v,i)=>{h+=`<div class=list><span><b>${v.title}</b><br><span class=small>${v.id}</span></span><button class=red onclick="videos.splice(${i},1);saveLocal();renderVideos()">X</button></div>`});document.getElementById('vlist').innerHTML=h||'<span class=small>Hakuna video
+function saveLocal(){localStorage.setItem('mtaani_videos',JSON.stringify(videos));localStorage.setItem('mtaani_ads',JSON.stringify(ads));localStorage.setItem('mtaani_owner',JSON.stringify(ownerData));document.getElementById
