@@ -1,10 +1,10 @@
 {
   "active": "0",
   "room": "MtaaniTV-Live-Show",
-  "background": "move5",
-  "backgroundUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+  "background": "crowd",
+  "backgroundUrl": "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=1200",
   "framed": false,
   "folded": false,
   "adVideo": "",
-  "timestamp": 1789633087861
+  "timestamp": 1789633097211
 }
