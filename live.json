@@ -1,7 +1,7 @@
 {
   "active": "1",
-  "room": "MtaaniTV-BIZZ-ByAlexMusau",
-  "category": "drama",
+  "room": "MtaaniTV-Live-Show",
+  "currentCat": "news",
   "background": "anim",
   "backgroundUrl": "anim",
   "framed": false,
@@ -16,7 +16,13 @@
     "live": false,
     "gen": false
   },
-  "timestamp": 1789637584300,
-  "officially": "OFFICIALLY LAUNCHED BY ALEX MUSAU",
-  "streaming": "WE STREAM LIVE MATCHES"
+  "enabled": {
+    "news": false,
+    "bizz": true,
+    "mchezo": true,
+    "music": true,
+    "drama": true,
+    "gen": true
+  },
+  "timestamp": 1789639368422
 }
