@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MTAANI TV - ADMIN - FINAL FIXED OFF OFF</title>
+<title>MTAANI TV - ADMIN - FINAL NO NAME</title>
 <script src="https://meet.jit.si/external_api.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -32,10 +32,10 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 </style>
 </head>
 <body>
-<h1>📺 MTAANI TV - ADMIN - OFF OFF EXCEPT MAIN</h1>
+<h1>📺 MTAANI TV - ADMIN - FINAL (NO NAME)</h1>
 
 <div class="card" style="border:3px solid #00ff00">
-<h3>🔑 GitHub AUTO - TOKEN HAIJITOI TENA</h3>
+<h3>🔑 GitHub AUTO</h3>
 <input id="token" type="password" placeholder="Weka Token ghp_..." oninput="autoSaveToken(this.value)">
 <div style="display:flex;gap:5px"><input id="owner" value="musauvincent76-source"><input id="repo" value="Mtaani-tv"></div>
 <button class="blue" onclick="saveToken()">💾 HIFADHI TOKEN</button>
@@ -62,7 +62,7 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 
 <div id="vcat-news" class="cat-box active">
 <button id="en-news" onclick="toggleCatEnabled('news')" style="background:#cc0000">NEWS: OFF</button>
-<input id="link-news" placeholder="🔗 Link ya NEWS" oninput="fetchTitleCat('news')">
+<input id="link-news" placeholder="🔗 Link ya NEWS - jina litajitaja" oninput="fetchTitleCat('news')">
 <input id="title-news" placeholder="📝 Jina - itaenda TV">
 <div id="status-news" class="small"></div>
 <button onclick="addVideoCat('news')">➕ ONGEZA NEWS</button>
@@ -116,31 +116,24 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 </div>
 
 <div id="a" class="tab card"><h3>📢 Tangazo</h3><input id="adTitle" placeholder="Title"><input id="adMsg" placeholder="Ujumbe"><input id="adContact" placeholder="Contact"><button class="blue" onclick="addAd()">ONGEZA AD</button><div id="alist"></div></div>
-<div id="o" class="tab card"><h3>👑 OWNER TV</h3><input id="tvName" value="MTAANI TV"><input id="ownerName" value="MUSAU VINCENT - TILL: 3624692"><input id="ticker" value="MTAANI TV TRUE LIVE 24/7 | TILL 3624692 | TANGAZA HAPA!"><button class="green" onclick="saveOwner()">HIFADHI OWNER</button><div id="ownerStatus" class="small"></div></div>
-<div id="s" class="tab card"><h3>🚀 Tuma PUBLIC</h3><button class="green" onclick="pushAll()">📤 TUMA VIDEOS KWA TV PUBLIC</button><div id="pushStatus" class="small"></div><textarea id="out" style="height:100px;background:#000;color:#0f0;font-size:11px" readonly></textarea><button onclick="copyOut()">📋 COPY</button></div>
+
+<div id="o" class="tab card">
+<h3>👑 OWNER TV - SASA HAKUNA JINA YAKO</h3>
+<input id="tvName" value="MTAANI TV">
+<input id="ownerName" value="MTAANI TV">
+<input id="ticker" value="MTAANI TV - TRUE LIVE 24/7 | TANGAZA BIASHARA HAPA!">
+<button class="green" onclick="saveOwner()">💾 HIFADHI OWNER</button>
+<div id="ownerStatus" class="small"></div>
+</div>
+
+<div id="s" class="tab card"><h3>🚀 Tuma PUBLIC</h3><button class="green" onclick="pushAll()">📤 TUMA VIDEOS + OWNER KWA TV PUBLIC</button><div id="pushStatus" class="small"></div><textarea id="out" style="height:100px;background:#000;color:#0f0;font-size:11px" readonly></textarea><button onclick="copyOut()">📋 COPY</button></div>
 
 <div id="live" class="tab card" style="border:2px solid #ff00ff">
-<h3>🔴 LIVE STUDIO - 30 BACKGROUNDS ZOTE</h3>
-<div class="cat-tabs">
-<button id="lc-news" class="active" onclick="openLiveCat('news','lc-news')">NEWS LIVE</button>
-<button id="lc-bizz" onclick="openLiveCat('bizz','lc-bizz')">BIZZ LIVE</button>
-<button id="lc-mchezo" onclick="openLiveCat('mchezo','lc-mchezo')">MCHEZO LIVE</button>
-<button id="lc-music" onclick="openLiveCat('music','lc-music')">MUSIC</button>
-<button id="lc-drama" onclick="openLiveCat('drama','lc-drama')">DRAMA</button>
-<button id="lc-main" onclick="openLiveCat('main','lc-main')">MAIN</button>
-</div>
-<div id="live-news" class="cat-box active"><input id="liveLink-news" readonly style="background:#000;color:#0f0"><div style="display:flex;gap:5px"><button style="background:red;flex:1" onclick="startLiveCat('news')">🔴 ANZA NEWS LIVE</button><button onclick="stopLiveCat('news')" style="flex:1;background:#333">⏹️ ZIMA NEWS</button></div></div>
-<div id="live-bizz" class="cat-box"><input id="liveLink-bizz" readonly style="background:#000;color:#0f0"><div style="display:flex;gap:5px"><button style="background:red;flex:1" onclick="startLiveCat('bizz')">ANZA BIZZ</button><button onclick="stopLiveCat('bizz')" style="flex:1;background:#333">ZIMA BIZZ</button></div></div>
-<div id="live-mchezo" class="cat-box"><input id="liveLink-mchezo" readonly style="background:#000;color:#0f0"><div style="display:flex;gap:5px"><button style="background:red;flex:1" onclick="startLiveCat('mchezo')">ANZA MCHEZO</button><button onclick="stopLiveCat('mchezo')" style="flex:1;background:#333">ZIMA MCHEZO</button></div></div>
-<div id="live-music" class="cat-box"><input id="liveLink-music" readonly style="background:#000;color:#0f0"><button style="background:red" onclick="startLiveCat('music')">ANZA MUSIC</button></div>
-<div id="live-drama" class="cat-box"><input id="liveLink-drama" readonly style="background:#000;color:#0f0"><button style="background:red" onclick="startLiveCat('drama')">ANZA DRAMA</button></div>
-<div id="live-main" class="cat-box"><input id="liveLink-main" readonly style="background:#000;color:#0f0"><button style="background:red" onclick="startLiveCat('main')">ANZA MAIN</button></div>
-
+<h3>🔴 LIVE STUDIO - 30 BACKGROUNDS</h3>
 <input id="liveRoom" value="MtaaniTV-Live-Show" style="display:none">
 <div style="display:flex;gap:5px"><button class="green" onclick="startLive()" style="background:#ff0000;flex:1">🔴 ANZA LIVE</button><button class="blue" onclick="toggleFull()" style="flex:1">🔳 FULL</button></div>
 <div id="liveLinkStatus" class="small" style="color:#ffcc00"></div>
 <div id="studioWrap"><video id="bgVideo" loop muted autoplay playsinline></video><div id="bgLayer"></div><div id="jitsiContainer"></div></div>
-
 <h4 style="margin-top:12px;color:#ffcc00">🖼️ 15 PICHA</h4>
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
 <div onclick="setBg('anim')"><img id="thumb-anim" class="bg-thumb active" src="https://images.unsplash.com/photo-1557683316-973673baf926?w=200"><br><span class="small">Anim</span></div>
@@ -180,87 +173,62 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 </div>
 
 <script>
-// FIX: OFF ZOTE EXCEPT MAIN ON
-let videos=[], videosByCat={news:[],bizz:[],mchezo:[],music:[],drama:[],gen:[]}, catEnabled={news:false,bizz:false,mchezo:false,music:false,drama:false,gen:true}, ads=[], ownerData={}, jitsiApi=null, currentBg='anim', currentLiveCat='news';
+let videos=[], videosByCat={news:[],bizz:[],mchezo:[],music:[],drama:[],gen:[]}, catEnabled={news:false,bizz:false,mchezo:false,music:false,drama:false,gen:true}, ads=[], ownerData={tvName:"MTAANI TV",ownerName:"MTAANI TV",ticker:"MTAANI TV - TRUE LIVE 24/7 | TANGAZA BIASHARA HAPA!"};
 const bgMap={city1:'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=1200',city2:'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200',city3:'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=1200',city4:'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1200',city5:'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=1200',city6:'https://images.unsplash.com/photo-1444723121867-7a241cacace9?w=1200',city7:'https://images.unsplash.com/photo-1519608487953-e999c86e7455?w=1200',city8:'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=1200',city9:'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200',news1:'https://images.unsplash.com/photo-1495020689067-958852a7765e?w=1200',talk:'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=1200',studio:'https://images.unsplash.com/photo-1590602847861-f357a9f6a35f?w=1200',crowd:'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=1200',street2:'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=1200'};
 const moveMap={move1:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',move2:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',move3:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',move4:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',move5:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',move6:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4',move7:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4',move8:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',move9:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4',move10:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',move11:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4',move12:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',move13:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',move14:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',move15:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'};
 
-function showTab(id, btnId){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');if(btnId)document.getElementById(btnId).classList.add('active');}
-function openVCat(cat, btnId){document.querySelectorAll('[id^=vcat-]').forEach(b=>b.classList.remove('active'));document.getElementById('vcat-'+cat).classList.add('active');document.querySelectorAll('[id^=vc-]').forEach(b=>b.classList.remove('active'));if(btnId)document.getElementById(btnId).classList.add('active');}
-function openLiveCat(cat, btnId){document.querySelectorAll('[id^=live-]').forEach(b=>{if(b.id.startsWith('live-') && b.classList.contains('cat-box')) b.classList.remove('active')});document.getElementById('live-'+cat).classList.add('active');document.querySelectorAll('[id^=lc-]').forEach(b=>b.classList.remove('active'));if(btnId)document.getElementById(btnId).classList.add('active');currentLiveCat=cat;document.getElementById('liveRoom').value='MtaaniTV-'+cat.toUpperCase();updateLiveLinks();}
+function showTab(id,btnId){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');if(btnId)document.getElementById(btnId).classList.add('active');}
+function openVCat(cat,btnId){document.querySelectorAll('[id^=vcat-]').forEach(b=>b.classList.remove('active'));document.getElementById('vcat-'+cat).classList.add('active');document.querySelectorAll('[id^=vc-]').forEach(b=>b.classList.remove('active'));if(btnId)document.getElementById(btnId).classList.add('active');}
 function extractID(t){if(!t)return null;t=t.trim();if(/^[a-zA-Z0-9_-]{11}$/.test(t))return t;let m=t.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/)([a-zA-Z0-9_-]{11})/);if(m)return m[1];try{let u=new URL(t);let v=u.searchParams.get('v');if(v)return v;}catch{}return null;}
-async function fetchTitle(){let id=extractID(document.getElementById('link').value);if(!id)return;try{let r=await fetch('https://noembed.com/embed?url=https://www.youtube.com/watch?v='+id);let d=await r.json();if(d.title)document.getElementById('title').value=d.title;}catch{}}
-async function fetchTitleCat(cat){let id=extractID(document.getElementById('link-'+cat).value);if(!id)return;try{let r=await fetch('https://noembed.com/embed?url=https://www.youtube.com/watch?v='+id);let d=await r.json();if(d.title)document.getElementById('title-'+cat).value=d.title;}catch{}}
+async function fetchTitle(){let id=extractID(document.getElementById('link').value);if(!id)return;try{let r=await fetch('https://noembed.com/embed?url=https://www.youtube.com/watch?v='+id);let d=await r.json();if(d.title){document.getElementById('title').value=d.title;document.getElementById('status').innerHTML='<span class="ok">✅ '+d.title+'</span>';}}catch{}}
+async function fetchTitleCat(cat){let id=extractID(document.getElementById('link-'+cat).value);if(!id)return;try{let r=await fetch('https://noembed.com/embed?url=https://www.youtube.com/watch?v='+id);let d=await r.json();if(d.title){document.getElementById('title-'+cat).value=d.title;let s=document.getElementById('status-'+cat);if(s)s.innerHTML='<span class="ok">✅ '+d.title+' - Itaenda TV</span>';}}catch{}}
 function autoSaveToken(v){try{if(v.trim().length>10){localStorage.setItem('gh_token',v.trim());sessionStorage.setItem('gh_token',v.trim());localStorage.setItem('gh_token_backup',v.trim());document.cookie='gh_token='+encodeURIComponent(v.trim())+'; max-age=31536000; path=/';}}catch(e){}}
 function saveToken(){let t=document.getElementById('token').value.trim();if(t.length<10){alert('Weka token');return;}try{localStorage.setItem('gh_token',t);sessionStorage.setItem('gh_token',t);localStorage.setItem('gh_token_backup',t);document.cookie='gh_token='+encodeURIComponent(t)+'; max-age=31536000; path=/';localStorage.setItem('gh_owner',document.getElementById('owner').value);localStorage.setItem('gh_repo',document.getElementById('repo').value);}catch(e){}document.getElementById('tokenStatus').innerHTML='<span class="ok">✅ Token imehifadhiwa!</span>';}
-function loadToken(){let s='';try{s=localStorage.getItem('gh_token')||'';}catch(e){}if(!s){try{s=sessionStorage.getItem('gh_token')||'';}catch(e){}}if(!s){try{s=localStorage.getItem('gh_token_backup')||'';}catch(e){}}if(!s){try{let m=document.cookie.match(/gh_token=([^;]+)/);if(m)s=decodeURIComponent(m[1]);}catch(e){}}document.getElementById('token').value=s;try{document.getElementById('owner').value=localStorage.getItem('gh_owner')||'musauvincent76-source';document.getElementById('repo').value=localStorage.getItem('gh_repo')||'Mtaani-tv';}catch(e){}document.getElementById('tokenStatus').innerHTML=s?'<span class="ok">✅ Token ipo ('+s.slice(0,8)+'...)</span>':'<span class="warn">Weka token</span>';}
+function loadToken(){let s='';try{s=localStorage.getItem('gh_token')||'';}catch(e){}if(!s){try{s=sessionStorage.getItem('gh_token')||'';}catch(e){}}if(!s){try{s=localStorage.getItem('gh_token_backup')||'';}catch(e){}}if(!s){try{let m=document.cookie.match(/gh_token=([^;]+)/);if(m)s=decodeURIComponent(m[1]);}catch(e){}}document.getElementById('token').value=s;try{document.getElementById('owner').value=localStorage.getItem('gh_owner')||'musauvincent76-source';document.getElementById('repo').value=localStorage.getItem('gh_repo')||'Mtaani-tv';}catch(e){}document.getElementById('tokenStatus').innerHTML=s?'<span class="ok">✅ Token ipo</span>':'<span class="warn">Weka token</span>';}
 function saveLocal(){localStorage.setItem('mtaani_videos',JSON.stringify(videos));Object.keys(videosByCat).forEach(c=>localStorage.setItem('mtaani_videos_'+c,JSON.stringify(videosByCat[c])));localStorage.setItem('mtaani_ads',JSON.stringify(ads));localStorage.setItem('mtaani_owner',JSON.stringify(ownerData));localStorage.setItem('mtaani_cat_enabled',JSON.stringify(catEnabled));localStorage.setItem('mtaani_cat_enabled_backup',JSON.stringify(catEnabled));try{document.cookie='cat_enabled='+encodeURIComponent(JSON.stringify(catEnabled))+'; max-age=31536000; path=/';}catch(e){}let all=[...videos];Object.keys(videosByCat).forEach(cat=>{if(catEnabled[cat])videosByCat[cat].forEach(v=>all.push(v));});document.getElementById('out').value=JSON.stringify(all,null,2);}
 function renderVideos(){let h="";videos.forEach((v,i)=>{h+=`<div class="list-item"><span><b>${v.title}</b></span><button class="red" onclick="videos.splice(${i},1);saveLocal();renderVideos()">X</button></div>`});document.getElementById('vlist').innerHTML=h||"Hakuna";saveLocal();}
 function renderVideosCat(cat){let h="";videosByCat[cat].forEach((v,i)=>{h+=`<div class="list-item"><span><b>${v.title}</b></span><button class="red" onclick="videosByCat['${cat}'].splice(${i},1);saveLocal();renderVideosCat('${cat}')">X</button></div>`});document.getElementById('vlist-'+cat).innerHTML=h||"Hakuna";saveLocal();}
 function renderAds(){let h="";ads.forEach((a,i)=>{h+=`<div class="list-item"><span><b>${a.title}</b></span><button class="red" onclick="ads.splice(${i},1);saveLocal();renderAds()">X</button></div>`});document.getElementById('alist').innerHTML=h||"Hakuna";saveLocal();}
 function addVideo(){let id=extractID(document.getElementById('link').value.trim());if(!id){alert("Link mbaya");return;}let title=document.getElementById('title').value.trim()||"MTAANI TV - "+id;videos.push({id:id,title:title});document.getElementById('link').value="";document.getElementById('title').value="";renderVideos();}
 function addVideoCat(cat){let id=extractID(document.getElementById('link-'+cat).value.trim());if(!id){alert("Link mbaya");return;}let title=document.getElementById('title-'+cat).value.trim()||cat.toUpperCase()+" - "+id;videosByCat[cat].push({id:id,title:title,category:cat});document.getElementById('link-'+cat).value="";document.getElementById('title-'+cat).value="";renderVideosCat(cat);}
-
-// FIX KUBWA - BUTTON ON/OFF INABAKI OFF
 function toggleCatEnabled(cat){
   catEnabled[cat]=!catEnabled[cat];
   let btn=document.getElementById('en-'+cat);
-  if(btn){
-    btn.innerText=cat.toUpperCase()+': '+(catEnabled[cat]?'ON':'OFF');
-    btn.style.background=catEnabled[cat]?'#00b300':'#cc0000';
-  }
-  try{
-    localStorage.setItem('mtaani_cat_enabled',JSON.stringify(catEnabled));
-    localStorage.setItem('mtaani_cat_enabled_backup',JSON.stringify(catEnabled));
-    document.cookie='cat_enabled='+encodeURIComponent(JSON.stringify(catEnabled))+'; max-age=31536000; path=/';
-  }catch(e){}
+  if(btn){btn.innerText=cat.toUpperCase()+': '+(catEnabled[cat]?'ON':'OFF');btn.style.background=catEnabled[cat]?'#00b300':'#cc0000';}
+  try{localStorage.setItem('mtaani_cat_enabled',JSON.stringify(catEnabled));localStorage.setItem('mtaani_cat_enabled_backup',JSON.stringify(catEnabled));document.cookie='cat_enabled='+encodeURIComponent(JSON.stringify(catEnabled))+'; max-age=31536000; path=/';}catch(e){}
   saveLocal();
 }
-function updateCatButtons(){
-  let saved=null;
-  try{
-    saved=localStorage.getItem('mtaani_cat_enabled');
-    if(!saved) saved=localStorage.getItem('mtaani_cat_enabled_backup');
-    if(!saved){ let m=document.cookie.match(/cat_enabled=([^;]+)/); if(m) saved=decodeURIComponent(m[1]); }
-    if(saved) catEnabled=JSON.parse(saved);
-  }catch(e){}
-  Object.keys(catEnabled).forEach(cat=>{
-    let b=document.getElementById('en-'+cat);
-    if(b){ b.innerText=cat.toUpperCase()+': '+(catEnabled[cat]?'ON':'OFF'); b.style.background=catEnabled[cat]?'#00b300':'#cc0000'; }
-  });
-}
-
+function updateCatButtons(){Object.keys(catEnabled).forEach(cat=>{let b=document.getElementById('en-'+cat);if(b){b.innerText=cat.toUpperCase()+': '+(catEnabled[cat]?'ON':'OFF');b.style.background=catEnabled[cat]?'#00b300':'#cc0000';}});}
 function addAd(){ads.push({title:document.getElementById('adTitle').value,msg:document.getElementById('adMsg').value});renderAds();}
-function saveOwner(){ownerData={tvName:document.getElementById('tvName').value,ownerName:document.getElementById('ownerName').value,ticker:document.getElementById('ticker').value};localStorage.setItem('mtaani_owner',JSON.stringify(ownerData));document.getElementById('ownerStatus').innerHTML='<span class="ok">✅ Saved</span>';}
+function saveOwner(){ownerData={tvName:document.getElementById('tvName').value,ownerName:document.getElementById('ownerName').value,ticker:document.getElementById('ticker').value};localStorage.setItem('mtaani_owner',JSON.stringify(ownerData));document.getElementById('ownerStatus').innerHTML='<span class="ok">✅ OWNER Saved - Sasa bonyeza PUBLIC > TUMA</span>';}
 function loadAll(){
   try{let v=localStorage.getItem('mtaani_videos');if(v)videos=JSON.parse(v);}catch{}
   Object.keys(videosByCat).forEach(c=>{try{let vv=localStorage.getItem('mtaani_videos_'+c);if(vv)videosByCat[c]=JSON.parse(vv);}catch{}});
   try{
     let ce=localStorage.getItem('mtaani_cat_enabled');
     if(!ce) ce=localStorage.getItem('mtaani_cat_enabled_backup');
-    if(!ce){ let m=document.cookie.match(/cat_enabled=([^;]+)/); if(m) ce=decodeURIComponent(m[1]); }
-    if(ce){ catEnabled=JSON.parse(ce); } else { catEnabled={news:false,bizz:false,mchezo:false,music:false,drama:false,gen:true}; }
-  }catch{ catEnabled={news:false,bizz:false,mchezo:false,music:false,drama:false,gen:true}; }
+    if(!ce){let m=document.cookie.match(/cat_enabled=([^;]+)/);if(m) ce=decodeURIComponent(m[1]);}
+    if(ce) catEnabled=JSON.parse(ce); else catEnabled={news:false,bizz:false,mchezo:false,music:false,drama:false,gen:true};
+  }catch{catEnabled={news:false,bizz:false,mchezo:false,music:false,drama:false,gen:true};}
   try{let a=localStorage.getItem('mtaani_ads');if(a)ads=JSON.parse(a);}catch{}
-  renderVideos();Object.keys(videosByCat).forEach(c=>renderVideosCat(c));renderAds();loadToken();updateLiveLinks();updateCatButtons();
+  try{let o=localStorage.getItem('mtaani_owner');if(o){ownerData=JSON.parse(o);document.getElementById('tvName').value=ownerData.tvName||"MTAANI TV";document.getElementById('ownerName').value=ownerData.ownerName||"MTAANI TV";document.getElementById('ticker').value=ownerData.ticker||"MTAANI TV - TRUE LIVE 24/7";}else{ownerData={tvName:"MTAANI TV",ownerName:"MTAANI TV",ticker:"MTAANI TV - TRUE LIVE 24/7 | TANGAZA BIASHARA HAPA!"};} }catch{ownerData={tvName:"MTAANI TV",ownerName:"MTAANI TV",ticker:"MTAANI TV - TRUE LIVE 24/7 | TANGAZA BIASHARA HAPA!"};}
+  renderVideos();Object.keys(videosByCat).forEach(c=>renderVideosCat(c));renderAds();loadToken();updateCatButtons();
 }
 loadAll();
 function b64(s){return btoa(unescape(encodeURIComponent(s)))}
 async function pushFile(fn,content){let token='';try{token=localStorage.getItem('gh_token')||sessionStorage.getItem('gh_token')||localStorage.getItem('gh_token_backup')||'';}catch(e){}if(!token){try{let m=document.cookie.match(/gh_token=([^;]+)/);if(m)token=decodeURIComponent(m[1]);}catch(e){}}let owner=document.getElementById('owner').value;let repo=document.getElementById('repo').value;if(!token){document.getElementById('pushStatus').innerText="❌ Weka Token!";return false;}document.getElementById('pushStatus').innerText="⏳ Inatuma "+fn+"...";try{let url=`https://api.github.com/repos/${owner}/${repo}/contents/${fn}`;let sha=null;try{let r=await fetch(url,{headers:{Authorization:`token ${token}`}});if(r.ok){let j=await r.json();sha=j.sha;}}catch{}let res=await fetch(url,{method:'PUT',headers:{Authorization:`token ${token}`,"Content-Type":"application/json"},body:JSON.stringify({message:`Update ${fn}`,content:b64(content),sha:sha})});if(res.ok)return true;let d=await res.json();document.getElementById('pushStatus').innerText="❌ "+fn+": "+d.message;return false;}catch(e){document.getElementById('pushStatus').innerText="❌ "+e.message;return false;}}
-async function pushAll(){let all=[...videos];Object.keys(videosByCat).forEach(c=>{if(catEnabled[c])videosByCat[c].forEach(v=>all.push(v));});let ok=await pushFile('videos.json',JSON.stringify(all,null,2));if(ok)document.getElementById('pushStatus').innerHTML='<span class="ok">✅ IMEENDA PUBLIC!</span>';}
+async function pushAll(){
+  let all=[...videos];Object.keys(videosByCat).forEach(c=>{if(catEnabled[c])videosByCat[c].forEach(v=>all.push(v));});
+  let ok1=await pushFile('videos.json',JSON.stringify(all,null,2));
+  let ok2=await pushFile('owner.json',JSON.stringify(ownerData,null,2));
+  if(ok1&&ok2) document.getElementById('pushStatus').innerHTML='<span class="ok">✅ IMEENDA PUBLIC - Jina lako halipo tena!</span>';
+  else if(ok1) document.getElementById('pushStatus').innerHTML='<span class="ok">✅ Videos zimeenda</span>';
+}
 function copyOut(){navigator.clipboard.writeText(document.getElementById('out').value);}
 function toggleFull(){document.getElementById('live').classList.toggle('fullscreen');}
-function toggleFrame(){document.getElementById('studioWrap').classList.toggle('framed');}
-function toggleFold(){document.getElementById('studioWrap').classList.toggle('folded');}
 function setBg(k){let layer=document.getElementById('bgLayer');let vid=document.getElementById('bgVideo');vid.style.display='none';vid.pause();document.querySelectorAll('.bg-thumb').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.move-thumb').forEach(t=>t.classList.remove('active'));if(document.getElementById('thumb-'+k))document.getElementById('thumb-'+k).classList.add('active');if(k==='anim'){layer.style.background='linear-gradient(45deg,#050a1f,#ff6600,#ffcc00,#111c44)';layer.style.display='block';}else{layer.style.backgroundImage=`url(${bgMap[k]})`;layer.style.backgroundSize='cover';layer.style.display='block';}}
 function setMoveBg(k){let vid=document.getElementById('bgVideo');let layer=document.getElementById('bgLayer');layer.style.display='none';vid.src=moveMap[k];vid.style.display='block';vid.play();document.querySelectorAll('.bg-thumb').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.move-thumb').forEach(t=>t.classList.remove('active'));if(document.getElementById('mthumb-'+k))document.getElementById('mthumb-'+k).classList.add('active');}
-function updateLiveLinks(){Object.keys(videosByCat).forEach(cat=>{let el=document.getElementById('liveLink-'+cat);if(el)el.value='https://meet.jit.si/MtaaniTV-'+cat.toUpperCase();});let m=document.getElementById('liveLink-main');if(m)m.value='https://meet.jit.si/MtaaniTV-Live-Show';}
-function startLiveCat(cat){let room=cat==='main'?'MtaaniTV-Live-Show':'MtaaniTV-'+cat.toUpperCase();document.getElementById('liveRoom').value=room;let container=document.getElementById('jitsiContainer');container.style.display='block';if(window.jitsiApi)try{window.jitsiApi.dispose();}catch{}let opts={roomName:room,width:"100%",height:400,parentNode:container,configOverwrite:{prejoinPageEnabled:false},userInfo:{displayName:"DIRECTOR - "+cat}};window.jitsiApi=new JitsiMeetExternalAPI("meet.jit.si",opts);document.getElementById('liveLinkStatus').innerHTML='<span class="ok">✅ LIVE '+cat.toUpperCase()+' ON - Room: '+room+'</span>';document.getElementById('live').classList.add('fullscreen');}
-function stopLiveCat(cat){if(window.jitsiApi){try{window.jitsiApi.dispose();}catch{}window.jitsiApi=null;}document.getElementById('jitsiContainer').style.display='none';document.getElementById('live').classList.remove('fullscreen');}
-function startLive(){startLiveCat(currentLiveCat||'main');}
-function copyLiveLink(){let room=document.getElementById('liveRoom').value;let link='https://meet.jit.si/'+room;navigator.clipboard.writeText(link).then(()=>{document.getElementById('liveLinkStatus').innerHTML='<span class="ok">✅ Link copied: '+link+'</span>';});}
-function stopLive(){stopLiveCat();}
-function publishLiveNow(){}
+function startLive(){let room=document.getElementById('liveRoom').value;let container=document.getElementById('jitsiContainer');container.style.display='block';if(window.jitsiApi)try{window.jitsiApi.dispose();}catch{}let opts={roomName:room,width:"100%",height:400,parentNode:container,configOverwrite:{prejoinPageEnabled:false},userInfo:{displayName:"MTAANI TV"}};window.jitsiApi=new JitsiMeetExternalAPI("meet.jit.si",opts);document.getElementById('live').classList.add('fullscreen');}
 </script>
 </body>
-                                                                                                                                                       </html>
+</html>
