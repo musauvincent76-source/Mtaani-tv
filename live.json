@@ -2,8 +2,8 @@
   "active": "1",
   "room": "MtaaniTV-Live-Show",
   "currentCat": "news",
-  "background": "anim",
-  "backgroundUrl": "anim",
+  "background": "city4",
+  "backgroundUrl": "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1200",
   "framed": false,
   "folded": false,
   "adVideo": "",
@@ -24,5 +24,5 @@
     "drama": true,
     "gen": true
   },
-  "timestamp": 1789639374334
+  "timestamp": 1789639388534
 }
