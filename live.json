@@ -1,10 +1,22 @@
 {
-  "active": "0",
-  "room": "MtaaniTV-Live-Show",
-  "background": "city1",
-  "backgroundUrl": "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=1200",
+  "active": "1",
+  "room": "MtaaniTV-BIZZ-ByAlexMusau",
+  "category": "drama",
+  "background": "anim",
+  "backgroundUrl": "anim",
   "framed": false,
   "folded": false,
   "adVideo": "",
-  "timestamp": 1789637494916
+  "auto": {
+    "news": false,
+    "bizz": false,
+    "mchezo": false,
+    "music": false,
+    "drama": false,
+    "live": false,
+    "gen": false
+  },
+  "timestamp": 1789637584300,
+  "officially": "OFFICIALLY LAUNCHED BY ALEX MUSAU",
+  "streaming": "WE STREAM LIVE MATCHES"
 }
