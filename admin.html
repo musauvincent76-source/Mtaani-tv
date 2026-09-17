@@ -1,72 +1,130 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MTAANI TV ADMIN</title>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MTAANI TV ADMIN</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}body{background:#050a1f;color:#fff;font-family:sans-serif;padding:10px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#050a1f;color:#fff;font-family:sans-serif;padding:10px}
 h1{color:#ffcc00;text-align:center;padding:10px;border-bottom:3px solid #ff6600}
 .card{background:#111c44;padding:12px;border-radius:12px;margin:10px 0;border:1px solid #223366}
 input,textarea{width:100%;padding:11px;border-radius:8px;border:none;margin:6px 0}
 button{width:100%;padding:12px;background:#ff6600;color:#fff;border:none;border-radius:8px;font-weight:900;margin-top:8px;cursor:pointer}
-button.green{background:#00b300} button.blue{background:#0066ff} button.red{background:#cc0000;width:auto;padding:5px 10px}
+button.green{background:#00b300}
+button.blue{background:#0066ff}
+button.red{background:#cc0000;width:auto;padding:5px 10px}
 .list{background:#000;padding:8px;margin:6px 0;border-radius:8px;display:flex;justify-content:space-between;border-left:4px solid #ffcc00}
-.small{font-size:11px;color:#aaa} .ok{color:#00ff00;font-weight:900}
-.tabs{display:flex;gap:4px;margin:8px 0} .tabs button{flex:1;background:#222} .tabs button.active{background:#ffcc00;color:#000}
-.tab{display:none} .tab.active{display:block}
-</style></head><body>
+.small{font-size:11px;color:#aaa}
+.ok{color:#00ff00;font-weight:900}
+.tabs{display:flex;gap:4px;margin:8px 0}
+.tabs button{flex:1;background:#222}
+.tabs button.active{background:#ffcc00;color:#000}
+.tab{display:none}
+.tab.active{display:block}
+</style>
+</head>
+<body>
+
 <h1>📺 MTAANI TV ADMIN</h1>
-<a href="index.html" target="_blank" style="text-decoration:none"><button class="green" style="font-size:18px;padding:15px;background:#00b300">📺 TAZAMA TV LIVE - BONyeZA HAPA KUONA TV</button></a>
+
+<a href="index.html" target="_blank" style="text-decoration:none">
+  <button class="green" style="font-size:16px">
+    📺 TAZAMA TV LIVE - BONyeZA HAPA KUONA TV
+  </button>
+</a>
 
 <div class="card" style="border:2px solid #00ff00">
-<h3>🔑 TOKEN (Mara moja tu)</h3>
-<input id="token" type="password" placeholder="ghp_xxxx...">
-<div style="display:flex;gap:5px"><input id="owner" value="musauvincent76-source"><input id="repo" value="Mtaani-tv"></div>
-<button class="blue" onclick="saveToken()">💾 HIFADHI TOKEN</button>
-<div id="tokenStatus" class="small"></div>
+  <h3>🔑 TOKEN (Mara moja tu)</h3>
+  <input id="token" type="password" placeholder="ghp_xxxx...">
+  <div style="display:flex;gap:5px">
+    <input id="owner" value="musauvincent76-source">
+    <input id="repo" value="Mtaani-tv">
+  </div>
+  <button class="blue" onclick="saveToken()">💾 HIFADHI TOKEN</button>
+  <div id="tokenStatus" class="small"></div>
 </div>
 
 <div class="tabs">
-<button class="active" onclick="showTab('v',this)">🎬 VIDEOS</button>
-<button onclick="showTab('a',this)">📢 ADS</button>
-<button onclick="showTab('o',this)">👑 OWNER</button>
-<button onclick="showTab('s',this)">🚀 PUBLIC</button>
+  <button class="active" onclick="showTab('v',this)">🎬 VIDEOS</button>
+  <button onclick="showTab('a',this)">📢 ADS</button>
+  <button onclick="showTab('o',this)">👑 OWNER</button>
+  <button onclick="showTab('s',this)">🚀 PUBLIC</button>
 </div>
 
 <div id="v" class="tab active card">
-<h3>Weka Video</h3>
-<input id="link" placeholder="Link ya YouTube hapa..." onpaste="setTimeout(getTitle,300)">
-<input id="title" placeholder="Jina la video...">
-<div id="status" class="small">Weka link</div>
-<button onclick="addVideo()">➕ ONGEZA VIDEO</button>
-<div id="vlist"></div>
+  <h3>Weka Video</h3>
+  <input id="link" placeholder="Link ya YouTube hapa..." onpaste="setTimeout(getTitle,300)">
+  <input id="title" placeholder="Jina la video...">
+  <div id="status" class="small">Weka link</div>
+  <button onclick="addVideo()">➕ ONGEZA VIDEO</button>
+  <div id="vlist"></div>
 </div>
 
 <div id="a" class="tab card">
-<h3>Tangazo</h3>
-<input id="adTitle" placeholder="Jina la tangazo">
-<input id="adMsg" placeholder="Ujumbe">
-<input id="adContact" placeholder="Contact TILL">
-<button class="blue" onclick="addAd()">➕ ONGEZA TANGAZO</button>
-<div id="alist"></div>
+  <h3>Tangazo</h3>
+  <input id="adTitle" placeholder="Jina la tangazo">
+  <input id="adMsg" placeholder="Ujumbe">
+  <input id="adContact" placeholder="Contact TILL">
+  <button class="blue" onclick="addAd()">➕ ONGEZA TANGAZO</button>
+  <div id="alist"></div>
 </div>
 
 <div id="o" class="tab card">
-<h3>👑 OWNER TV</h3>
-<input id="tvName" value="MTAANI TV">
-<input id="ownerName" value="ALEX MUSAU KATOYO USU">
-<input id="ticker" value="🔴 MTAANI TV - TRUE LIVE 24/7 | HABARI ZA MTAANI, MUSIC & BURUDANI | TANGAZA HAPA TILL: 3624692 | OWNER: ALEX MUSAU KATOYO USU">
-<button class="green" onclick="saveOwner()">💾 HIFADHI OWNER & TICKER</button>
-<div id="ownerStatus" class="small"></div>
+  <h3>👑 OWNER TV - IMERUDI!</h3>
+  <label class="small">Jina la TV</label>
+  <input id="tvName" value="MTAANI TV">
+  <label class="small">Owner</label>
+  <input id="ownerName" value="ALEX MUSAU KATOYO USU">
+  <label class="small">TICKER KALI INAYOSONGA CHINI</label>
+  <input id="ticker" value="🔴 MTAANI TV - TRUE LIVE 24/7 | HABARI ZA MTAANI, MUSIC & BURUDANI NON-STOP | TANGAZA BIASHARA YAKO HAPA - TILL: 3624692 | OWNER: ALEX MUSAU KATOYO USU | SUBSCRIBE SASA!">
+  <button class="green" onclick="saveOwner()">💾 HIFADHI OWNER & TICKER</button>
+  <div id="ownerStatus" class="small"></div>
 </div>
 
 <div id="s" class="tab card">
-<h3>🚀 TUMA KWA TV PUBLIC</h3>
-<button class="green" style="font-size:16px;padding:15px" onclick="pushAll()">📤 TUMA YOTE KWA TV PUBLIC SASA</button>
-<div id="pushStatus" class="small" style="margin-top:10px"></div>
-<textarea id="out" style="height:100px;background:#000;color:#0f0;font-size:11px;margin-top:10px" readonly></textarea>
+  <h3>🚀 TUMA KWA TV PUBLIC</h3>
+  <button class="green" style="font-size:16px;padding:15px" onclick="pushAll()">📤 TUMA YOTE KWA TV PUBLIC SASA (AUTO)</button>
+  <div id="pushStatus" class="small" style="margin-top:10px"></div>
+  <textarea id="out" style="height:100px;background:#000;color:#0f0;font-size:11px;margin-top:10px" readonly></textarea>
 </div>
 
 <script>
 let videos=[],ads=[],ownerData={};
-function showTab(id,btn){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');if(btn)btn.classList.add('active');}
-function extractID(t){if(!t)return null;t=t.trim();if(/^[a-zA-Z0-9_-]{11}$/.test(t))return t;let m=t.match(/(?:watch\?v=|youtu\.be\/|live\/|embed\/|shorts\/)([a-zA-Z0-9_-]{11})/);if(m)return m[1];try{let u=new URL(t);let v=u.searchParams.get('v');if(v)return v;}catch{}return null;}
-async function getTitle(){let link=document.getElementById('link').value.trim();let id=extractID(link);if(!id)return;document.getElementById('status').innerText='⏳ Nachukua jina...';try{let r=await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${id}`);let d=await r.json();if(d.title){document.getElementById('title').value=d.title;document.getElementById('status').innerHTML='<span class=ok>✅ '+d.title+'</span>';}}catch{}}
-function saveToken(){localStorage.setItem('gh_token',document.getElementById('token').value.trim());localStorage.setItem('gh_owner',document.getElementById('owner').value.trim());localStorage.setItem('gh_repo',document.getElementById('repo').value.trim());document.getElementById('tokenStatus').innerHTML='<span class=ok>✅ Token imehifadhiwa!</span>';}
-function saveLocal(){localStorage.setItem('mtaani_videos',JSON.stringify(videos));localStorage.setItem('mtaani_ads',JSON.stringify(ads));localStorage.setItem('mtaani_owner',JSON.stringify(ownerData));document.getElementById
+
+function showTab(id,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+function extractID(t){
+  if(!t)return null;
+  t=t.trim();
+  if(/^[a-zA-Z0-9_-]{11}$/.test(t))return t;
+  let m=t.match(/(?:watch\?v=|youtu\.be\/|live\/|embed\/|shorts\/)([a-zA-Z0-9_-]{11})/);
+  if(m)return m[1];
+  try{let u=new URL(t);let v=u.searchParams.get('v');if(v)return v;}catch{}
+  return null;
+}
+
+async function getTitle(){
+  let link=document.getElementById('link').value.trim();
+  let id=extractID(link);
+  if(!id)return;
+  document.getElementById('status').innerText='⏳ Nachukua jina...';
+  try{
+    let r=await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${id}`);
+    let d=await r.json();
+    if(d.title){
+      document.getElementById('title').value=d.title;
+      document.getElementById('status').innerHTML='<span class=ok>✅ '+d.title+'</span>';
+    }
+  }catch{}
+}
+
+function saveToken(){
+  localStorage.setItem('gh_token',document.getElementById('token').value.trim());
+  localStorage.setItem('gh_owner',document.getElementById('owner').value.trim());
+  localStorage.setItem('gh_repo',document.getElementById('repo').
