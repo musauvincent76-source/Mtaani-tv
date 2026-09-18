@@ -1,28 +1,7 @@
 {
-  "active": "1",
-  "room": "MtaaniTV-Live-Show",
-  "currentCat": "news",
-  "background": "city4",
-  "backgroundUrl": "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1200",
-  "framed": false,
-  "folded": false,
-  "adVideo": "",
-  "auto": {
-    "news": false,
-    "bizz": false,
-    "mchezo": false,
-    "music": false,
-    "drama": false,
-    "live": false,
-    "gen": false
-  },
-  "enabled": {
-    "news": false,
-    "bizz": true,
-    "mchezo": true,
-    "music": true,
-    "drama": true,
-    "gen": true
-  },
-  "timestamp": 1789639388534
+  "live": true,
+  "room": "MtaaniTV-NEWS-1789725451231",
+  "bg": "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=1200",
+  "time": 1789725451302,
+  "endTime": 0
 }
