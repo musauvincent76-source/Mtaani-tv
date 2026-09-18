@@ -58,7 +58,6 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <button id="vc-drama" onclick="openVCat('drama','vc-drama')">DRAMA <span id="count-drama" class="count">0</span></button>
 <button id="vc-gen" onclick="openVCat('gen','vc-gen')">MAIN <span id="count-gen" class="count">0</span></button>
 </div>
-
 <div id="vcat-news" class="cat-box active">
 <div style="display:flex;justify-content:space-between;align-items:center"><h4>NEWS</h4><button id="sw-news" class="sw" onclick="toggleCat('news')">OFF 🔴</button></div>
 <input id="link-news" placeholder="🔗 Link YouTube / Facebook" oninput="fetchTitleCat('news')">
@@ -96,34 +95,28 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <div id="s" class="tab card"><h3>🚀 PUBLIC AUTO</h3><button class="green" onclick="pushAll()">📤 TUMA KWA TV</button><div id="pushStatus" class="small"></div><textarea id="out" style="height:80px;background:#000;color:#0f0;font-size:11px" readonly></textarea></div>
 
 <div id="live" class="tab card" style="border:3px solid #ff00ff">
-<h3>🔴 LIVE STUDIO - SCREEN 1 + BG 1 + MULTIPLE</h3>
-
+<h3>🔴 LIVE STUDIO - SCREEN 1</h3>
 <div class="card" style="background:#000;border:2px solid #ff00ff;margin:5px 0">
-<h4>📤 SHARE LINK - WATU WENGI WAINGIE</h4>
-<input id="shareLink" readonly style="background:#222;color:#0f0" placeholder="Tengeneza Link">
-<div style="display:flex;gap:5px"><button class="blue" onclick="genShareLink()" style="flex:1">🔗 TENGENEZA LINK</button><button class="green" onclick="copyShareLink()" style="flex:1">📋 COPY LINK</button></div>
-<div class="small" style="color:#00ff00">✅ Admin + Guests wote screen moja - Background moja nyuma yenu wote - Hakuna limit!</div>
+<h4>📤 SHARE LINK - WATU WENGI</h4>
+<input id="shareLink" readonly style="background:#222;color:#0f0">
+<div style="display:flex;gap:5px"><button class="blue" onclick="genShareLink()" style="flex:1">🔗 TENGENEZA LINK</button><button class="green" onclick="copyShareLink()" style="flex:1">📋 COPY</button></div>
+<div class="small" style="color:#00ff00">✅ Screen 1 - Background 1 - Hakuna PIN tena!</div>
 </div>
-
 <div style="display:flex;gap:5px"><button class="green" onclick="startLive()" style="background:#ff0000;flex:1">🔴 ANZA LIVE</button><button class="blue" onclick="toggleFull()" style="flex:1">🔳 FULL</button><button class="blue" onclick="switchCamera()" style="flex:1;background:#ff6600">📷 FRONT/BACK</button></div>
-
 <div class="filter-box">
 <button onclick="setFilter('pic')" style="background:#00b300;border:2px solid #ffcc00">✨ PICHA YAKO FILTER</button>
 <button onclick="setFilter('smart')" style="background:#0066ff">SMART</button>
 <button onclick="setFilter('beauty')" style="background:#cc00cc">💄 BEAUTY</button>
 <button onclick="setFilter('normal')" style="background:#333">NORMAL</button>
 </div>
-<div class="small" style="color:#ffcc00">Filter PICHA YAKO = kama picha yako uliotuma - ngozi inang'aa, blue inawaka!</div>
-
 <div id="studioWrap"><video id="bgVideo" loop muted autoplay playsinline></video><div id="bgLayer"></div><div id="jitsiContainer"></div></div>
-
-<h4 style="margin-top:10px">🖼️ BACKGROUND MOJA KWA WOTE</h4>
+<h4 style="margin-top:10px">🖼️ BACKGROUND MOJA</h4>
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px">
 <img class="bg-thumb" src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=400" onclick="setBg(this,'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=1200')">
 <img class="bg-thumb" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400" onclick="setBg(this,'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200')">
 <img class="bg-thumb" src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400" onclick="setBg(this,'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200')">
 </div>
-<button class="blue" onclick="pushLiveStatus(true)" style="margin-top:10px">📡 ONYESHA LIVE KWA PUBLIC TV</button>
+<button class="blue" onclick="pushLiveStatus(true)" style="margin-top:10px">📡 ONYESHA LIVE PUBLIC TV</button>
 <button class="red" onclick="pushLiveStatus(false)" style="background:#333">⏹️ ZIMA LIVE PUBLIC</button>
 </div>
 
@@ -156,9 +149,8 @@ function setBg(el,url){document.querySelectorAll('.bg-thumb').forEach(t=>t.class
 function setFilter(type){
  let layer=document.getElementById('bgLayer'); let jitsi=document.getElementById('jitsiContainer');
  if(type==='pic'){
-  // FILTER KAMA PICHA YAKO - BLUE INANG'AA, NGOZI SMART, BACKGROUND CLEAR
   layer.style.filter='brightness(1.35) contrast(1.2) saturate(1.5) hue-rotate(-5deg)';
-  jitsi.style.filter='brightness(1.28) contrast(1.18) saturate(1.35) blur(0px)';
+  jitsi.style.filter='brightness(1.28) contrast(1.18) saturate(1.35)';
   document.getElementById('studioWrap').style.filter='brightness(1.1) contrast(1.1)';
  }
  else if(type==='smart'){ layer.style.filter='brightness(1.25) contrast(1.25) saturate(1.3)'; jitsi.style.filter='brightness(1.15) contrast(1.15) saturate(1.1)'; }
@@ -166,10 +158,46 @@ function setFilter(type){
  else { layer.style.filter='none'; jitsi.style.filter='none'; document.getElementById('studioWrap').style.filter='none'; }
  localStorage.setItem('live_filter',type);
 }
-function switchCamera(){ currentFacing = currentFacing==='user'? 'environment' : 'user'; alert('📷 '+(currentFacing==='user'?'FRONT SELFIE':'BACK CAMERA')+'\nJitsi: Bonyeza ⋮ > Settings > Camera'); }
+function switchCamera(){ currentFacing = currentFacing==='user'? 'environment' : 'user'; alert('📷 '+(currentFacing==='user'?'FRONT':'BACK')+'\nNdani ya Jitsi bonyeza ⋮ > Settings > Camera'); }
 function genShareLink(){ let room=currentRoom; let link='https://musauvincent76-source.github.io/Mtaani-tv/live-join.html?room='+room; document.getElementById('shareLink').value=link; localStorage.setItem('live_room',room); return link;}
-function copyShareLink(){ let l=document.getElementById('shareLink'); if(!l.value) genShareLink(); l.select(); document.execCommand('copy'); alert('✅ Link imecopy!\n'+l.value+'\n\nMtu akiingia mtakuwa screen moja!'); }
-function startLive(){let room=currentRoom;let container=document.getElementById('jitsiContainer');container.style.display='block';if(window.jitsiApi)try{window.jitsiApi.dispose();}catch{}let opts={roomName:room,width:"100%",height:"100%",parentNode:container,configOverwrite:{prejoinPageEnabled:false,startWithVideoMuted:false,startWithAudioMuted:false},userInfo:{displayName:"MTAANI TV HOST"}};window.jitsiApi=new JitsiMeetExternalAPI("meet.jit.si",opts);document.getElementById('live').classList.add('fullscreen'); genShareLink(); setFilter(localStorage.getItem('live_filter')||'pic'); let bg=localStorage.getItem('live_bg'); if(bg) document.getElementById('bgLayer').style.backgroundImage='url('+bg+')'; pushLiveStatus(true);}
+function copyShareLink(){ let l=document.getElementById('shareLink'); if(!l.value) genShareLink(); l.select(); document.execCommand('copy'); alert('✅ Link imecopy!\n'+l.value); }
+function startLive(){
+ let room=currentRoom;
+ let container=document.getElementById('jitsiContainer');
+ container.style.display='block';
+ if(window.jitsiApi)try{window.jitsiApi.dispose();}catch{}
+ let opts={
+  roomName:room,
+  width:"100%",
+  height:"100%",
+  parentNode:container,
+  configOverwrite:{
+    prejoinPageEnabled:false,
+    disableInviteFunctions:true,
+    enableClosePage:false,
+    disableDeepLinking:true,
+    transcribingEnabled:false,
+    dialOutCodesUrl:'',
+    dialOutAuthUrl:'',
+    disableProfile:true
+  },
+  interfaceConfigOverwrite:{
+    SHOW_JITSI_WATERMARK:false,
+    SHOW_WATERMARK_FOR_GUESTS:false,
+    SHOW_CHROME_EXTENSION_BANNER:false,
+    MOBILE_APP_PROMO:false,
+    DISPLAY_WELCOME_PAGE_CONTENT:false,
+    DISPLAY_WELCOME_FOOTER:false
+  },
+  userInfo:{displayName:"MTAANI TV HOST"}
+ };
+ window.jitsiApi=new JitsiMeetExternalAPI("meet.jit.si",opts);
+ document.getElementById('live').classList.add('fullscreen');
+ genShareLink();
+ setFilter(localStorage.getItem('live_filter')||'pic');
+ let bg=localStorage.getItem('live_bg'); if(bg) document.getElementById('bgLayer').style.backgroundImage='url('+bg+')';
+ pushLiveStatus(true);
+}
 function startLiveCat(cat){ openVCat(cat,'vc-'+cat); showTab('live','btn-live'); currentRoom="MtaaniTV-"+cat.toUpperCase()+"-"+Date.now(); localStorage.setItem('live_room',currentRoom); startLive(); }
 async function pushLiveStatus(isLive){
  let room=localStorage.getItem('live_room')||currentRoom;
