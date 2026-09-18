@@ -1,0 +1,73 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MSAIDIZI TV - CHANNEL YANGU</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0a1430;color:#fff;font-family:sans-serif;padding:16px}
+h2{color:#ffcc00;text-align:center;margin:10px 0} .box{background:#001a4d;padding:14px;border-radius:12px;margin:12px 0;border:2px solid #ff6600}
+input,button{width:100%;padding:12px;margin:6px 0;border-radius:8px;border:none;font-weight:900} input{background:#fff;color:#000} button{background:#ff6600;color:#000;cursor:pointer} button.green{background:#00ff00} button.red{background:red;color:#fff}
+small{color:#aaa} #list{margin-top:10px} .item{background:#000;padding:8px;border-radius:8px;margin:6px 0;display:flex;justify-content:space-between;align-items:center}</style></head><body>
+<h2>🔰 MSAIDIZI PANEL</h2><p style="text-align:center"><small>Channel Yako Ndogo - Hauoni Ligi Kubwa Ya Boss</small></p>
+
+<div class="box">
+<h3>📺 Channel Yangu - Weka Link Yako</h3>
+<input id="yt" placeholder="Weka YouTube link yako hapa - mfano: https://youtu.be/xxxx">
+<input id="ttl" placeholder="Title - mfano: Ligi Yangu Ya Mtaa">
+<button class="green" onclick="addVideo()">➕ POST VIDEO YANGU</button>
+<small>Video yako itaonekana kwa ?channel=msaidizi tu, sio kwa channel kubwa ya boss</small>
+</div>
+
+<div class="box">
+<h3>🔴 ENDA LIVE - Channel Yangu</h3>
+<input id="room" placeholder="Jina ya Room - mfano: msaidizi-live-1">
+<button onclick="goLive()">🔴 ANZA LIVE YANGU</button>
+<button class="red" onclick="stopLive()">⏹️ ZIMA LIVE YANGU</button>
+<p id="liveStatus" style="margin-top:8px;color:#00ff00"></p>
+</div>
+
+<div class="box">
+<h3>🎬 Video Zangu</h3>
+<div id="list">Inapakia...</div>
+</div>
+
+<script>
+const VIDEO_FILE='assistant_videos.json';
+const LIVE_FILE='assistant_live.json';
+let videos=[];
+
+function extractID(t){if(!t)return null;t=t.trim();if(/^[a-zA-Z0-9_-]{11}$/.test(t))return t;let m=t.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);if(m)return m[1];try{let u=new URL(t);let v=u.searchParams.get('v');if(v&&v.length===11)return v;}catch{}return null;}
+
+async function load(){try{let r=await fetch(VIDEO_FILE+'?v='+Date.now());videos=await r.json();}catch{videos=[]}render();}
+function render(){let d=document.getElementById('list');if(videos.length==0){d.innerHTML='<small>Hakuna video bado - weka ya kwanza juu</small>';return} d.innerHTML=videos.map((v,i)=>`<div class=item><span>${v.title}</span><button style="width:auto;padding:6px 10px" class="red" onclick="del(${i})">Futa</button></div>`).join('');}
+
+async function addVideo(){
+ let id=extractID(document.getElementById('yt').value);
+ let title=document.getElementById('ttl').value||'Channel ya Msaidizi';
+ if(!id){alert('Weka YouTube link sahihi');return}
+ videos.unshift({id:id,title:title,duration:300});
+ await save(); document.getElementById('yt').value=''; document.getElementById('ttl').value='';
+ alert('Sawa! Video yako imepost kwa channel yako ndogo');
+}
+async function del(i){videos.splice(i,1);await save();}
+async function save(){
+ // Hapa unafaa kuweka GitHub API yako, kwa sasa inasave local - nitakuwekea ya GitHub ukitaka
+ localStorage.setItem('assistant_videos',JSON.stringify(videos));
+ // Kwa GitHub: tumia admin yako ku-upload assistant_videos.json
+ console.log(JSON.stringify(videos,null,2));
+ render();
+ let blob=new Blob([JSON.stringify(videos,null,2)],{type:'application/json'});
+ let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='assistant_videos.json'; a.innerText='⬇️ Pakua assistant_videos.json u-upload GitHub'; a.style.display='block'; a.style.color='#ffcc00'; a.style.marginTop='10px'; document.getElementById('list').appendChild(a);
+}
+async function goLive(){
+ let room=document.getElementById('room').value||'msaidizi-live-'+Date.now();
+ let data={live:true,room:room,bg:''};
+ localStorage.setItem('assistant_live',JSON.stringify(data));
+ document.getElementById('liveStatus').innerText='🔴 LIVE YAKO INAENDELEA: '+room+' - Watu wanaona kwa ?channel=msaidizi';
+ let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+ let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='assistant_live.json'; a.innerText='⬇️ Pakua assistant_live.json u-upload GitHub'; a.style.display='block'; a.style.color='#00ff00'; document.getElementById('liveStatus').appendChild(a);
+}
+function stopLive(){
+ localStorage.removeItem('assistant_live');
+ document.getElementById('liveStatus').innerText='⏹️ LIVE YAKO IMEZIMWA';
+ let data={live:false}; let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+ let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='assistant_live.json'; a.innerText='⬇️ Pakua assistant_live.json (zima) u-upload GitHub'; a.style.display='block'; a.style.color='red'; document.getElementById('liveStatus').appendChild(a);
+}
+load();
+</script>
+</body></html>
