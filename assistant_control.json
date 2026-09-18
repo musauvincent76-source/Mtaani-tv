@@ -1,1 +1,4 @@
-{"enabled":false,"token":"MTAANI-1234"}
+{
+  "enabled": true,
+  "token": "MTAANI-1234"
+}
