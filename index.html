@@ -144,7 +144,7 @@ function onYouTubeIframeAPIReady(){
         }
       }
       let pct = Math.floor((cur.seek / list[cur.index].dur) * 100);
-      if(pct>90) pct=90;
+      if(pct>100) pct=100;
       document.getElementById('pbar').style.width=pct+'%';
       document.getElementById('ptext').innerText=pct+'%';
     },1000);
