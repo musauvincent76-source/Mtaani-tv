@@ -1,9 +1,13 @@
 <!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MTAANI TV - TRUE LIVE</title>
+<script src="https://meet.jit.si/external_api.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}body{background:#000;color:#fff;font-family:sans-serif;min-height:100vh;display:flex;flex-direction:column}
-header{background:#001a4d;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #ff6600}header b{font-size:26px;letter-spacing:2px;font-weight:900}header b span{color:#ff6600}.badge{background:red;padding:6px 12px;border-radius:15px;font-size:11px;font-weight:900}
+header{background:#001a4d;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #ff6600}header b{font-size:26px;letter-spacing:2px;font-weight:900}header b span{color:#ff6600}.badge{background:red;padding:6px 12px;border-radius:15px;font-size:11px;font-weight:900;animation:blink 1s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:0.5}}
 #wrap{flex:1;position:relative;background:#000;min-height:60vh}
 #player{width:100%;height:100%;position:absolute;top:0;left:0}
+#liveWrap{width:100%;height:100%;position:absolute;top:0;left:0;display:none;z-index:5}
+#liveBg{position:absolute;top:0;left:0;width:100%;height:100%;background-size:cover;background-position:center;filter:brightness(1.35) contrast(1.2) saturate(1.5);z-index:1}
+#liveJitsi{position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;filter:brightness(1.28) contrast(1.18) saturate(1.35)}
 /* SAA HAPA CHINI RIGHT */
 #clock{position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,0.75);padding:6px 12px;border-radius:6px;font-weight:900;font-size:14px;z-index:10;border:1px solid #ff6600;color:#ffcc00;letter-spacing:1px}
 .bar{padding:12px 16px;background:#0a1430;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #ff6600}#title{font-weight:900;font-size:15px;color:#ffcc00;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60%}
@@ -11,10 +15,13 @@ header{background:#001a4d;padding:14px 16px;display:flex;justify-content:space-b
 #ad-box{padding:18px;text-align:center;font-weight:900;min-height:130px;display:flex;flex-direction:column;justify-content:center;align-items:center;border:3px solid #000;background:#ffcc00;color:#000}
 #progress{height:8px;background:#222;position:relative}#progress div{height:100%;background:linear-gradient(90deg,#ff6600,#ffcc00);width:0%;transition:width 1s linear}
 #progress b{position:absolute;right:6px;top:-18px;font-size:10px;color:#ffcc00}
+#liveBadge{position:absolute;top:12px;left:12px;background:red;color:#fff;padding:5px 14px;border-radius:20px;font-weight:900;font-size:13px;z-index:20;display:none;animation:blink 1s infinite}
 </style></head><body>
-<header><b>MTAANI <span>TV</span></b><span class="badge">● LIVE</span></header>
+<header><b>MTAANI <span>TV</span></b><span class="badge" id="badge">● LIVE</span></header>
 <div id="wrap">
 <div id="player"></div>
+<div id="liveWrap"><div id="liveBg"></div><div id="liveJitsi"></div></div>
+<div id="liveBadge">🔴 TRUE LIVE - SCREEN 1</div>
 <div id="clock">00:00:00</div>
 </div>
 <div id="progress"><b id="ptext">0%</b><div id="pbar"></div></div>
@@ -26,7 +33,7 @@ header{background:#001a4d;padding:14px 16px;display:flex;justify-content:space-b
 <script>
 function extractID(t){if(!t)return null;t=t.trim();if(/^[a-zA-Z0-9_-]{11}$/.test(t))return t;let m=t.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);if(m)return m[1];try{let u=new URL(t);let v=u.searchParams.get('v');if(v&&v.length===11)return v;}catch{}let m2=t.match(/[a-zA-Z0-9_-]{11}/);return m2?m2[0]:null;}
 
-let player,list=[];const LOOP_START=new Date('2025-01-01T00:00:00Z').getTime();
+let player,list=[],jitsiApi=null, isLiveMode=false;const LOOP_START=new Date('2025-01-01T00:00:00Z').getTime();
 
 async function getVideos(){try{let r=await fetch('videos.json?v='+Date.now(),{cache:'no-store'});let d=await r.json();let f=d.map(v=>({id:extractID(v.id||v.url||''),dur:parseInt(v.duration)||300,title:v.title||'MTAANI TV'})).filter(v=>v.id&&v.id.length===11);if(f.length>0)return f;}catch{}return [{id:'4EDkfksVFdE',dur:300,title:'MTAANI TV'}];}
 
@@ -34,9 +41,70 @@ function getLivePos(total){return Math.floor((Date.now()-LOOP_START)/1000)%total
 function findV(pos){let a=0;for(let i=0;i<list.length;i++){if(pos<a+list[i].dur)return{index:i,seek:pos-a,start:a};a+=list[i].dur}return{index:0,seek:0,start:0}}
 
 function updateUI(idx){
-  if(!list[idx]) return;
+  if(!list[idx] || isLiveMode) return;
   document.getElementById('title').innerText=list[idx].title;
   document.getElementById('ticker').innerText=list[idx].title.toUpperCase()+" | MTAANI TV TRUE LIVE 24/7 | TILL 3624692";
+}
+
+// === LIVE DETECTION KAMA PICHA YAKO ===
+async function checkLive(){
+  try{
+    let r=await fetch('live.json?v='+Date.now(),{cache:'no-store'});
+    if(!r.ok) throw 'no live';
+    let d=await r.json();
+    if(d.live && d.room){
+      if(!isLiveMode || window._currentLiveRoom!==d.room){
+        startPublicLive(d.room, d.bg);
+      }
+    } else {
+      if(isLiveMode) stopPublicLive();
+    }
+  }catch{
+    if(isLiveMode) stopPublicLive();
+  }
+}
+
+function startPublicLive(room, bg){
+  isLiveMode=true;
+  window._currentLiveRoom=room;
+  document.getElementById('player').style.display='none';
+  document.getElementById('liveWrap').style.display='block';
+  document.getElementById('liveBadge').style.display='block';
+  document.getElementById('badge').innerText='● TRUE LIVE';
+  document.getElementById('badge').style.background='#00b300';
+  document.getElementById('title').innerText='🔴 TRUE LIVE - SCREEN 1 - WOTE PAMOJA';
+  document.getElementById('ticker').innerText='🔴 MTAANI TV TRUE LIVE - SCREEN 1 - WOTE PAMOJA - BACKGROUND MOJA | TILL 3624692';
+  document.getElementById('count').innerText='LIVE';
+  document.getElementById('pbar').style.width='100%';
+  document.getElementById('ptext').innerText='LIVE';
+
+  if(bg) document.getElementById('liveBg').style.backgroundImage='url('+bg+')';
+
+  let container=document.getElementById('liveJitsi');
+  if(jitsiApi) try{jitsiApi.dispose();}catch{}
+  jitsiApi=new JitsiMeetExternalAPI("meet.jit.si",{
+    roomName: room,
+    parentNode: container,
+    width:"100%",
+    height:"100%",
+    configOverwrite:{prejoinPageEnabled:false,startWithVideoMuted:false,startWithAudioMuted:true},
+    userInfo:{displayName:"MTAZAMAJI TV"}
+  });
+}
+
+function stopPublicLive(){
+  isLiveMode=false;
+  document.getElementById('player').style.display='block';
+  document.getElementById('liveWrap').style.display='none';
+  document.getElementById('liveBadge').style.display='none';
+  document.getElementById('badge').innerText='● LIVE';
+  document.getElementById('badge').style.background='red';
+  if(jitsiApi) try{jitsiApi.dispose(); jitsiApi=null;}catch{}
+  if(player && list.length>0){
+    let total=list.reduce((s,x)=>s+x.dur,0);
+    let live=findV(getLivePos(total));
+    try{player.loadVideoById({videoId:list[live.index].id, startSeconds:live.seek});}catch{}
+  }
 }
 
 function onYouTubeIframeAPIReady(){
@@ -58,12 +126,12 @@ function onYouTubeIframeAPIReady(){
           e.target.playVideo();
           setTimeout(()=>{try{e.target.unMute();e.target.setVolume(100);}catch{}},800);
         },
-        onStateChange:e=>{ if(e.data===0) goNext(); }
+        onStateChange:e=>{ if(e.data===0 &&!isLiveMode) goNext(); }
       }
     });
 
-    // Progress 90% na clock update
     setInterval(()=>{
+      if(isLiveMode) return;
       let total=list.reduce((s,x)=>s+x.dur,0);
       let pos=getLivePos(total);
       let cur=findV(pos);
@@ -76,21 +144,25 @@ function onYouTubeIframeAPIReady(){
         }
       }
       let pct = Math.floor((cur.seek / list[cur.index].dur) * 100);
-      if(pct>90) pct=90; // kama ulivyotaka 90%
+      if(pct>90) pct=90;
       document.getElementById('pbar').style.width=pct+'%';
       document.getElementById('ptext').innerText=pct+'%';
     },1000);
+
+    // CHECK LIVE KILA 5 SEC
+    setInterval(checkLive,5000);
+    checkLive();
   });
 }
 
 function goNext(){
+  if(isLiveMode) return;
   let total=list.reduce((s,x)=>s+x.dur,0);
   let live=findV(getLivePos(total));
   if(player&&player.loadVideoById) player.loadVideoById({videoId:list[live.index].id,startSeconds:live.seek});
   updateUI(live.index);
 }
 
-// saa
 function updateClock(){
   let now=new Date();
   let h=String(now.getHours()).padStart(2,'0');
@@ -99,8 +171,7 @@ function updateClock(){
   document.getElementById('clock').innerText=h+":"+m+":"+s;
 }
 setInterval(updateClock,1000); updateClock();
-
-document.addEventListener('click',()=>{try{player.unMute();player.setVolume(100);player.playVideo();}catch{}});
+document.addEventListener('click',()=>{try{if(!isLiveMode){player.unMute();player.setVolume(100);player.playVideo();}}catch{}});
 async function loadAds(){let ads=[];try{let r=await fetch('ads.json?v='+Date.now(),{cache:'no-store'});let d=await r.json();if(Array.isArray(d)&&d.length>0)ads=d;}catch{}if(!ads.length)ads=[{title:'📢 TANGAZA HAPA!',msg:'Watu 1000+ LIVE',contact:'💰 TILL: 3624692'}];let i=0;function show(){let a=ads[i%ads.length];document.getElementById('adT').innerText=a.title;document.getElementById('adM').innerText=a.msg;document.getElementById('adC').innerText=a.contact;i++;}show();setInterval(show,5000);}loadAds();
 </script>
 </body></html>
