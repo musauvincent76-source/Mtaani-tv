@@ -5,82 +5,68 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#060d22;color:#fff;font-family:system-ui,sans-serif;min-height:100vh}
 .header{background:linear-gradient(135deg,#ff6600,#ffcc00);padding:18px;text-align:center;color:#000}
-.header h1{font-size:22px;font-weight:900;letter-spacing:1px}
-.header p{font-size:12px;font-weight:700;opacity:.8;margin-top:4px}
+.header h1{font-size:22px;font-weight:900}
 .container{max-width:480px;margin:0 auto;padding:16px}
-.card{background:#0f1e45;border-radius:16px;padding:16px;margin:14px 0;border:1px solid #1e3a8a;box-shadow:0 8px 20px rgba(0,0,0,.4)}
-.card.live{border-color:#ff6600;background:linear-gradient(180deg,#1a2450,#0f1e45)}
-.card.video{border-color:#00e676}
-.card h3{font-size:15px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.card h3 span.icon{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:16px}
-.live h3 span.icon{background:#ff6600} .video h3 span.icon{background:#00e676;color:#000}
-input{width:100%;background:#060d22;border:1px solid #2a3f7a;color:#fff;padding:13px 14px;border-radius:10px;margin:7px 0;font-size:14px;outline:none}
-input:focus{border-color:#ffcc00}
-.btn{width:100%;padding:14px;border:none;border-radius:10px;font-weight:900;font-size:14px;cursor:pointer;margin-top:10px;transition:.2s}
-.btn:active{transform:scale(.97)}
-.btn-green{background:#00e676;color:#000}
-.btn-orange{background:linear-gradient(90deg,#ff6600,#ff8800);color:#000}
-.btn-red{background:#111;color:#ff4444;border:1px solid #ff4444}
-.status{margin-top:12px;font-size:13px;line-height:1.4}
-.download{display:block;background:#ffcc00;color:#000;padding:14px;border-radius:10px;text-align:center;font-weight:900;text-decoration:none;margin-top:12px;animation:pulse 1.5s infinite}
-@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
-.badge{display:inline-block;background:#00e676;color:#000;font-size:10px;font-weight:900;padding:3px 8px;border-radius:20px;margin-left:6px}
+.card{background:#0f1e45;border-radius:16px;padding:16px;margin:14px 0;border:1px solid #1e3a8a}
+.card.live{border-color:#ff6600}.card.video{border-color:#00e676}
+input{width:100%;background:#060d22;border:1px solid #2a3f7a;color:#fff;padding:13px;border-radius:10px;margin:7px 0}
+.btn{width:100%;padding:14px;border:none;border-radius:10px;font-weight:900;cursor:pointer;margin-top:10px}
+.btn-green{background:#00e676;color:#000}.btn-orange{background:#ff6600;color:#000}.btn-red{background:#111;color:#ff4444;border:1px solid #ff4444}
+.download{display:block;background:#ffcc00;color:#000;padding:14px;border-radius:10px;text-align:center;font-weight:900;text-decoration:none;margin-top:12px}
+.locked{height:100vh;display:grid;place-items:center;text-align:center;padding:20px}
 </style></head><body>
-<div class="header">
-<h1>🔰 MSAIDIZI PANEL</h1>
-<p>MTAANI TV • POST KWA TV KUBWA YA BOSS</p>
-</div>
-
-<div class="container">
-
-<div class="card live">
-<h3><span class="icon">🔴</span> LIVE KWA TV KUBWA <span class="badge">LIVE</span></h3>
-<input id="room" placeholder="Jina ya Room - mfano: msaidizi-live">
-<button class="btn btn-orange" onclick="goLiveBig()">🔴 ANZA LIVE YANGU KWA TV KUBWA</button>
-<button class="btn btn-red" onclick="stopLiveBig()">⏹️ ZIMA LIVE YANGU</button>
-<div id="liveStatus" class="status"></div>
-</div>
-
-<div class="card video">
-<h3><span class="icon">📺</span> WEKA VIDEO KWA TV KUBWA</h3>
-<input id="yt" placeholder="Weka YouTube link hapa">
-<input id="ttl" placeholder="Title - mfano: Ligi ya Mutomo Leo">
-<button class="btn btn-green" onclick="addToBigTV()">🔥 POST VIDEO KWA TV KUBWA</button>
-<div id="status" class="status"></div>
-</div>
-
-<div class="card" style="text-align:center;padding:12px">
-<small style="color:#7aa0ff">Ukweka hapa inaingia moja kwa moja kwa <b style="color:#ffcc00">TV KUBWA</b> ya Boss • index.html</small>
-</div>
-
-</div>
-
+<div id="app"></div>
 <script>
+async function checkAccess(){
+ try{
+  let r=await fetch('assistant_control.json?v='+Date.now());
+  let ctrl=await r.json();
+  let urlKey=new URLSearchParams(location.search).get('key');
+  if(!ctrl.enabled){ showLocked('⛔ BOSS AMEZIMA ACCESS<br><small>Subiri Boss akuruhusu</small>'); return; }
+  if(urlKey!==ctrl.token){ showLocked('🔑 KEY IMEEXPIRE<br><small>Omba key mpya kwa Boss<br>Refresh imefanywa</small>'); return; }
+  showPanel();
+ }catch{ showLocked('⚠️ Control file haijapatikana<br><small>Boss bado hajaweka assistant_control.json</small>'); }
+}
+function showLocked(msg){
+ document.getElementById('app').innerHTML=`<div class="locked"><div><h1 style="font-size:60px">🔒</h1><h2 style="color:#ffcc00;margin:15px 0">${msg}</h2><p style="color:#aaa">Ulifukuzwa au key imebadilishwa na Boss</p></div></div>`;
+}
+function showPanel(){
+ document.getElementById('app').innerHTML=`
+<div class="header"><h1>🔰 MSAIDIZI PANEL</h1><p>Access Imefunguliwa na Boss</p></div>
+<div class="container">
+<div class="card live"><h3>🔴 LIVE KWA TV KUBWA</h3>
+<input id="room" placeholder="Room - mfano: msaidizi-live">
+<button class="btn btn-orange" onclick="goLiveBig()">🔴 ANZA LIVE</button>
+<button class="btn btn-red" onclick="stopLiveBig()">⏹️ ZIMA LIVE</button>
+<div id="liveStatus"></div></div>
+<div class="card video"><h3>📺 VIDEO KWA TV KUBWA</h3>
+<input id="yt" placeholder="YouTube link"><input id="ttl" placeholder="Title">
+<button class="btn btn-green" onclick="addToBigTV()">🔥 POST KWA TV KUBWA</button>
+<div id="status"></div></div></div>`;
+ load();
+}
 let videos=[];
-function extractID(t){if(!t)return null;t=t.trim();if(/^[a-zA-Z0-9_-]{11}$/.test(t))return t;let m=t.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);if(m)return m[1];try{let u=new URL(t);let v=u.searchParams.get('v');if(v&&v.length===11)return v;}catch{}return null;}
+function extractID(t){if(!t)return null;t=t.trim();if(/^[a-zA-Z0-9_-]{11}$/.test(t))return t;let m=t.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);if(m)return m[1];try{let u=new URL(t);let v=u.searchParams.get('v');if(v)return v;}catch{}return null;}
 async function load(){try{let r=await fetch('videos.json?v='+Date.now());videos=await r.json();}catch{videos=[]}}
 async function addToBigTV(){
- let id=extractID(document.getElementById('yt').value);
- let title=document.getElementById('ttl').value||'Video ya Msaidizi';
- if(!id){alert('Weka YouTube link sahihi');return}
- videos.unshift({id:id,title:title,duration:300,from:'msaidizi'});
+ let id=extractID(document.getElementById('yt').value); let title=document.getElementById('ttl').value||'Video ya Msaidizi';
+ if(!id){alert('Weka link sahihi');return}
+ videos.unshift({id:id,title:title,duration:300});
  let blob=new Blob([JSON.stringify(videos,null,2)],{type:'application/json'});
  let url=URL.createObjectURL(blob);
- document.getElementById('status').innerHTML=`<a href="${url}" download="videos.json" class="download">⬇️ PAKUA videos.json KISHA UPLOAD GITHUB</a><div style="margin-top:8px;color:#aaa;font-size:12px">1. Bonyeza kupakua<br>2. GitHub > videos.json > Edit > weka > Save<br>3. TV kubwa ita-update auto!</div>`;
+ document.getElementById('status').innerHTML=`<a href="${url}" download="videos.json" class="download">⬇️ PAKUA videos.json UPLOAD</a>`;
 }
 async function goLiveBig(){
  let room=document.getElementById('room').value||'msaidizi-live-'+Date.now();
- let data={live:true,room:room,bg:'',from:'msaidizi'};
+ let data={live:true,room:room,bg:''};
  let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
  let url=URL.createObjectURL(blob);
- document.getElementById('liveStatus').innerHTML=`<div style="color:#00ff88">🔴 Unaenda LIVE: <b>${room}</b></div><a href="${url}" download="live.json" class="download" style="background:#ff6600">⬇️ PAKUA live.json UPLOAD GITHUB - UTAKUWA LIVE!</a>`;
+ document.getElementById('liveStatus').innerHTML=`<a href="${url}" download="live.json" class="download" style="background:#ff6600">⬇️ PAKUA live.json UPLOAD - LIVE!</a>`;
 }
 function stopLiveBig(){
- let data={live:false};
- let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+ let data={live:false}; let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
  let url=URL.createObjectURL(blob);
- document.getElementById('liveStatus').innerHTML=`<div style="color:#ff4444">⏹️ LIVE IMEZIMWA</div><a href="${url}" download="live.json" class="download" style="background:#111;color:#ff4444;border:1px solid #ff4444">⬇️ PAKUA live.json (ZIMA) UPLOAD</a>`;
+ document.getElementById('liveStatus').innerHTML=`<a href="${url}" download="live.json" class="download" style="background:#111;color:#ff4444;border:1px solid red">⬇️ PAKUA live.json (ZIMA)</a>`;
 }
-load();
-</script>
-</body></html>
+checkAccess();
+</script></body></html>
