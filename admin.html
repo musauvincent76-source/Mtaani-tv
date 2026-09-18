@@ -35,6 +35,26 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <div class="card" style="border:3px solid #ffcc00;background:#000">
 <button onclick="window.open('https://musauvincent76-source.github.io/Mtaani-tv/','_blank')" style="background:#ffcc00;color:#000">📺 ANGALIA TV PUBLIC</button>
 </div>
+
+<!-- === MPYA - MSAIDIZI CONTROL ON/OFF + REFRESH === -->
+<div class="card" style="border:3px solid #00e676;background:linear-gradient(180deg,#0f1e45,#0a1430)">
+<h3 style="color:#00e676">👥 MSAIDIZI CONTROL - ON/OFF + REFRESH</h3>
+<p id="ctrlStatus" style="font-size:13px;color:#aaa;margin:8px 0">Inapakia...</p>
+<input id="ctrlKey" placeholder="Key ya msaidizi - mfano: MTAANI-1234" style="background:#000;color:#ffcc00;border:1px solid #00e676">
+<div style="display:flex;gap:6px">
+<button onclick="toggleMsaidizi(true)" style="background:#00e676;color:#000;flex:1">🟢 WASHIA MSAIDIZI</button>
+<button onclick="toggleMsaidizi(false)" style="background:#cc0000;color:#fff;flex:1">🔴 ZIMA MSAIDIZI</button>
+</div>
+<button onclick="refreshKey()" style="background:#ffcc00;color:#000;margin-top:8px">🔄 REFRESH KEY (Fukuza wote wa zamani)</button>
+<div style="background:#000;padding:10px;border-radius:8px;margin-top:10px">
+<small style="color:#aaa">LINK YA KUTUMIA MSAIDIZI WhatsApp:</small>
+<p id="linkOut" style="word-break:break-all;font-size:12px;color:#ffcc00;margin-top:5px"></p>
+<button onclick="copyLink()" style="background:#111;border:1px solid #fff;padding:8px;margin-top:6px">📋 COPY LINK</button>
+</div>
+<div id="ctrlDownload"></div>
+</div>
+<!-- === MWISHO WA MSAIDIZI CONTROL === -->
+
 <div class="card" style="border:3px solid #00ff00">
 <h3>🔑 GitHub AUTO</h3>
 <input id="token" type="password" placeholder="Weka Token ghp_..." oninput="localStorage.setItem('gh_token',this.value.trim())">
@@ -144,6 +164,53 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <script>
 let videos=[], videosByCat={news:[],bizz:[],mchezo:[],music:[],drama:[],gen:[]}, catEnabled={news:false,bizz:false,mchezo:false,music:false,drama:false,gen:false}, ads=[], ownerData={tvName:"MTAANI TV",ownerName:"MTAANI TV",ticker:"MTAANI TV LIVE"}, currentFacing="user", currentRoom="MtaaniTV-Live-Show";
 let liveEndTime=0, liveTimerInterval=null, autoStopTimeout=null;
+// ===== MSAIDIZI CONTROL LOGIC =====
+let ctrlData={enabled:false,token:"MTAANI-1234"};
+async function loadCtrl(){
+ try{
+  let r=await fetch('assistant_control.json?v='+Date.now());
+  if(r.ok) ctrlData=await r.json();
+ }catch{}
+ document.getElementById('ctrlKey').value=ctrlData.token;
+ updateCtrlStatus();
+}
+function updateCtrlStatus(){
+ let enabled = ctrlData.enabled;
+ document.getElementById('ctrlStatus').innerHTML = enabled? `✅ <b style="color:#00e676">IMEWASHWA</b> - Key: <b style="color:#ffcc00">${ctrlData.token}</b>` : `⛔ <b style="color:#ff4444">IMEZIMWA</b> - Hakuna msaidizi anaweza ingia`;
+ let base = location.origin + location.pathname.replace('admin.html','');
+ let link = base + 'assistance.html?key=' + ctrlData.token;
+ document.getElementById('linkOut').innerText = link;
+}
+function downloadCtrl(){
+ let blob=new Blob([JSON.stringify(ctrlData,null,2)],{type:'application/json'});
+ let url=URL.createObjectURL(blob);
+ document.getElementById('ctrlDownload').innerHTML=`<a href="${url}" download="assistant_control.json" style="display:block;background:#00e676;color:#000;padding:14px;border-radius:10px;text-align:center;font-weight:900;text-decoration:none;margin-top:12px">⬇️ PAKUA assistant_control.json KISHA UPLOAD GITHUB</a><small style="color:#aaa">Upload kwa GitHub > assistant_control.json > Edit > weka > Save</small>`;
+}
+function toggleMsaidizi(on){
+ ctrlData.enabled=on;
+ ctrlData.token=document.getElementById('ctrlKey').value.trim()||ctrlData.token;
+ updateCtrlStatus();
+ downloadCtrl();
+ if(on) pushCtrlDirect();
+}
+function refreshKey(){
+ let newKey='MTAANI-'+Math.random().toString(36).substring(2,7).toUpperCase()+'-'+Date.now().toString().slice(-4);
+ ctrlData.token=newKey;
+ document.getElementById('ctrlKey').value=newKey;
+ document.getElementById('ctrlStatus').innerHTML=`🔄 KEY MPYA: <b style="color:#ffcc00">${newKey}</b> - Wote wa zamani wamefukuzwa! Tuma link mpya`;
+ updateCtrlStatus();
+ downloadCtrl();
+}
+function copyLink(){
+ let link=document.getElementById('linkOut').innerText;
+ navigator.clipboard.writeText(link).then(()=>alert('✅ Link imencopy:\n'+link));
+}
+async function pushCtrlDirect(){
+ let token=localStorage.getItem('gh_token')||'';
+ if(!token) return;
+ await pushFile('assistant_control.json', JSON.stringify(ctrlData,null,2));
+}
+// ===== END CONTROL =====
 function showTab(id,btnId){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');if(btnId)document.getElementById(btnId).classList.add('active');}
 function openVCat(cat,btnId){document.querySelectorAll('[id^=vcat-]').forEach(b=>b.classList.remove('active'));document.getElementById('vcat-'+cat).classList.add('active');document.querySelectorAll('[id^=vc-]').forEach(b=>b.classList.remove('active'));if(btnId)document.getElementById(btnId).classList.add('active');}
 function extractID(t){if(!t) return null; t=t.trim(); if(/^[a-zA-Z0-9_-]{11}$/.test(t)) return t; let m=t.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/)([a-zA-Z0-9_-]{11})/); if(m) return m[1]; if(t.includes('facebook.com')||t.includes('fb.watch')) return t; try{let u=new URL(t);let v=u.searchParams.get('v');if(v)return v;}catch{} return t.length>5? t : null;}
@@ -161,7 +228,7 @@ function renderAds(){let h="";ads.forEach((a,i)=>{h+=`<div class="list-item"><sp
 function addAd(){ads.push({title:document.getElementById('adTitle').value,msg:document.getElementById('adMsg').value,contact:document.getElementById('adContact').value});renderAds();}
 function saveOwner(){ownerData={tvName:document.getElementById('tvName').value,ownerName:document.getElementById('ownerName').value,ticker:document.getElementById('ticker').value};localStorage.setItem('mtaani_owner',JSON.stringify(ownerData));document.getElementById('ownerStatus').innerHTML='<span class="ok">✅ Saved</span>';}
 function toggleCat(cat){catEnabled[cat]=!catEnabled[cat];let btn=document.getElementById('sw-'+cat);if(btn){btn.innerText=catEnabled[cat]? 'ON 🟢' : 'OFF 🔴';btn.style.background=catEnabled[cat]? '#00b300' : '#cc0000';}saveLocal();}
-function loadAll(){try{let v=localStorage.getItem('mtaani_videos');if(v)videos=JSON.parse(v);}catch{} Object.keys(videosByCat).forEach(c=>{try{let vv=localStorage.getItem('mtaani_videos_'+c);if(vv)videosByCat[c]=JSON.parse(vv);}catch{}});try{let ce=localStorage.getItem('mtaani_cat_enabled');if(ce)catEnabled=JSON.parse(ce);}catch{} try{let a=localStorage.getItem('mtaani_ads');if(a)ads=JSON.parse(a);}catch{} try{let o=localStorage.getItem('mtaani_owner');if(o){ownerData=JSON.parse(o);document.getElementById('tvName').value=ownerData.tvName;document.getElementById('ownerName').value=ownerData.ownerName;document.getElementById('ticker').value=ownerData.ticker;}}catch{} renderVideos();Object.keys(videosByCat).forEach(c=>{renderVideosCat(c); let btn=document.getElementById('sw-'+c); if(btn){ btn.innerText=catEnabled[c]? 'ON 🟢' : 'OFF 🔴'; btn.style.background=catEnabled[c]? '#00b300' : '#cc0000'; } });renderAds();loadToken();}
+function loadAll(){try{let v=localStorage.getItem('mtaani_videos');if(v)videos=JSON.parse(v);}catch{} Object.keys(videosByCat).forEach(c=>{try{let vv=localStorage.getItem('mtaani_videos_'+c);if(vv)videosByCat[c]=JSON.parse(vv);}catch{}});try{let ce=localStorage.getItem('mtaani_cat_enabled');if(ce)catEnabled=JSON.parse(ce);}catch{} try{let a=localStorage.getItem('mtaani_ads');if(a)ads=JSON.parse(a);}catch{} try{let o=localStorage.getItem('mtaani_owner');if(o){ownerData=JSON.parse(o);document.getElementById('tvName').value=ownerData.tvName;document.getElementById('ownerName').value=ownerData.ownerName;document.getElementById('ticker').value=ownerData.ticker;}}catch{} renderVideos();Object.keys(videosByCat).forEach(c=>{renderVideosCat(c); let btn=document.getElementById('sw-'+c); if(btn){ btn.innerText=catEnabled[c]? 'ON 🟢' : 'OFF 🔴'; btn.style.background=catEnabled[c]? '#00b300' : '#cc0000'; } });renderAds();loadToken();loadCtrl();}
 loadAll();
 function b64(s){return btoa(unescape(encodeURIComponent(s)))}
 async function pushFile(fn,content){let token=localStorage.getItem('gh_token')||''; let owner=document.getElementById('owner').value; let repo=document.getElementById('repo').value;if(!token){document.getElementById('pushStatus').innerText="❌ Weka Token!";return false;}document.getElementById('pushStatus').innerText="⏳ Inatuma "+fn+"...";try{let url=`https://api.github.com/repos/${owner}/${repo}/contents/${fn}`;let sha=null;try{let r=await fetch(url,{headers:{Authorization:`token ${token}`}});if(r.ok){let j=await r.json();sha=j.sha;}}catch{}let res=await fetch(url,{method:'PUT',headers:{Authorization:`token ${token}`,"Content-Type":"application/json"},body:JSON.stringify({message:`Update ${fn}`,content:b64(content),sha:sha})});if(res.ok)return true;let d=await res.json();document.getElementById('pushStatus').innerText="❌ "+d.message;return false;}catch(e){document.getElementById('pushStatus').innerText="❌ "+e.message;return false;}}
@@ -179,6 +246,7 @@ async function pushAll(){
  let ok1=await pushFile('videos.json',pretty);
  let ok2=await pushFile('owner.json',JSON.stringify(ownerData,null,2));
  let ok3=await pushFile('categories.json',JSON.stringify(catEnabled,null,2));
+ let ok4=await pushFile('assistant_control.json',JSON.stringify(ctrlData,null,2));
  if(ok1&&ok2) document.getElementById('pushStatus').innerHTML='<span class="ok">✅ IMEENDA TV - ZILE UMEWASHA TU!</span>';
 }
 function copyOut(){let o=document.getElementById('out');o.select();document.execCommand('copy');alert('✅ Copied!');}
