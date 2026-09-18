@@ -1,20 +1,8 @@
 {
-  "enabled": {
-    "news": false,
-    "bizz": true,
-    "mchezo": true,
-    "music": true,
-    "drama": true,
-    "gen": true
-  },
-  "auto": {
-    "news": false,
-    "bizz": false,
-    "mchezo": false,
-    "music": false,
-    "drama": false,
-    "live": false,
-    "gen": false
-  },
-  "timestamp": 1789642945558
+  "news": false,
+  "bizz": false,
+  "mchezo": false,
+  "music": false,
+  "drama": true,
+  "gen": true
 }
