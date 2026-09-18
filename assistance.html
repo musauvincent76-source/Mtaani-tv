@@ -1,72 +1,112 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Msaidizi - MTAANI TV</title>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MSAIDIZI - LIVE</title>
+<script src="https://meet.jit.si/external_api.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#060d22;color:#fff;font-family:system-ui,sans-serif;min-height:100vh}
-.header{background:linear-gradient(135deg,#ff6600,#ffcc00);padding:18px;text-align:center;color:#000}
-.header h1{font-size:22px;font-weight:900}
-.container{max-width:480px;margin:0 auto;padding:16px}
-.card{background:#0f1e45;border-radius:16px;padding:16px;margin:14px 0;border:1px solid #1e3a8a}
-.card.live{border-color:#ff6600}.card.video{border-color:#00e676}
-input{width:100%;background:#060d22;border:1px solid #2a3f7a;color:#fff;padding:13px;border-radius:10px;margin:7px 0}
-.btn{width:100%;padding:14px;border:none;border-radius:10px;font-weight:900;cursor:pointer;margin-top:10px}
-.btn-green{background:#00e676;color:#000}.btn-orange{background:#ff6600;color:#000}.btn-red{background:#111;color:#ff4444;border:1px solid #ff4444}
-.download{display:block;background:#ffcc00;color:#000;padding:14px;border-radius:10px;text-align:center;font-weight:900;text-decoration:none;margin-top:12px}
-.locked{height:100vh;display:grid;place-items:center;text-align:center;padding:20px}
-</style></head><body>
-<div id="app"></div>
+*{box-sizing:border-box;margin:0;padding:0}body{background:#050a1f;color:#fff;font-family:sans-serif;padding:10px}
+.card{background:#111c44;padding:12px;border-radius:12px;margin:10px 0;border:2px solid #00e676}
+input{width:100%;padding:12px;border-radius:8px;border:none;margin:6px 0}
+button{width:100%;padding:13px;border:none;border-radius:10px;font-weight:900;margin-top:8px;cursor:pointer}
+#studioWrap{position:relative;width:100%;height:55vh;background:#000;border-radius:12px;overflow:hidden;border:3px solid #ffcc00;margin-top:10px;display:none}
+#bgLayer{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;background-size:cover}
+#jitsiContainer{position:absolute;top:0;left:0;width:100%;height:100%;z-index:2}
+.filter-box{display:flex;gap:5px;margin:8px 0;flex-wrap:wrap}.filter-box button{flex:1;font-size:11px;padding:10px;min-width:70px}
+</style>
+</head>
+<body>
+<div id="lock" style="background:#111;padding:40px;border-radius:15px;text-align:center;margin-top:50px;border:3px solid #ff4444">
+<h2>🔒 SUBIRI BOSS...</h2><p id="lockMsg" style="margin-top:10px;color:#aaa">Inaangalia access...</p>
+</div>
+
+<div id="panel" style="display:none">
+<div style="background:linear-gradient(90deg,#ff6600,#ffcc00);color:#000;padding:12px;border-radius:10px;text-align:center;font-weight:900">
+✅ Access Imefunguliwa na Boss
+</div>
+
+<div class="card">
+<h3>🔴 LIVE KWA TV KUBWA</h3>
+<input id="room" placeholder="Room - mfano: msaidizi-live-vin" value="msaidizi-live-1">
+<button onclick="startLive()" style="background:#ff6600;color:#fff">🔴 ANZA LIVE</button>
+<button onclick="switchCamera()" style="background:#333;color:#fff">📷 FRONT / BACK CAMERA</button>
+
+<div class="filter-box">
+<button onclick="setFilter('pic')" style="background:#00b300;border:2px solid #ffcc00">✨ PICHA YAKO FILTER</button>
+<button onclick="setFilter('smart')" style="background:#0066ff;color:#fff">SMART</button>
+<button onclick="setFilter('beauty')" style="background:#cc00cc;color:#fff">💄 BEAUTY</button>
+<button onclick="setFilter('normal')" style="background:#222;color:#fff">NORMAL</button>
+</div>
+
+<div id="studioWrap"><div id="bgLayer"></div><div id="jitsiContainer"></div></div>
+
+<button onclick="stopLive()" style="background:#111;border:1px solid #ff4444;color:#ff4444;margin-top:10px">⏹️ ZIMA LIVE</button>
+<button id="dlBtn" onclick="downloadLive()" style="background:#ffcc00;color:#000;display:none">⬇️ PAKUA live.json UPLOAD - LIVE!</button>
+<p id="status" style="font-size:12px;color:#0f0;margin-top:8px"></p>
+</div>
+</div>
+
 <script>
+let currentFacing="user";
+let jitsiApi=null;
+let liveData=null;
+
 async function checkAccess(){
+ let params=new URLSearchParams(location.search);
+ let key=params.get('key')||'';
+ if(!key){ document.getElementById('lockMsg').innerText='❌ Hakuna KEY! Omba link kwa Boss'; return; }
  try{
   let r=await fetch('assistant_control.json?v='+Date.now());
-  let ctrl=await r.json();
-  let urlKey=new URLSearchParams(location.search).get('key');
-  if(!ctrl.enabled){ showLocked('⛔ BOSS AMEZIMA ACCESS<br><small>Subiri Boss akuruhusu</small>'); return; }
-  if(urlKey!==ctrl.token){ showLocked('🔑 KEY IMEEXPIRE<br><small>Omba key mpya kwa Boss<br>Refresh imefanywa</small>'); return; }
-  showPanel();
- }catch{ showLocked('⚠️ Control file haijapatikana<br><small>Boss bado hajaweka assistant_control.json</small>'); }
-}
-function showLocked(msg){
- document.getElementById('app').innerHTML=`<div class="locked"><div><h1 style="font-size:60px">🔒</h1><h2 style="color:#ffcc00;margin:15px 0">${msg}</h2><p style="color:#aaa">Ulifukuzwa au key imebadilishwa na Boss</p></div></div>`;
-}
-function showPanel(){
- document.getElementById('app').innerHTML=`
-<div class="header"><h1>🔰 MSAIDIZI PANEL</h1><p>Access Imefunguliwa na Boss</p></div>
-<div class="container">
-<div class="card live"><h3>🔴 LIVE KWA TV KUBWA</h3>
-<input id="room" placeholder="Room - mfano: msaidizi-live">
-<button class="btn btn-orange" onclick="goLiveBig()">🔴 ANZA LIVE</button>
-<button class="btn btn-red" onclick="stopLiveBig()">⏹️ ZIMA LIVE</button>
-<div id="liveStatus"></div></div>
-<div class="card video"><h3>📺 VIDEO KWA TV KUBWA</h3>
-<input id="yt" placeholder="YouTube link"><input id="ttl" placeholder="Title">
-<button class="btn btn-green" onclick="addToBigTV()">🔥 POST KWA TV KUBWA</button>
-<div id="status"></div></div></div>`;
- load();
-}
-let videos=[];
-function extractID(t){if(!t)return null;t=t.trim();if(/^[a-zA-Z0-9_-]{11}$/.test(t))return t;let m=t.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);if(m)return m[1];try{let u=new URL(t);let v=u.searchParams.get('v');if(v)return v;}catch{}return null;}
-async function load(){try{let r=await fetch('videos.json?v='+Date.now());videos=await r.json();}catch{videos=[]}}
-async function addToBigTV(){
- let id=extractID(document.getElementById('yt').value); let title=document.getElementById('ttl').value||'Video ya Msaidizi';
- if(!id){alert('Weka link sahihi');return}
- videos.unshift({id:id,title:title,duration:300});
- let blob=new Blob([JSON.stringify(videos,null,2)],{type:'application/json'});
- let url=URL.createObjectURL(blob);
- document.getElementById('status').innerHTML=`<a href="${url}" download="videos.json" class="download">⬇️ PAKUA videos.json UPLOAD</a>`;
-}
-async function goLiveBig(){
- let room=document.getElementById('room').value||'msaidizi-live-'+Date.now();
- let data={live:true,room:room,bg:''};
- let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
- let url=URL.createObjectURL(blob);
- document.getElementById('liveStatus').innerHTML=`<a href="${url}" download="live.json" class="download" style="background:#ff6600">⬇️ PAKUA live.json UPLOAD - LIVE!</a>`;
-}
-function stopLiveBig(){
- let data={live:false}; let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
- let url=URL.createObjectURL(blob);
- document.getElementById('liveStatus').innerHTML=`<a href="${url}" download="live.json" class="download" style="background:#111;color:#ff4444;border:1px solid red">⬇️ PAKUA live.json (ZIMA)</a>`;
+  let d=await r.json();
+  if(!d.enabled){ document.getElementById('lockMsg').innerHTML='🔒 <b style=color:#ff4444>BOSS AMEZIMA ACCESS</b><br>Subiri awashe'; return; }
+  if(d.token!==key){ document.getElementById('lockMsg').innerHTML='❌ KEY IMEEXPIRE!<br>Omba link mpya kwa Boss'; return; }
+  // OK
+  document.getElementById('lock').style.display='none';
+  document.getElementById('panel').style.display='block';
+ }catch(e){ document.getElementById('lockMsg').innerText='⏳ Inajaribu tena...'; setTimeout(checkAccess,2000); }
 }
 checkAccess();
-</script></body></html>
+
+function startLive(){
+ let room=document.getElementById('room').value.trim()||'msaidizi-live-1';
+ let container=document.getElementById('jitsiContainer');
+ document.getElementById('studioWrap').style.display='block';
+ if(jitsiApi) try{jitsiApi.dispose();}catch{}
+ let opts={
+  roomName:room,
+  width:"100%",
+  height:"100%",
+  parentNode:container,
+  configOverwrite:{prejoinPageEnabled:false},
+  interfaceConfigOverwrite:{SHOW_JITSI_WATERMARK:false},
+  userInfo:{displayName:"MSAIDIZI LIVE"}
+ };
+ jitsiApi=new JitsiMeetExternalAPI("meet.jit.si",opts);
+ liveData={live:true,room:room,bg:"",time:Date.now(),endTime:Date.now()+10800000};
+ document.getElementById('dlBtn').style.display='block';
+ document.getElementById('status').innerText='🔴 LIVE INAENDELEA - Bonyeza PAKUA ili ionekane TV KUBWA';
+ setFilter('pic');
+}
+
+function switchCamera(){
+ currentFacing = currentFacing==='user'?'environment':'user';
+ alert('📷 Imebadilisha kwenda '+(currentFacing==='user'?'FRONT':'BACK')+'\nNdani ya Jitsi bonyeza ⋮ > Settings > Camera ili uchague');
+}
+
+function setFilter(type){
+ let layer=document.getElementById('bgLayer'); let jitsi=document.getElementById('jitsiContainer');
+ if(type==='pic'){
+  layer.style.filter='brightness(1.35) contrast(1.2) saturate(1.5)';
+  jitsi.style.filter='brightness(1.28) contrast(1.18) saturate(1.35)';
+ }
+ else if(type==='smart'){ jitsi.style.filter='brightness(1.25) contrast(1.25) saturate(1.3)'; }
+ else if(type==='beauty'){ jitsi.style.filter='brightness(1.3) contrast(1.1) saturate(1.4)'; }
+ else { jitsi.style.filter='none'; layer.style.filter='none'; }
+}
+
+function stopLive(){
+ if(jitsiApi) try{jitsiApi.dispose();}catch{}
+ document.getElementById('studioWrap').style.display='none';
+ liveData={live:false,room:"",time:Date.now(),endTime:0};
+ document.getElementById('status').innerText='⏹️ LIVE IMEZIMWA - Pakua tena file
