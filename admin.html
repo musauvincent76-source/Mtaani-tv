@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MTAANI TV ADMIN - FIXED FINAL + FULL CHANNEL</title>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MTAANI TV ADMIN - FINAL CLEAN NO FULL</title>
 <script src="https://meet.jit.si/external_api.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}body{background:#050a1f;color:#fff;font-family:sans-serif;padding:12px}
@@ -20,9 +20,8 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 .cat-box{display:none}.cat-box.active{display:block}
 .count{color:#ffcc00;font-weight:900;font-size:13px;background:#000;padding:2px 8px;border-radius:20px}
 .sw{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:900;cursor:pointer;border:none}
-.filter-box{display:flex;gap:5px;margin:6px 0;flex-wrap:wrap}.filter-box button{flex:1;font-size:10px;padding:10px;min-width:70px}
 </style></head><body>
-<h1>📺 MTAANI TV - FIXED FINAL + FULL</h1>
+<h1>📺 MTAANI TV - FINAL CLEAN (NO FULL)</h1>
 <div class="card" style="border:3px solid #ffcc00;background:#000">
 <button onclick="window.open('https://musauvincent76-source.github.io/Mtaani-tv/','_blank')" style="background:#ffcc00;color:#000">📺 ANGALIA TV PUBLIC</button>
 </div>
@@ -43,31 +42,13 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <div id="ctrlDownload"></div>
 </div>
 
-<div class="card" style="border:3px solid #ffcc00;background:linear-gradient(180deg,#221100,#000)">
-<h3 style="color:#ffcc00">📺 FULL CHANNEL - ONGEZA CHANNEL YOTE</h3>
-<p class="small">Weka @Jina au https://youtube.com/@Jina - itacheza zote</p>
-<input id="fullLink" placeholder="🔗 @EricOmondi au https://youtube.com/@EricOmondi" style="background:#000;color:#ffcc00;border:1px solid #ffcc00" oninput="autoTitleFull()">
-<input id="fullTitle" placeholder="📝 Jina - FULL CHANNEL" style="background:#111;color:#fff">
-<div style="display:flex;gap:5px">
-<select id="fullCat" style="flex:1;background:#111;color:#ffcc00;border:1px solid #333">
-<option value="gen">MAIN</option>
-<option value="news">NEWS</option>
-<option value="bizz">BIZZ</option>
-<option value="mchezo">MCHEZO</option>
-<option value="music">MUSIC</option>
-<option value="drama">DRAMA</option>
-</select>
-<button onclick="addFullChannelGlobal()" style="flex:1;background:#ffcc00;color:#000">📺 ONGEZA FULL CHANNEL</button>
-</div>
-<div id="fullStatus" class="small"></div>
-</div>
-
 <div class="card" style="border:3px solid #00ff00">
 <h3>🔑 GitHub AUTO</h3>
 <input id="token" type="password" placeholder="Weka Token ghp_..." oninput="localStorage.setItem('gh_token',this.value.trim())">
 <div style="display:flex;gap:5px"><input id="owner" value="musauvincent76-source"><input id="repo" value="Mtaani-tv"></div>
 <button class="blue" onclick="saveToken()">💾 HIFADHI TOKEN</button>
 <div id="tokenStatus" class="small"></div>
+<button onclick="clearAllBundles()" style="background:#000;border:2px solid red;color:#ff4444;margin-top:10px">🗑️ FUTA BUNDLES ZOTE - CLEAN TV</button>
 </div>
 
 <div class="tabs">
@@ -90,31 +71,29 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 
 <div id="vcat-news" class="cat-box active">
 <div style="display:flex;justify-content:space-between;align-items:center"><h4>NEWS</h4><button id="sw-news" class="sw" onclick="toggleCat('news')">OFF 🔴</button></div>
-<input id="link-news" placeholder="🔗 Link YouTube / Facebook" oninput="fetchTitleCat('news')">
+<input id="link-news" placeholder="🔗 Link YouTube" oninput="fetchTitleCat('news')">
 <input id="title-news" placeholder="📝 Jina"><div id="status-news" class="small"></div>
 <div style="display:flex;gap:5px">
 <button onclick="addVideoCat('news', false)" style="flex:1">➕ ONGEZA NEWS</button>
 <button onclick="addVideoCat('news', true)" style="flex:1;background:#00ff00;color:#000">▶️ PLAY NOW</button>
 <button onclick="startLiveCat('news')" style="flex:1;background:#cc00cc">🔴 LIVE</button>
 </div>
-<div style="display:flex;gap:5px;margin-top:5px"><button onclick="addFullChannelCat('news')" style="flex:1;background:#ffcc00;color:#000">📺 FULL CHANNEL NEWS</button></div>
 <div id="vlist-news"></div>
 </div>
-
-<div id="vcat-bizz" class="cat-box"><div style="display:flex;justify-content:space-between;align-items:center"><h4>BIZZ</h4><button id="sw-bizz" class="sw" onclick="toggleCat('bizz')">OFF 🔴</button></div><input id="link-bizz" placeholder="🔗 Link BIZZ" oninput="fetchTitleCat('bizz')"><input id="title-bizz" placeholder="📝 Jina"><div style="display:flex;gap:5px"><button onclick="addVideoCat('bizz', false)" style="flex:1">➕ ONGEZA</button><button onclick="addVideoCat('bizz', true)" style="flex:1;background:#00ff00;color:#000">▶️ NOW</button><button onclick="startLiveCat('bizz')" style="flex:1;background:#cc00cc">🔴 LIVE</button></div><div style="display:flex;gap:5px;margin-top:5px"><button onclick="addFullChannelCat('bizz')" style="flex:1;background:#ffcc00;color:#000">📺 FULL CHANNEL BIZZ</button></div><div id="vlist-bizz"></div></div>
-<div id="vcat-mchezo" class="cat-box"><div style="display:flex;justify-content:space-between;align-items:center"><h4>MCHEZO</h4><button id="sw-mchezo" class="sw" onclick="toggleCat('mchezo')">OFF 🔴</button></div><input id="link-mchezo" placeholder="🔗 Link MCHEZO" oninput="fetchTitleCat('mchezo')"><input id="title-mchezo" placeholder="📝 Jina"><div style="display:flex;gap:5px"><button style="background:red;flex:1" onclick="addVideoCat('mchezo', false)">⚽ ONGEZA</button><button onclick="addVideoCat('mchezo', true)" style="flex:1;background:#00ff00;color:#000">▶️ NOW</button><button onclick="startLiveCat('mchezo')" style="flex:1;background:#cc00cc">🔴 LIVE</button></div><div style="display:flex;gap:5px;margin-top:5px"><button onclick="addFullChannelCat('mchezo')" style="flex:1;background:#ffcc00;color:#000">📺 FULL CHANNEL MCHEZO</button></div><div id="vlist-mchezo"></div></div>
-<div id="vcat-music" class="cat-box"><div style="display:flex;justify-content:space-between;align-items:center"><h4>MUSIC</h4><button id="sw-music" class="sw" onclick="toggleCat('music')">OFF 🔴</button></div><input id="link-music" placeholder="🔗 Link MUSIC" oninput="fetchTitleCat('music')"><input id="title-music" placeholder="📝 Jina"><div style="display:flex;gap:5px"><button onclick="addVideoCat('music', false)" style="flex:1">➕ ONGEZA</button><button onclick="addVideoCat('music', true)" style="flex:1;background:#00ff00;color:#000">▶️ NOW</button><button onclick="startLiveCat('music')" style="flex:1;background:#cc00cc">🔴 LIVE</button></div><div style="display:flex;gap:5px;margin-top:5px"><button onclick="addFullChannelCat('music')" style="flex:1;background:#ffcc00;color:#000">📺 FULL CHANNEL MUSIC</button></div><div id="vlist-music"></div></div>
-<div id="vcat-drama" class="cat-box"><div style="display:flex;justify-content:space-between;align-items:center"><h4>DRAMA</h4><button id="sw-drama" class="sw" onclick="toggleCat('drama')">OFF 🔴</button></div><input id="link-drama" placeholder="🔗 Link DRAMA" oninput="fetchTitleCat('drama')"><input id="title-drama" placeholder="📝 Jina"><div style="display:flex;gap:5px"><button onclick="addVideoCat('drama', false)" style="flex:1">➕ ONGEZA</button><button onclick="addVideoCat('drama', true)" style="flex:1;background:#00ff00;color:#000">▶️ NOW</button><button onclick="startLiveCat('drama')" style="flex:1;background:#cc00cc">🔴 LIVE</button></div><div style="display:flex;gap:5px;margin-top:5px"><button onclick="addFullChannelCat('drama')" style="flex:1;background:#ffcc00;color:#000">📺 FULL CHANNEL DRAMA</button></div><div id="vlist-drama"></div></div>
-<div id="vcat-gen" class="cat-box"><div style="display:flex;justify-content:space-between;align-items:center"><h4>MAIN</h4><button id="sw-gen" class="sw" onclick="toggleCat('gen')">OFF 🔴</button></div><input id="link" placeholder="🔗 Link MAIN YT/FB" oninput="fetchTitle()"><input id="title" placeholder="📝 Jina"><div style="display:flex;gap:5px"><button onclick="addVideo(false)" style="flex:1">➕ ONGEZA MAIN</button><button onclick="addVideo(true)" style="flex:1;background:#00ff00;color:#000">▶️ PLAY NOW</button><button onclick="startLiveCat('gen')" style="flex:1;background:#cc00cc">🔴 LIVE MAIN</button></div><div style="display:flex;gap:5px;margin-top:5px"><button onclick="addFullChannelCat('gen')" style="flex:1;background:#ffcc00;color:#000">📺 FULL CHANNEL MAIN</button></div><div id="vlist"></div></div>
+<div id="vcat-bizz" class="cat-box"><div style="display:flex;justify-content:space-between;align-items:center"><h4>BIZZ</h4><button id="sw-bizz" class="sw" onclick="toggleCat('bizz')">OFF 🔴</button></div><input id="link-bizz" placeholder="🔗 Link BIZZ" oninput="fetchTitleCat('bizz')"><input id="title-bizz" placeholder="📝 Jina"><div style="display:flex;gap:5px"><button onclick="addVideoCat('bizz', false)" style="flex:1">➕ ONGEZA</button><button onclick="addVideoCat('bizz', true)" style="flex:1;background:#00ff00;color:#000">▶️ NOW</button><button onclick="startLiveCat('bizz')" style="flex:1;background:#cc00cc">🔴 LIVE</button></div><div id="vlist-bizz"></div></div>
+<div id="vcat-mchezo" class="cat-box"><div style="display:flex;justify-content:space-between;align-items:center"><h4>MCHEZO</h4><button id="sw-mchezo" class="sw" onclick="toggleCat('mchezo')">OFF 🔴</button></div><input id="link-mchezo" placeholder="🔗 Link MCHEZO" oninput="fetchTitleCat('mchezo')"><input id="title-mchezo" placeholder="📝 Jina"><div style="display:flex;gap:5px"><button style="background:red;flex:1" onclick="addVideoCat('mchezo', false)">⚽ ONGEZA</button><button onclick="addVideoCat('mchezo', true)" style="flex:1;background:#00ff00;color:#000">▶️ NOW</button><button onclick="startLiveCat('mchezo')" style="flex:1;background:#cc00cc">🔴 LIVE</button></div><div id="vlist-mchezo"></div></div>
+<div id="vcat-music" class="cat-box"><div style="display:flex;justify-content:space-between;align-items:center"><h4>MUSIC</h4><button id="sw-music" class="sw" onclick="toggleCat('music')">OFF 🔴</button></div><input id="link-music" placeholder="🔗 Link MUSIC" oninput="fetchTitleCat('music')"><input id="title-music" placeholder="📝 Jina"><div style="display:flex;gap:5px"><button onclick="addVideoCat('music', false)" style="flex:1">➕ ONGEZA</button><button onclick="addVideoCat('music', true)" style="flex:1;background:#00ff00;color:#000">▶️ NOW</button><button onclick="startLiveCat('music')" style="flex:1;background:#cc00cc">🔴 LIVE</button></div><div id="vlist-music"></div></div>
+<div id="vcat-drama" class="cat-box"><div style="display:flex;justify-content:space-between;align-items:center"><h4>DRAMA</h4><button id="sw-drama" class="sw" onclick="toggleCat('drama')">OFF 🔴</button></div><input id="link-drama" placeholder="🔗 Link DRAMA" oninput="fetchTitleCat('drama')"><input id="title-drama" placeholder="📝 Jina"><div style="display:flex;gap:5px"><button onclick="addVideoCat('drama', false)" style="flex:1">➕ ONGEZA</button><button onclick="addVideoCat('drama', true)" style="flex:1;background:#00ff00;color:#000">▶️ NOW</button><button onclick="startLiveCat('drama')" style="flex:1;background:#cc00cc">🔴 LIVE</button></div><div id="vlist-drama"></div></div>
+<div id="vcat-gen" class="cat-box"><div style="display:flex;justify-content:space-between;align-items:center"><h4>MAIN</h4><button id="sw-gen" class="sw" onclick="toggleCat('gen')">OFF 🔴</button></div><input id="link" placeholder="🔗 Link MAIN" oninput="fetchTitle()"><input id="title" placeholder="📝 Jina"><div style="display:flex;gap:5px"><button onclick="addVideo(false)" style="flex:1">➕ ONGEZA MAIN</button><button onclick="addVideo(true)" style="flex:1;background:#00ff00;color:#000">▶️ PLAY NOW</button><button onclick="startLiveCat('gen')" style="flex:1;background:#cc00cc">🔴 LIVE MAIN</button></div><div id="vlist"></div></div>
 </div>
 
 <div id="a" class="tab card"><h3>📢 ADS + Facebook</h3><input id="adTitle" placeholder="Title"><input id="adMsg" placeholder="Ujumbe"><input id="adContact" placeholder="FB Link"><button class="blue" onclick="addAd()">ONGEZA AD</button><div id="alist"></div></div>
 <div id="o" class="tab card"><h3>👑 OWNER</h3><input id="tvName" value="MTAANI TV"><input id="ownerName" value="MTAANI TV"><input id="ticker" value="MTAANI TV LIVE 24/7"><button class="green" onclick="saveOwner()">💾 HIFADHI</button><div id="ownerStatus" class="small"></div></div>
-<div id="s" class="tab card"><h3>🚀 PUBLIC AUTO - BLACK BOX FIXED</h3><button class="green" onclick="pushAll()">📤 TUMA KWA TV - JAZA BOX</button><div id="pushStatus" class="small"></div><textarea id="out" style="height:350px;background:#000;color:#0f0;font-size:11px" placeholder="Codes zitajaa hapa..."></textarea><button class="blue" onclick="copyOut()">📋 COPY CODE YOTE</button></div>
+<div id="s" class="tab card"><h3>🚀 PUBLIC AUTO</h3><button class="green" onclick="pushAll()">📤 TUMA KWA TV</button><div id="pushStatus" class="small"></div><textarea id="out" style="height:350px;background:#000;color:#0f0;font-size:11px"></textarea><button class="blue" onclick="copyOut()">📋 COPY CODE YOTE</button></div>
 <div id="live" class="tab card" style="border:3px solid #ff00ff">
-<h3>🔴 LIVE STUDIO - SCREEN 1 - 3 HRS AUTO</h3>
+<h3>🔴 LIVE STUDIO - 3 HRS AUTO</h3>
 <div class="card" style="background:#000;border:2px solid #ff00ff;margin:5px 0">
-<h4>📤 SHARE LINK - WATU WENGI</h4>
+<h4>📤 SHARE LINK</h4>
 <input id="shareLink" readonly style="background:#222;color:#0f0">
 <div style="display:flex;gap:5px"><button class="blue" onclick="genShareLink()" style="flex:1">🔗 TENGENEZA LINK</button><button class="green" onclick="copyShareLink()" style="flex:1">📋 COPY</button></div>
 <div id="liveTimerDisplay" style="background:#ff0000;color:#fff;padding:8px;border-radius:8px;margin-top:8px;text-align:center;font-weight:900;font-size:14px;display:none">⏱️ LIVE: 3h 00m 00s left</div>
@@ -129,7 +108,6 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 let videos=[], videosByCat={news:[],bizz:[],mchezo:[],music:[],drama:[],gen:[]}, catEnabled={news:false,bizz:false,mchezo:false,music:false,drama:false,gen:false}, ads=[], ownerData={tvName:"MTAANI TV",ownerName:"MTAANI TV",ticker:"MTAANI TV LIVE"}, currentFacing="user", currentRoom="MtaaniTV-Live-Show";
 let liveEndTime=0, liveTimerInterval=null, autoStopTimeout=null;
 let ctrlData={enabled:false,token:"MTAANI-1234"};
-
 async function loadCtrl(){ try{ let r=await fetch('assistant_control.json?v='+Date.now()); if(r.ok) ctrlData=await r.json(); }catch{} document.getElementById('ctrlKey').value=ctrlData.token; updateCtrlStatus(); }
 function updateCtrlStatus(){ let enabled=ctrlData.enabled; document.getElementById('ctrlStatus').innerHTML=enabled? `✅ <b style="color:#00e676">IMEWASHWA</b> - Key: <b style="color:#ffcc00">${ctrlData.token}</b>` : `⛔ <b style="color:#ff4444">IMEZIMWA</b>`; let base=location.origin+location.pathname.replace('admin.html',''); let link=base+'assistance.html?key='+ctrlData.token; document.getElementById('linkOut').innerText=link; }
 function downloadCtrl(){ let blob=new Blob([JSON.stringify(ctrlData,null,2)],{type:'application/json'}); let url=URL.createObjectURL(blob); document.getElementById('ctrlDownload').innerHTML=`<a href="${url}" download="assistant_control.json" style="display:block;background:#00e676;color:#000;padding:14px;border-radius:10px;text-align:center;font-weight:900;text-decoration:none;margin-top:12px">⬇️ PAKUA assistant_control.json KISHA UPLOAD GITHUB</a>`; }
@@ -138,45 +116,11 @@ function refreshKey(){ let newKey='MTAANI-'+Math.random().toString(36).substring
 function copyLink(){ let link=document.getElementById('linkOut').innerText; navigator.clipboard.writeText(link).then(()=>alert('✅ Link:\n'+link)); }
 async function pushCtrlDirect(){ let token=localStorage.getItem('gh_token')||''; if(!token) return; await pushFile('assistant_control.json', JSON.stringify(ctrlData,null,2)); }
 
-function autoTitleFull(){ let l=document.getElementById('fullLink').value.trim(); if(!l) return; let handle=l; try{ if(l.includes('@')){ let m=l.match(/@([a-zA-Z0-9_.-]+)/); if(m) handle='@'+m[1]; } }catch{} document.getElementById('fullTitle').value='FULL CHANNEL: '+handle; document.getElementById('fullStatus').innerHTML='<span class="ok">✅ Tayari: '+handle+'</span>'; }
-
-function addFullChannelGlobal(){
- let link=document.getElementById('fullLink').value.trim();
- let cat=document.getElementById('fullCat').value;
- if(!link){ alert('Weka link ya channel kwanza! @EricOmondi'); return; }
- let title=document.getElementById('fullTitle').value.trim() || 'FULL CHANNEL: '+link;
- let video={id:link,title:title,category:cat,isFullChannel:true,full:true,duration:1800};
- videosByCat[cat].unshift(video);
- catEnabled[cat]=true;
- let btn=document.getElementById('sw-'+cat); if(btn){btn.innerText='ON 🟢';btn.style.background='#00b300';}
- saveLocal(); renderVideosCat(cat); openVCat(cat,'vc-'+cat);
- document.getElementById('fullStatus').innerHTML='<span class="ok">✅ FULL CHANNEL Imeongezwa kwa '+cat.toUpperCase()+' na IMEWASHWA ON! Nenda chini utaiona</span>';
- document.getElementById('fullLink').value=''; document.getElementById('fullTitle').value='';
- setTimeout(()=>{document.getElementById('vlist-'+cat).scrollIntoView({behavior:'smooth'});},400);
-}
-
-function addFullChannelCat(cat){
- let linkEl=document.getElementById(cat==='gen'?'link':'link-'+cat);
- let titleEl=document.getElementById(cat==='gen'?'title':'title-'+cat);
- let link=linkEl.value.trim();
- if(!link){ alert('Weka link ya channel hapo juu! Mfano @EricOmondi'); return; }
- let title=titleEl.value.trim() || 'FULL CHANNEL: '+link;
- let video={id:link,title:title,category:cat,isFullChannel:true,full:true,duration:1800};
- videosByCat[cat].unshift(video);
- catEnabled[cat]=true;
- let btn=document.getElementById('sw-'+cat); if(btn){btn.innerText='ON 🟢';btn.style.background='#00b300';}
- saveLocal(); renderVideosCat(cat);
- linkEl.value=''; titleEl.value='';
- alert('✅ FULL CHANNEL ya '+cat.toUpperCase()+' imewekwa JUU na IMEWASHWA ON! Nenda PUBLIC > TUMA');
-}
-
 function showTab(id,btnId){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');if(btnId)document.getElementById(btnId).classList.add('active');}
 function openVCat(cat,btnId){document.querySelectorAll('[id^=vcat-]').forEach(b=>b.classList.remove('active'));document.getElementById('vcat-'+cat).classList.add('active');document.querySelectorAll('[id^=vc-]').forEach(b=>b.classList.remove('active'));if(btnId)document.getElementById(btnId).classList.add('active');}
-
 function extractID(t){
- if(!t) return null;
- t=t.trim();
- if(t.includes('@')||t.toLowerCase().includes('/channel/')||t.toLowerCase().includes('/c/')||t.toLowerCase().includes('youtube.com/@')) return t;
+ if(!t) return null; t=t.trim();
+ if(t.includes('@')||t.toLowerCase().includes('/channel/')||t.toLowerCase().includes('/c/')) return null; // FULL CHANNEL BLOCKED
  if(/^[a-zA-Z0-9_-]{11}$/.test(t)) return t;
  let m=t.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);
  if(m) return m[1];
@@ -184,98 +128,47 @@ function extractID(t){
  try{let u=new URL(t);let v=u.searchParams.get('v');if(v&&v.length===11) return v;}catch{}
  return t.length>5? t : null;
 }
-
-async function fetchTitle(){ let raw=document.getElementById('link').value; let id=extractID(raw); if(!id||id.includes('facebook')||id.includes('@')) return; try{let r=await fetch('https://noembed.com/embed?url=https://www.youtube.com/watch?v='+id);let d=await r.json();if(d.title)document.getElementById('title').value=d.title;}catch{} }
-async function fetchTitleCat(cat){ let raw=document.getElementById('link-'+cat).value; let id=extractID(raw); if(!id) return; if(id.includes('facebook')||id.includes('fb.watch')||id.includes('@')){let s=document.getElementById('status-'+cat); if(s) s.innerHTML='<span class="ok">✅ FULL CHANNEL Sawa - itacheza zote</span>'; if(id.includes('@')) document.getElementById('title-'+cat).value='FULL CHANNEL: '+id; return;} try{let r=await fetch('https://noembed.com/embed?url=https://www.youtube.com/watch?v='+id);let d=await r.json();if(d.title){document.getElementById('title-'+cat).value=d.title; let s=document.getElementById('status-'+cat); if(s)s.innerHTML='<span class="ok">✅ '+d.title+'</span>';}}catch{} }
-
+async function fetchTitle(){ let raw=document.getElementById('link').value; let id=extractID(raw); if(!id||id.includes('facebook')) return; try{let r=await fetch('https://noembed.com/embed?url=https://www.youtube.com/watch?v='+id);let d=await r.json();if(d.title)document.getElementById('title').value=d.title;}catch{} }
+async function fetchTitleCat(cat){ let raw=document.getElementById('link-'+cat).value; let id=extractID(raw); if(!id||id.includes('facebook')||id.includes('fb.watch')) return; try{let r=await fetch('https://noembed.com/embed?url=https://www.youtube.com/watch?v='+id);let d=await r.json();if(d.title){document.getElementById('title-'+cat).value=d.title;}}catch{} }
 function saveToken(){let t=document.getElementById('token').value.trim();if(t.length<10){alert('Weka token');return;}localStorage.setItem('gh_token',t);localStorage.setItem('gh_owner',document.getElementById('owner').value);localStorage.setItem('gh_repo',document.getElementById('repo').value);document.getElementById('tokenStatus').innerHTML='<span class="ok">✅ Token Saved!</span>';}
 function loadToken(){let s=localStorage.getItem('gh_token')||'';document.getElementById('token').value=s;document.getElementById('owner').value=localStorage.getItem('gh_owner')||'musauvincent76-source';document.getElementById('repo').value=localStorage.getItem('gh_repo')||'Mtaani-tv';}
 function saveLocal(){localStorage.setItem('mtaani_videos',JSON.stringify(videos));Object.keys(videosByCat).forEach(c=>localStorage.setItem('mtaani_videos_'+c,JSON.stringify(videosByCat[c])));localStorage.setItem('mtaani_ads',JSON.stringify(ads));localStorage.setItem('mtaani_owner',JSON.stringify(ownerData));localStorage.setItem('mtaani_cat_enabled',JSON.stringify(catEnabled));}
-
-// === FIXED RENDER - SASA DELETE INAPIGA GITHUB ===
-function renderVideos(){
- let h="";
- videos.forEach((v,i)=>{
-  let badge=v.isFullChannel||v.full?' <span style="background:#ffcc00;color:#000;padding:2px 6px;border-radius:10px;font-size:10px">FULL</span>':'';
-  h+=`<div class="list-item"><span><b>${v.title}</b>${badge}</span><button class="red" onclick="deleteMain(${i})">X</button></div>`
- });
- document.getElementById('vlist').innerHTML=h||"Hakuna";
- updateCount('gen');
- saveLocal();
-}
-function renderVideosCat(cat){
- let h="";
- videosByCat[cat].forEach((v,i)=>{
-  let badge=v.isFullChannel||v.full?' <span style="background:#ffcc00;color:#000;padding:2px 6px;border-radius:10px;font-size:10px">FULL</span>':'';
-  h+=`<div class="list-item"><span><b>${v.title}</b>${badge}<br><span class="small">${v.id.substring(0,50)}</span></span><button class="red" onclick="deleteCat('${cat}',${i})">X</button></div>`
- });
- document.getElementById('vlist-'+cat).innerHTML=h||"Hakuna";
- updateCount(cat);
- saveLocal();
-}
-
-// === SMART DELETE - INAFUTA LOCAL + GITHUB ===
-async function autoPushVideos(){
- let all=[...videos];
- Object.keys(videosByCat).forEach(c=>{ if(catEnabled[c]){ videosByCat[c].forEach(v=>all.push(v)); } });
- let pretty=JSON.stringify(all,null,2);
- document.getElementById('out').value=pretty;
- let token=localStorage.getItem('gh_token')||'';
- if(!token||token.length<10){
-   document.getElementById('pushStatus').innerHTML='⚠️ Token hakuna - nenda PUBLIC > TUMA manual';
-   return;
- }
- document.getElementById('pushStatus').innerText="🗑️ Inafuta GitHub...";
- let ok=await pushFile('videos.json',pretty);
- if(ok) document.getElementById('pushStatus').innerHTML='<span class="ok">✅ IMEFUTWA GITHUB PIA! TV itabadilika 10sec</span>';
-}
-function deleteMain(i){
- if(!confirm('Futa hii video? Itafutika na GitHub pia')) return;
- videos.splice(i,1);
- saveLocal(); renderVideos();
- autoPushVideos();
-}
-function deleteCat(cat,i){
- if(!confirm('Futa hii ya '+cat.toUpperCase()+'? Itafutika na GitHub pia')) return;
- videosByCat[cat].splice(i,1);
- saveLocal(); renderVideosCat(cat);
- autoPushVideos();
-}
-
+function renderVideos(){let h="";videos.forEach((v,i)=>{h+=`<div class="list-item"><span><b>${v.title}</b></span><button class="red" onclick="deleteMain(${i})">X</button></div>`});document.getElementById('vlist').innerHTML=h||"Hakuna";updateCount('gen');saveLocal();}
+function renderVideosCat(cat){let h="";videosByCat[cat].forEach((v,i)=>{h+=`<div class="list-item"><span><b>${v.title}</b><br><span class="small">${v.id.substring(0,50)}</span></span><button class="red" onclick="deleteCat('${cat}',${i})">X</button></div>`});document.getElementById('vlist-'+cat).innerHTML=h||"Hakuna";updateCount(cat);saveLocal();}
+async function autoPushVideos(){let all=[...videos];Object.keys(videosByCat).forEach(c=>{if(catEnabled[c]){videosByCat[c].forEach(v=>all.push(v));}});let pretty=JSON.stringify(all,null,2);document.getElementById('out').value=pretty;let token=localStorage.getItem('gh_token')||'';if(!token)return;document.getElementById('pushStatus').innerText="🗑️ Inafuta GitHub...";let ok=await pushFile('videos.json',pretty);if(ok)document.getElementById('pushStatus').innerHTML='<span class="ok">✅ IMEFUTWA GITHUB PIA! TV itabadilika 10sec</span>';}
+function deleteMain(i){if(!confirm('Futa? Itafutika na GitHub pia'))return;videos.splice(i,1);saveLocal();renderVideos();autoPushVideos();}
+function deleteCat(cat,i){if(!confirm('Futa hii ya '+cat.toUpperCase()+'?'))return;videosByCat[cat].splice(i,1);saveLocal();renderVideosCat(cat);autoPushVideos();}
 function updateCount(cat){let c=cat==='gen'?videos.length:videosByCat[cat].length;let el=document.getElementById('count-'+cat);if(el)el.innerText=c+' video';}
-function addVideo(playNow=false){let raw=document.getElementById('link').value.trim();let id=extractID(raw);if(!id){alert("Link mbaya");return;}let title=document.getElementById('title').value.trim()||"MTAANI - "+id.substring(0,15);let isFull=id.includes('@')||id.includes('/channel/');let video={id:id,title:title,isFullChannel:isFull,full:isFull,duration:isFull?1800:300};if(playNow){videos.unshift(video);}else{videos.push(video);}if(isFull){catEnabled['gen']=true; let b=document.getElementById('sw-gen'); if(b){b.innerText='ON 🟢';b.style.background='#00b300';}}document.getElementById('link').value="";document.getElementById('title').value="";renderVideos(); if(playNow) alert('▶️ Imewekwa JUU! Nenda PUBLIC > TUMA');}
-function addVideoCat(cat,playNow=false){let raw=document.getElementById('link-'+cat).value.trim();let id=extractID(raw);if(!id){alert("Link mbaya");return;}let title=document.getElementById('title-'+cat).value.trim()||cat.toUpperCase()+" - "+id.substring(0,15);let isFull=id.includes('@')||id.includes('/channel/');let video={id:id,title:title,category:cat,isFullChannel:isFull,full:isFull,duration:isFull?1800:300};if(playNow){videosByCat[cat].unshift(video);}else{videosByCat[cat].push(video);}catEnabled[cat]=true; let b=document.getElementById('sw-'+cat); if(b){b.innerText='ON 🟢';b.style.background='#00b300';}document.getElementById('link-'+cat).value="";document.getElementById('title-'+cat).value="";renderVideosCat(cat); if(playNow) alert('▶️ '+cat.toUpperCase()+' JUU na ON! Nenda PUBLIC > TUMA');}
+function addVideo(playNow=false){let raw=document.getElementById('link').value.trim();let id=extractID(raw);if(!id){alert("Link mbaya - FULL CHANNEL imezuiwa, weka video moja");return;}let title=document.getElementById('title').value.trim()||"MTAANI - "+id.substring(0,15);let video={id:id,title:title,duration:300};if(playNow){videos.unshift(video);}else{videos.push(video);}document.getElementById('link').value="";document.getElementById('title').value="";renderVideos();if(playNow)alert('▶️ JUU! Nenda PUBLIC > TUMA');}
+function addVideoCat(cat,playNow=false){let raw=document.getElementById('link-'+cat).value.trim();let id=extractID(raw);if(!id){alert("Link mbaya - FULL CHANNEL imezuiwa");return;}let title=document.getElementById('title-'+cat).value.trim()||cat.toUpperCase()+" - "+id.substring(0,15);let video={id:id,title:title,category:cat,duration:300};if(playNow){videosByCat[cat].unshift(video);}else{videosByCat[cat].push(video);}catEnabled[cat]=true;let b=document.getElementById('sw-'+cat);if(b){b.innerText='ON 🟢';b.style.background='#00b300';}document.getElementById('link-'+cat).value="";document.getElementById('title-'+cat).value="";renderVideosCat(cat);}
 function renderAds(){let h="";ads.forEach((a,i)=>{h+=`<div class="list-item"><span><b>${a.title}</b> - ${a.msg}</span><button class="red" onclick="ads.splice(${i},1);saveLocal();renderAds()">X</button></div>`});document.getElementById('alist').innerHTML=h||"Hakuna";saveLocal();}
 function addAd(){ads.push({title:document.getElementById('adTitle').value,msg:document.getElementById('adMsg').value,contact:document.getElementById('adContact').value});renderAds();}
 function saveOwner(){ownerData={tvName:document.getElementById('tvName').value,ownerName:document.getElementById('ownerName').value,ticker:document.getElementById('ticker').value};localStorage.setItem('mtaani_owner',JSON.stringify(ownerData));document.getElementById('ownerStatus').innerHTML='<span class="ok">✅ Saved</span>';}
 function toggleCat(cat){catEnabled[cat]=!catEnabled[cat];let btn=document.getElementById('sw-'+cat);if(btn){btn.innerText=catEnabled[cat]? 'ON 🟢' : 'OFF 🔴';btn.style.background=catEnabled[cat]? '#00b300' : '#cc0000';}saveLocal();}
-function loadAll(){try{let v=localStorage.getItem('mtaani_videos');if(v)videos=JSON.parse(v);}catch{} Object.keys(videosByCat).forEach(c=>{try{let vv=localStorage.getItem('mtaani_videos_'+c);if(vv)videosByCat[c]=JSON.parse(vv);}catch{}});try{let ce=localStorage.getItem('mtaani_cat_enabled');if(ce)catEnabled=JSON.parse(ce);}catch{} try{let a=localStorage.getItem('mtaani_ads');if(a)ads=JSON.parse(a);}catch{} try{let o=localStorage.getItem('mtaani_owner');if(o){ownerData=JSON.parse(o);document.getElementById('tvName').value=ownerData.tvName;document.getElementById('ownerName').value=ownerData.ownerName;document.getElementById('ticker').value=ownerData.ticker;}}catch{} renderVideos();Object.keys(videosByCat).forEach(c=>{renderVideosCat(c); let btn=document.getElementById('sw-'+c); if(btn){ btn.innerText=catEnabled[c]? 'ON 🟢' : 'OFF 🔴'; btn.style.background=catEnabled[c]? '#00b300' : '#cc0000'; } });renderAds();loadToken();loadCtrl();}
+function loadAll(){try{let v=localStorage.getItem('mtaani_videos');if(v)videos=JSON.parse(v);}catch{}Object.keys(videosByCat).forEach(c=>{try{let vv=localStorage.getItem('mtaani_videos_'+c);if(vv)videosByCat[c]=JSON.parse(vv);}catch{}});try{let ce=localStorage.getItem('mtaani_cat_enabled');if(ce)catEnabled=JSON.parse(ce);}catch{}try{let a=localStorage.getItem('mtaani_ads');if(a)ads=JSON.parse(a);}catch{}try{let o=localStorage.getItem('mtaani_owner');if(o){ownerData=JSON.parse(o);document.getElementById('tvName').value=ownerData.tvName;document.getElementById('ownerName').value=ownerData.ownerName;document.getElementById('ticker').value=ownerData.ticker;}}catch{}renderVideos();Object.keys(videosByCat).forEach(c=>{renderVideosCat(c);let btn=document.getElementById('sw-'+c);if(btn){btn.innerText=catEnabled[c]? 'ON 🟢' : 'OFF 🔴';btn.style.background=catEnabled[c]? '#00b300' : '#cc0000';}});renderAds();loadToken();loadCtrl();}
 loadAll();
 function b64(s){return btoa(unescape(encodeURIComponent(s)))}
-async function pushFile(fn,content){let token=localStorage.getItem('gh_token')||''; let owner=document.getElementById('owner').value; let repo=document.getElementById('repo').value;if(!token){document.getElementById('pushStatus').innerText="❌ Weka Token!";return false;}document.getElementById('pushStatus').innerText="⏳ Inatuma "+fn+"...";try{let url=`https://api.github.com/repos/${owner}/${repo}/contents/${fn}`;let sha=null;try{let r=await fetch(url,{headers:{Authorization:`token ${token}`}});if(r.ok){let j=await r.json();sha=j.sha;}}catch{}let res=await fetch(url,{method:'PUT',headers:{Authorization:`token ${token}`,"Content-Type":"application/json"},body:JSON.stringify({message:`Update ${fn}`,content:b64(content),sha:sha})});if(res.ok)return true;let d=await res.json();document.getElementById('pushStatus').innerText="❌ "+d.message;return false;}catch(e){document.getElementById('pushStatus').innerText="❌ "+e.message;return false;}}
-async function pushAll(){
- let all=[...videos];
- Object.keys(videosByCat).forEach(c=>{ if(catEnabled[c]){ videosByCat[c].forEach(v=>all.push(v)); } });
- if(all.length===0){alert('⚠️ Hakuna video - Weka kwanza!');return;}
- let pretty=JSON.stringify(all,null,2);
- document.getElementById('out').value=pretty;
- document.getElementById('pushStatus').innerHTML='<span class="ok">✅ Imejaa ('+all.length+' videos) - Inatuma...</span>';
- let token=localStorage.getItem('gh_token')||'';
- if(!token||token.length<10){document.getElementById('pushStatus').innerHTML='⚠️ Token hakuna - COPY code chini > GitHub > videos.json > Edit';return;}
- let ok1=await pushFile('videos.json',pretty);
- let ok2=await pushFile('owner.json',JSON.stringify(ownerData,null,2));
- let ok3=await pushFile('categories.json',JSON.stringify(catEnabled,null,2));
- let ok4=await pushFile('assistant_control.json',JSON.stringify(ctrlData,null,2));
- if(ok1) document.getElementById('pushStatus').innerHTML='<span class="ok">✅ IMEENDA TV - ('+all.length+' videos ikiwa na FULL CHANNEL)!</span>';
-}
+async function pushFile(fn,content){let token=localStorage.getItem('gh_token')||'';let owner=document.getElementById('owner').value;let repo=document.getElementById('repo').value;if(!token){document.getElementById('pushStatus').innerText="❌ Weka Token!";return false;}document.getElementById('pushStatus').innerText="⏳ Inatuma "+fn+"...";try{let url=`https://api.github.com/repos/${owner}/${repo}/contents/${fn}`;let sha=null;try{let r=await fetch(url,{headers:{Authorization:`token ${token}`}});if(r.ok){let j=await r.json();sha=j.sha;}}catch{}let res=await fetch(url,{method:'PUT',headers:{Authorization:`token ${token}`,"Content-Type":"application/json"},body:JSON.stringify({message:`Update ${fn}`,content:b64(content),sha:sha})});if(res.ok)return true;let d=await res.json();document.getElementById('pushStatus').innerText="❌ "+d.message;return false;}catch(e){document.getElementById('pushStatus').innerText="❌ "+e.message;return false;}}
+async function pushAll(){let all=[...videos];Object.keys(videosByCat).forEach(c=>{if(catEnabled[c]){videosByCat[c].forEach(v=>all.push(v));}});if(all.length===0){alert('⚠️ Hakuna video');return;}let pretty=JSON.stringify(all,null,2);document.getElementById('out').value=pretty;document.getElementById('pushStatus').innerHTML='<span class="ok">✅ Imejaa ('+all.length+' videos) - Inatuma...</span>';let token=localStorage.getItem('gh_token')||'';if(!token||token.length<10){document.getElementById('pushStatus').innerHTML='⚠️ Token hakuna';return;}let ok1=await pushFile('videos.json',pretty);let ok2=await pushFile('owner.json',JSON.stringify(ownerData,null,2));let ok3=await pushFile('categories.json',JSON.stringify(catEnabled,null,2));let ok4=await pushFile('assistant_control.json',JSON.stringify(ctrlData,null,2));if(ok1)document.getElementById('pushStatus').innerHTML='<span class="ok">✅ IMEENDA TV - ('+all.length+' videos)!</span>';}
 function copyOut(){let o=document.getElementById('out');o.select();document.execCommand('copy');alert('✅ Copied!');}
 function toggleFull(){document.getElementById('live').classList.toggle('fullscreen');}
-function switchCamera(){ currentFacing=currentFacing==='user'?'environment':'user'; alert('📷 '+(currentFacing==='user'?'FRONT':'BACK')); }
-function genShareLink(){ let room=currentRoom; let link='https://musauvincent76-source.github.io/Mtaani-tv/live-join.html?room='+room; document.getElementById('shareLink').value=link; localStorage.setItem('live_room',room); return link;}
-function copyShareLink(){ let l=document.getElementById('shareLink'); if(!l.value) genShareLink(); l.select(); document.execCommand('copy'); alert('✅ Copied: '+l.value); }
-function start3hrTimer(){ clearInterval(liveTimerInterval); clearTimeout(autoStopTimeout); liveEndTime=Date.now()+(3*60*60*1000); localStorage.setItem('live_end',liveEndTime); document.getElementById('liveTimerDisplay').style.display='block'; liveTimerInterval=setInterval(()=>{ let left=liveEndTime-Date.now(); if(left<=0){ clearInterval(liveTimerInterval); document.getElementById('liveTimerDisplay').innerText='⏹️ LIVE IMEISHA'; autoStopLive(); return;} let h=Math.floor(left/3600000); let m=Math.floor((left%3600000)/60000); let s=Math.floor((left%60000)/1000); document.getElementById('liveTimerDisplay').innerText=`🔴 LIVE: ${h}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s left`;},1000); autoStopTimeout=setTimeout(()=>{autoStopLive();},3*60*60*1000); }
-async function autoStopLive(){ alert('⏹️ 3 HRS ZIMEISHA!'); await pushLiveStatus(false); if(window.jitsiApi) try{window.jitsiApi.dispose();}catch{} document.getElementById('liveTimerDisplay').style.display='none'; localStorage.removeItem('live_end'); clearInterval(liveTimerInterval); clearTimeout(autoStopTimeout); }
-function startLive(){ let room=currentRoom; let container=document.getElementById('jitsiContainer'); container.style.display='block'; if(window.jitsiApi)try{window.jitsiApi.dispose();}catch{} let opts={roomName:room,width:"100%",height:"100%",parentNode:container,configOverwrite:{prejoinPageEnabled:false},userInfo:{displayName:"MTAANI TV HOST"}}; window.jitsiApi=new JitsiMeetExternalAPI("meet.jit.si",opts); document.getElementById('live').classList.add('fullscreen'); genShareLink(); pushLiveStatus(true); start3hrTimer(); }
-function startLiveCat(cat){ openVCat(cat,'vc-'+cat); showTab('live','btn-live'); currentRoom="MtaaniTV-"+cat.toUpperCase()+"-"+Date.now(); localStorage.setItem('live_room',currentRoom); startLive(); }
-async function pushLiveStatus(isLive){ let room=localStorage.getItem('live_room')||currentRoom; let bg=localStorage.getItem('live_bg')||''; let data={live:isLive,room:room,bg:bg,time:Date.now(),endTime:isLive?liveEndTime:0}; await pushFile('live.json', JSON.stringify(data,null,2)); document.getElementById('pushStatus').innerHTML=isLive?'<span class="ok">🔴 LIVE PUBLIC TV!</span>':'<span class="ok">⏹️ LIVE IMEZIMWA</span>'; if(!isLive){clearInterval(liveTimerInterval);clearTimeout(autoStopTimeout);document.getElementById('liveTimerDisplay').style.display='none';localStorage.removeItem('live_end');}}
+function switchCamera(){currentFacing=currentFacing==='user'?'environment':'user';alert('📷 '+(currentFacing==='user'?'FRONT':'BACK'));}
+function genShareLink(){let room=currentRoom;let link='https://musauvincent76-source.github.io/Mtaani-tv/live-join.html?room='+room;document.getElementById('shareLink').value=link;localStorage.setItem('live_room',room);return link;}
+function copyShareLink(){let l=document.getElementById('shareLink');if(!l.value)genShareLink();l.select();document.execCommand('copy');alert('✅ Copied: '+l.value);}
+function start3hrTimer(){clearInterval(liveTimerInterval);clearTimeout(autoStopTimeout);liveEndTime=Date.now()+(3*60*60*1000);localStorage.setItem('live_end',liveEndTime);document.getElementById('liveTimerDisplay').style.display='block';liveTimerInterval=setInterval(()=>{let left=liveEndTime-Date.now();if(left<=0){clearInterval(liveTimerInterval);document.getElementById('liveTimerDisplay').innerText='⏹️ LIVE IMEISHA';autoStopLive();return;}let h=Math.floor(left/3600000);let m=Math.floor((left%3600000)/60000);let s=Math.floor((left%60000)/1000);document.getElementById('liveTimerDisplay').innerText=`🔴 LIVE: ${h}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s left`;},1000);autoStopTimeout=setTimeout(()=>{autoStopLive();},3*60*60*1000);}
+async function autoStopLive(){alert('⏹️ 3 HRS ZIMEISHA!');await pushLiveStatus(false);if(window.jitsiApi)try{window.jitsiApi.dispose();}catch{}document.getElementById('liveTimerDisplay').style.display='none';localStorage.removeItem('live_end');clearInterval(liveTimerInterval);clearTimeout(autoStopTimeout);}
+function startLive(){let room=currentRoom;let container=document.getElementById('jitsiContainer');container.style.display='block';if(window.jitsiApi)try{window.jitsiApi.dispose();}catch{}let opts={roomName:room,width:"100%",height:"100%",parentNode:container,configOverwrite:{prejoinPageEnabled:false},userInfo:{displayName:"MTAANI TV HOST"}};window.jitsiApi=new JitsiMeetExternalAPI("meet.jit.si",opts);document.getElementById('live').classList.add('fullscreen');genShareLink();pushLiveStatus(true);start3hrTimer();}
+function startLiveCat(cat){openVCat(cat,'vc-'+cat);showTab('live','btn-live');currentRoom="MtaaniTV-"+cat.toUpperCase()+"-"+Date.now();localStorage.setItem('live_room',currentRoom);startLive();}
+async function pushLiveStatus(isLive){let room=localStorage.getItem('live_room')||currentRoom;let bg=localStorage.getItem('live_bg')||'';let data={live:isLive,room:room,bg:bg,time:Date.now(),endTime:isLive?liveEndTime:0};await pushFile('live.json', JSON.stringify(data,null,2));document.getElementById('pushStatus').innerHTML=isLive?'<span class="ok">🔴 LIVE PUBLIC TV!</span>':'<span class="ok">⏹️ LIVE IMEZIMWA</span>';if(!isLive){clearInterval(liveTimerInterval);clearTimeout(autoStopTimeout);document.getElementById('liveTimerDisplay').style.display='none';localStorage.removeItem('live_end');}}
+async function clearAllBundles(){
+ if(!confirm('FUTA BUNDLES ZOTE?')) return;
+ videos=[]; Object.keys(videosByCat).forEach(c=>videosByCat[c]=[]);
+ localStorage.setItem('mtaani_videos','[]');
+ Object.keys(videosByCat).forEach(c=>localStorage.setItem('mtaani_videos_'+c,'[]'));
+ renderVideos(); Object.keys(videosByCat).forEach(c=>renderVideosCat(c));
+ let empty='[{"id":"4EDkfksVFdE","title":"MTAANI TV LIVE","duration":300}]';
+ document.getElementById('out').value=empty;
+ let ok=await pushFile('videos.json',empty);
+ if(ok){ alert('✅ BUNDLES ZOTE ZIMEFUTWA!'); document.getElementById('pushStatus').innerHTML='<span class="ok">✅ CLEAN DONE!</span>'; }
+}
 </script></body></html>
