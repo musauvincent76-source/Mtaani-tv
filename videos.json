@@ -1,7 +1,10 @@
 [
   {
-    "id": "https://www.facebook.com/CityOfTransformationChurchHQ/videos/4533810466862122/?app=fbl",
-    "title": "mtaani tv live"
+    "id": "@fortunemwikali",
+    "title": "MTAANI - @fortunemwikali",
+    "isFullChannel": true,
+    "full": true,
+    "duration": 1800
   },
   {
     "id": "Mi95IkHvvyI",
@@ -74,5 +77,55 @@
   {
     "id": "O3CtHOsNDDA",
     "title": "FAITH MAINA:,,Hitha Mathagu-ini"
+  },
+  {
+    "id": "https://youtube.com/@fortunemwikali?si=qroy13YgcK4iHWIw",
+    "title": "FULL CHANNEL: @fortunemwikali",
+    "category": "gen",
+    "isFullChannel": true,
+    "full": true,
+    "duration": 1800
+  },
+  {
+    "id": "https://youtube.com/@fortunemwikali?si=qroy13YgcK4iHWIw",
+    "title": "FULL CHANNEL: @fortunemwikali",
+    "category": "gen",
+    "isFullChannel": true,
+    "full": true
+  },
+  {
+    "id": "https://youtube.com/@davidjelina2?si=CNRhKEAnkB4DcP0T",
+    "title": "FULL CHANNEL: @davidjelina2",
+    "category": "gen",
+    "isFullChannel": true,
+    "full": true
+  },
+  {
+    "id": "@davidjelina2",
+    "title": "FULL CHANNEL: @davidjelina2",
+    "category": "gen",
+    "isFullChannel": true,
+    "full": true
+  },
+  {
+    "id": "@davidjelina2",
+    "title": "FULL CHANNEL: @davidjelina2",
+    "category": "gen",
+    "isFullChannel": true,
+    "full": true
+  },
+  {
+    "id": "https://youtube.com/@davidjelina2?si=CNRhKEAnkB4DcP0T",
+    "title": "FULL CHANNEL: @davidjelina2",
+    "category": "gen",
+    "isFullChannel": true,
+    "full": true
+  },
+  {
+    "id": "https://youtube.com/@davidjelina2?si=CNRhKEAnkB4DcP0T",
+    "title": "FULL CHANNEL: @davidjelina2",
+    "category": "gen",
+    "isFullChannel": true,
+    "full": true
   }
 ]
