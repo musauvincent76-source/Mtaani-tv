@@ -9,7 +9,7 @@
 *{box-sizing:border-box;margin:0;padding:0}body{background:#050a1f;color:#fff;font-family:sans-serif;padding:12px}
 h1{color:#ffcc00;text-align:center;padding:12px;font-size:18px;border-bottom:3px solid #ff6600}
 .card{background:#111c44;padding:12px;border-radius:12px;margin:10px 0;border:1px solid #223366}
-input,textarea{width:100%;padding:11px;border-radius:8px;border:none;margin:6px 0;font-size:14px}
+input,textarea,select{width:100%;padding:11px;border-radius:8px;border:none;margin:6px 0;font-size:14px}
 button{width:100%;padding:12px;background:#ff6600;color:#fff;border:none;border-radius:8px;font-weight:900;margin-top:8px;cursor:pointer}
 button.green{background:#00b300}button.blue{background:#0066ff}button.red{background:#cc0000;width:auto;padding:6px 12px}
 .list-item{background:#000;padding:10px;margin:7px 0;border-radius:8px;display:flex;justify-content:space-between;align-items:center;border-left:4px solid #ffcc00}
@@ -36,7 +36,6 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <button onclick="window.open('https://musauvincent76-source.github.io/Mtaani-tv/','_blank')" style="background:#ffcc00;color:#000">📺 ANGALIA TV PUBLIC</button>
 </div>
 
-<!-- === MPYA - MSAIDIZI CONTROL ON/OFF + REFRESH === -->
 <div class="card" style="border:3px solid #00e676;background:linear-gradient(180deg,#0f1e45,#0a1430)">
 <h3 style="color:#00e676">👥 MSAIDIZI CONTROL - ON/OFF + REFRESH</h3>
 <p id="ctrlStatus" style="font-size:13px;color:#aaa;margin:8px 0">Inapakia...</p>
@@ -53,7 +52,27 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 </div>
 <div id="ctrlDownload"></div>
 </div>
-<!-- === MWISHO WA MSAIDIZI CONTROL === -->
+
+<!-- ====== MPYA: FULL CHANNEL BUTTON - SIKUONDOA KITU, NIMEONGEZA TU HII ====== -->
+<div class="card" style="border:3px solid #ffcc00;background:linear-gradient(180deg,#221100,#000)">
+<h3 style="color:#ffcc00">📺 FULL CHANNEL - ONGEZA CHANNEL YOTE</h3>
+<p class="small">Weka link ya Channel kama https://www.youtube.com/@EricOmondi au @EricOmondi, chagua category, kisha bonyeza FULL CHANNEL</p>
+<input id="fullLink" placeholder="🔗 Link ya Channel - @Jina au https://youtube.com/@Jina" style="background:#000;color:#ffcc00;border:1px solid #ffcc00" oninput="autoTitleFull()">
+<input id="fullTitle" placeholder="📝 Jina itajaza yenyewe - FULL CHANNEL" style="background:#111;color:#fff">
+<div style="display:flex;gap:5px">
+<select id="fullCat" style="flex:1;background:#111;color:#ffcc00;border:1px solid #333">
+<option value="gen">MAIN</option>
+<option value="news">NEWS</option>
+<option value="bizz">BIZZ</option>
+<option value="mchezo">MCHEZO</option>
+<option value="music">MUSIC</option>
+<option value="drama">DRAMA</option>
+</select>
+<button onclick="addFullChannelGlobal()" style="flex:1;background:#ffcc00;color:#000">📺 ONGEZA FULL CHANNEL</button>
+</div>
+<div id="fullStatus" class="small"></div>
+</div>
+<!-- ====== MWISHO WA FULL CHANNEL MPYA ====== -->
 
 <div class="card" style="border:3px solid #00ff00">
 <h3>🔑 GitHub AUTO</h3>
@@ -87,6 +106,7 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <button onclick="addVideoCat('news', true)" style="flex:1;background:#00ff00;color:#000">▶️ PLAY NOW</button>
 <button onclick="startLiveCat('news')" style="flex:1;background:#cc00cc">🔴 LIVE</button>
 </div>
+<div style="display:flex;gap:5px;margin-top:5px"><button onclick="addFullChannelCat('news')" style="flex:1;background:#ffcc00;color:#000">📺 FULL CHANNEL NEWS</button></div>
 <div id="vlist-news"></div>
 </div>
 <div id="vcat-bizz" class="cat-box">
@@ -97,7 +117,7 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <button onclick="addVideoCat('bizz', false)" style="flex:1">➕ ONGEZA</button>
 <button onclick="addVideoCat('bizz', true)" style="flex:1;background:#00ff00;color:#000">▶️ NOW</button>
 <button onclick="startLiveCat('bizz')" style="flex:1;background:#cc00cc">🔴 LIVE</button>
-</div><div id="vlist-bizz"></div>
+</div><div style="display:flex;gap:5px;margin-top:5px"><button onclick="addFullChannelCat('bizz')" style="flex:1;background:#ffcc00;color:#000">📺 FULL CHANNEL BIZZ</button></div><div id="vlist-bizz"></div>
 </div>
 <div id="vcat-mchezo" class="cat-box">
 <div style="display:flex;justify-content:space-between;align-items:center"><h4>MCHEZO</h4><button id="sw-mchezo" class="sw" onclick="toggleCat('mchezo')">OFF 🔴</button></div>
@@ -107,7 +127,7 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <button style="background:red;flex:1" onclick="addVideoCat('mchezo', false)">⚽ ONGEZA</button>
 <button onclick="addVideoCat('mchezo', true)" style="flex:1;background:#00ff00;color:#000">▶️ NOW</button>
 <button onclick="startLiveCat('mchezo')" style="flex:1;background:#cc00cc">🔴 LIVE</button>
-</div><div id="vlist-mchezo"></div>
+</div><div style="display:flex;gap:5px;margin-top:5px"><button onclick="addFullChannelCat('mchezo')" style="flex:1;background:#ffcc00;color:#000">📺 FULL CHANNEL MCHEZO</button></div><div id="vlist-mchezo"></div>
 </div>
 <div id="vcat-music" class="cat-box">
 <div style="display:flex;justify-content:space-between;align-items:center"><h4>MUSIC</h4><button id="sw-music" class="sw" onclick="toggleCat('music')">OFF 🔴</button></div>
@@ -117,7 +137,7 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <button onclick="addVideoCat('music', false)" style="flex:1">➕ ONGEZA</button>
 <button onclick="addVideoCat('music', true)" style="flex:1;background:#00ff00;color:#000">▶️ NOW</button>
 <button onclick="startLiveCat('music')" style="flex:1;background:#cc00cc">🔴 LIVE</button>
-</div><div id="vlist-music"></div>
+</div><div style="display:flex;gap:5px;margin-top:5px"><button onclick="addFullChannelCat('music')" style="flex:1;background:#ffcc00;color:#000">📺 FULL CHANNEL MUSIC</button></div><div id="vlist-music"></div>
 </div>
 <div id="vcat-drama" class="cat-box">
 <div style="display:flex;justify-content:space-between;align-items:center"><h4>DRAMA</h4><button id="sw-drama" class="sw" onclick="toggleCat('drama')">OFF 🔴</button></div>
@@ -127,7 +147,7 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <button onclick="addVideoCat('drama', false)" style="flex:1">➕ ONGEZA</button>
 <button onclick="addVideoCat('drama', true)" style="flex:1;background:#00ff00;color:#000">▶️ NOW</button>
 <button onclick="startLiveCat('drama')" style="flex:1;background:#cc00cc">🔴 LIVE</button>
-</div><div id="vlist-drama"></div>
+</div><div style="display:flex;gap:5px;margin-top:5px"><button onclick="addFullChannelCat('drama')" style="flex:1;background:#ffcc00;color:#000">📺 FULL CHANNEL DRAMA</button></div><div id="vlist-drama"></div>
 </div>
 <div id="vcat-gen" class="cat-box">
 <div style="display:flex;justify-content:space-between;align-items:center"><h4>MAIN</h4><button id="sw-gen" class="sw" onclick="toggleCat('gen')">OFF 🔴</button></div>
@@ -136,7 +156,7 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <button onclick="addVideo(false)" style="flex:1">➕ ONGEZA MAIN</button>
 <button onclick="addVideo(true)" style="flex:1;background:#00ff00;color:#000">▶️ PLAY NOW</button>
 <button onclick="startLiveCat('gen')" style="flex:1;background:#cc00cc">🔴 LIVE MAIN</button>
-</div><div id="vlist"></div>
+</div><div style="display:flex;gap:5px;margin-top:5px"><button onclick="addFullChannelCat('gen')" style="flex:1;background:#ffcc00;color:#000">📺 FULL CHANNEL MAIN</button></div><div id="vlist"></div>
 </div>
 </div>
 <div id="a" class="tab card"><h3>📢 ADS + Facebook</h3><input id="adTitle" placeholder="Title"><input id="adMsg" placeholder="Ujumbe"><input id="adContact" placeholder="FB Link"><button class="blue" onclick="addAd()">ONGEZA AD</button><div id="alist"></div></div>
@@ -164,7 +184,6 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <script>
 let videos=[], videosByCat={news:[],bizz:[],mchezo:[],music:[],drama:[],gen:[]}, catEnabled={news:false,bizz:false,mchezo:false,music:false,drama:false,gen:false}, ads=[], ownerData={tvName:"MTAANI TV",ownerName:"MTAANI TV",ticker:"MTAANI TV LIVE"}, currentFacing="user", currentRoom="MtaaniTV-Live-Show";
 let liveEndTime=0, liveTimerInterval=null, autoStopTimeout=null;
-// ===== MSAIDIZI CONTROL LOGIC =====
 let ctrlData={enabled:false,token:"MTAANI-1234"};
 async function loadCtrl(){
  try{
@@ -210,17 +229,49 @@ async function pushCtrlDirect(){
  if(!token) return;
  await pushFile('assistant_control.json', JSON.stringify(ctrlData,null,2));
 }
-// ===== END CONTROL =====
+// ====== MPYA: FULL CHANNEL LOGIC - HAIJAGUSA CODE YAKO YA ZAMANI ======
+function autoTitleFull(){
+ let l=document.getElementById('fullLink').value.trim();
+ if(!l) return;
+ let handle=l;
+ try{ if(l.includes('@')){ let m=l.match(/@([a-zA-Z0-9_.-]+)/); if(m) handle='@'+m[1]; } }catch{}
+ document.getElementById('fullTitle').value='FULL CHANNEL: '+handle;
+ document.getElementById('fullStatus').innerHTML='<span class="ok">✅ Tayari: '+handle+' - Chagua category kisha ONGEZA</span>';
+}
+function addFullChannelGlobal(){
+ let link=document.getElementById('fullLink').value.trim();
+ let cat=document.getElementById('fullCat').value;
+ if(!link){ alert('Weka link ya channel kwanza!'); return; }
+ let title=document.getElementById('fullTitle').value.trim() || 'FULL CHANNEL: '+link.substring(0,30);
+ let video={id:link,title:title,category:cat,isFullChannel:true,full:true};
+ videosByCat[cat].unshift(video);
+ saveLocal(); renderVideosCat(cat);
+ document.getElementById('fullStatus').innerHTML='<span class="ok">✅ FULL CHANNEL Imeongezwa kwa '+cat.toUpperCase()+' JUU!</span>';
+ document.getElementById('fullLink').value=''; document.getElementById('fullTitle').value='';
+}
+function addFullChannelCat(cat){
+ let linkEl=document.getElementById(cat==='gen'?'link':'link-'+cat);
+ let titleEl=document.getElementById(cat==='gen'?'title':'title-'+cat);
+ let link=linkEl.value.trim();
+ if(!link){ alert('Weka link ya channel hapo juu kwanza! Mfano @EricOmondi'); return; }
+ let title=titleEl.value.trim() || 'FULL CHANNEL: '+link;
+ let video={id:link,title:title,category:cat,isFullChannel:true,full:true};
+ videosByCat[cat].unshift(video);
+ saveLocal(); renderVideosCat(cat);
+ linkEl.value=''; titleEl.value='';
+ alert('✅ FULL CHANNEL ya '+cat.toUpperCase()+' imewekwa JUU! Nenda PUBLIC > TUMA');
+}
+// ====== MWISHO WA FULL CHANNEL LOGIC ======
 function showTab(id,btnId){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');if(btnId)document.getElementById(btnId).classList.add('active');}
 function openVCat(cat,btnId){document.querySelectorAll('[id^=vcat-]').forEach(b=>b.classList.remove('active'));document.getElementById('vcat-'+cat).classList.add('active');document.querySelectorAll('[id^=vc-]').forEach(b=>b.classList.remove('active'));if(btnId)document.getElementById(btnId).classList.add('active');}
-function extractID(t){if(!t) return null; t=t.trim(); if(/^[a-zA-Z0-9_-]{11}$/.test(t)) return t; let m=t.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/)([a-zA-Z0-9_-]{11})/); if(m) return m[1]; if(t.includes('facebook.com')||t.includes('fb.watch')) return t; try{let u=new URL(t);let v=u.searchParams.get('v');if(v)return v;}catch{} return t.length>5? t : null;}
-async function fetchTitle(){let id=extractID(document.getElementById('link').value);if(!id||id.includes('facebook')){document.getElementById('title').value='Facebook Video';return;}try{let r=await fetch('https://noembed.com/embed?url=https://www.youtube.com/watch?v='+id);let d=await r.json();if(d.title)document.getElementById('title').value=d.title;}catch{}}
-async function fetchTitleCat(cat){let id=extractID(document.getElementById('link-'+cat).value);if(!id) return; if(id.includes('facebook')||id.includes('fb.watch')){document.getElementById('title-'+cat).value='FB - '+cat.toUpperCase(); let s=document.getElementById('status-'+cat); if(s) s.innerHTML='<span class="ok">✅ FB Link Sawa</span>'; return;} try{let r=await fetch('https://noembed.com/embed?url=https://www.youtube.com/watch?v='+id);let d=await r.json();if(d.title){document.getElementById('title-'+cat).value=d.title;let s=document.getElementById('status-'+cat);if(s)s.innerHTML='<span class="ok">✅ '+d.title+'</span>';}}catch{}}
+function extractID(t){if(!t) return null; t=t.trim(); if(/^[a-zA-Z0-9_-]{11}$/.test(t)) return t; if(t.includes('@')||t.includes('youtube.com/channel')||t.includes('youtube.com/@')||t.includes('youtube.com/c/')) return t; let m=t.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/)([a-zA-Z0-9_-]{11})/); if(m) return m[1]; if(t.includes('facebook.com')||t.includes('fb.watch')) return t; try{let u=new URL(t);let v=u.searchParams.get('v');if(v)return v;}catch{} return t.length>5? t : null;}
+async function fetchTitle(){let id=extractID(document.getElementById('link').value);if(!id||id.includes('facebook')||id.includes('@')){return;}try{let r=await fetch('https://noembed.com/embed?url=https://www.youtube.com/watch?v='+id);let d=await r.json();if(d.title)document.getElementById('title').value=d.title;}catch{}}
+async function fetchTitleCat(cat){let id=extractID(document.getElementById('link-'+cat).value);if(!id) return; if(id.includes('facebook')||id.includes('fb.watch')||id.includes('@')){let s=document.getElementById('status-'+cat); if(s) s.innerHTML='<span class="ok">✅ Link Sawa - FULL CHANNEL itacheza zote</span>'; if(id.includes('@')) document.getElementById('title-'+cat).value='FULL CHANNEL: '+id; return;} try{let r=await fetch('https://noembed.com/embed?url=https://www.youtube.com/watch?v='+id);let d=await r.json();if(d.title){document.getElementById('title-'+cat).value=d.title;let s=document.getElementById('status-'+cat);if(s)s.innerHTML='<span class="ok">✅ '+d.title+'</span>';}}catch{}}
 function saveToken(){let t=document.getElementById('token').value.trim();if(t.length<10){alert('Weka token');return;}localStorage.setItem('gh_token',t);localStorage.setItem('gh_owner',document.getElementById('owner').value);localStorage.setItem('gh_repo',document.getElementById('repo').value);document.getElementById('tokenStatus').innerHTML='<span class="ok">✅ Token Saved!</span>';}
 function loadToken(){let s=localStorage.getItem('gh_token')||'';document.getElementById('token').value=s;document.getElementById('owner').value=localStorage.getItem('gh_owner')||'musauvincent76-source';document.getElementById('repo').value=localStorage.getItem('gh_repo')||'Mtaani-tv';}
 function saveLocal(){localStorage.setItem('mtaani_videos',JSON.stringify(videos));Object.keys(videosByCat).forEach(c=>localStorage.setItem('mtaani_videos_'+c,JSON.stringify(videosByCat[c])));localStorage.setItem('mtaani_ads',JSON.stringify(ads));localStorage.setItem('mtaani_owner',JSON.stringify(ownerData));localStorage.setItem('mtaani_cat_enabled',JSON.stringify(catEnabled));}
-function renderVideos(){let h="";videos.forEach((v,i)=>{h+=`<div class="list-item"><span><b>${v.title}</b></span><button class="red" onclick="videos.splice(${i},1);saveLocal();renderVideos()">X</button></div>`});document.getElementById('vlist').innerHTML=h||"Hakuna";updateCount('gen');saveLocal();}
-function renderVideosCat(cat){let h="";videosByCat[cat].forEach((v,i)=>{h+=`<div class="list-item"><span><b>${v.title}</b><br><span class="small">${v.id.substring(0,40)}</span></span><button class="red" onclick="videosByCat['${cat}'].splice(${i},1);saveLocal();renderVideosCat('${cat}')">X</button></div>`});document.getElementById('vlist-'+cat).innerHTML=h||"Hakuna";updateCount(cat);saveLocal();}
+function renderVideos(){let h="";videos.forEach((v,i)=>{let badge=v.isFullChannel||v.full?' <span style="background:#ffcc00;color:#000;padding:2px 6px;border-radius:10px;font-size:10px">FULL CHANNEL</span>':'';h+=`<div class="list-item"><span><b>${v.title}</b>${badge}</span><button class="red" onclick="videos.splice(${i},1);saveLocal();renderVideos()">X</button></div>`});document.getElementById('vlist').innerHTML=h||"Hakuna";updateCount('gen');saveLocal();}
+function renderVideosCat(cat){let h="";videosByCat[cat].forEach((v,i)=>{let badge=v.isFullChannel||v.full?' <span style="background:#ffcc00;color:#000;padding:2px 6px;border-radius:10px;font-size:10px">FULL</span>':'';h+=`<div class="list-item"><span><b>${v.title}</b>${badge}<br><span class="small">${v.id.substring(0,40)}</span></span><button class="red" onclick="videosByCat['${cat}'].splice(${i},1);saveLocal();renderVideosCat('${cat}')">X</button></div>`});document.getElementById('vlist-'+cat).innerHTML=h||"Hakuna";updateCount(cat);saveLocal();}
 function updateCount(cat){let c = cat==='gen'? videos.length : videosByCat[cat].length; let el = document.getElementById('count-'+cat); if(el){ el.innerText = c + ' video'; }}
 function addVideo(playNow=false){let id=extractID(document.getElementById('link').value.trim());if(!id){alert("Link mbaya");return;}let title=document.getElementById('title').value.trim()||"MTAANI - "+id.substring(0,10);let video={id:id,title:title};if(playNow){ videos.unshift(video); } else { videos.push(video); }document.getElementById('link').value=""; document.getElementById('title').value=""; renderVideos(); if(playNow) alert('▶️ Imewekwa JUU! Nenda PUBLIC > TUMA');}
 function addVideoCat(cat, playNow=false){let id=extractID(document.getElementById('link-'+cat).value.trim());if(!id){alert("Link mbaya");return;}let title=document.getElementById('title-'+cat).value.trim()||cat.toUpperCase()+" - "+id.substring(0,15);let video={id:id,title:title,category:cat};if(playNow){videosByCat[cat].unshift(video);} else {videosByCat[cat].push(video);}document.getElementById('link-'+cat).value=""; document.getElementById('title-'+cat).value=""; renderVideosCat(cat); if(playNow) alert('▶️ '+cat.toUpperCase()+' JUU! Nenda PUBLIC > TUMA');}
