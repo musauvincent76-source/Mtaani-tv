@@ -18,6 +18,9 @@ header{background:#001a4d;padding:14px 16px;display:flex;justify-content:space-b
 #liveBadge{position:absolute;top:12px;left:12px;background:red;color:#fff;padding:5px 14px;border-radius:20px;font-weight:900;font-size:13px;z-index:20;display:none;animation:blink 1s infinite}
 #playNowBadge{position:absolute;top:12px;right:12px;background:#00ff00;color:#000;padding:6px 14px;border-radius:20px;font-weight:900;font-size:12px;z-index:30;display:none;animation:blink 1s infinite}
 #fullBadge{position:absolute;top:50px;left:12px;background:#ffcc00;color:#000;padding:5px 14px;border-radius:20px;font-weight:900;font-size:11px;z-index:20;display:none}
+/* NEW - TIKTOK BUTTON */
+#tiktokBtn{position:absolute;top:90px;left:12px;right:12px;background:linear-gradient(90deg,#000,#ff0050);color:#fff;padding:12px;border-radius:10px;font-weight:900;font-size:14px;z-index:40;display:flex;justify-content:space-between;align-items:center;text-decoration:none;border:2px solid #fff}
+#tiktokBtn b{background:#fff;color:#000;padding:4px 10px;border-radius:15px;font-size:11px}
 </style></head><body>
 <header><b>MTAANI <span>TV</span></b><span class="badge" id="badge">● LIVE</span></header>
 <div id="wrap">
@@ -26,12 +29,15 @@ header{background:#001a4d;padding:14px 16px;display:flex;justify-content:space-b
 <div id="liveBadge">🔴 TRUE LIVE</div>
 <div id="playNowBadge">▶️ PLAY NOW</div>
 <div id="fullBadge">📺 FULL CHANNEL</div>
+<a id="tiktokBtn" href="https://www.tiktok.com/@mtaani_tv/live" target="_blank"><span>🔴 TIKTOK LIVE - INGIA HAPA</span><b>LIVE ▶️</b></a>
 <div id="clock">00:00:00</div>
 </div>
 <div id="progress"><b id="ptext">0%</b><div id="pbar"></div></div>
 <div class="bar"><span id="title">MTAANI TV LIVE...</span><span id="count">LIVE</span></div>
 <div id="tick"><span id="ticker">MTAANI TV TRUE LIVE 24/7 | PHONE NUMBER 0751 768763 TILL 3624692</span></div>
-<div id="ad-box"><h2 id="adT">📢 TANGAZA HAPA!</h2><p id="adM">Watu 1000+ LIVE</p><span id="adC" style="background:#000;color:#ffcc00;padding:5px 12px;border-radius:20px;margin-top:8px;display:inline-block">💰 TILL: 3624692</span></div>
+<div id="ad-box"><h2 id="adT">📢 TANGAZA HAPA!</h2><p id="adM">Watu 1000+ LIVE</p><span id="adC" style="background:#000;color:#ffcc00;padding:5px 12px;border-radius:20px;margin-top:8px;display:inline-block">💰 TILL: 3624692</span>
+<div style="margin-top:12px;width:100%;background:#fff;padding:5px;color:#000;font-size:11px;">AdSense Ad Hapa - Imewekwa tayari kwa ajili ya Google</div>
+</div>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
 function isChannelLink(t){ if(!t) return false; t=t.toLowerCase(); return t.includes('@') || t.includes('/channel/') || t.includes('/c/') || t.includes('youtube.com/@'); }
