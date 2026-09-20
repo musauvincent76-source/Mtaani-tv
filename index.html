@@ -1,4 +1,5 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MTAANI TV - TRUE LIVE + PLAY NOW INSTANT + FULL CHANNEL</title>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MTAANI TV - TRUE LIVE</title>
+<meta name="monetag" content="9e14a7948c785cbdc24504b2533b5d6a">
 <script src="https://meet.jit.si/external_api.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}body{background:#000;color:#fff;font-family:sans-serif;min-height:100vh;display:flex;flex-direction:column}
@@ -51,7 +52,6 @@ let f=d.map(v=>{
 if(f.length>0)return f;}catch(e){console.log(e)}return [{id:'4EDkfksVFdE',dur:300,title:'MTAANI TV',isFullChannel:false}];}
 function getLivePos(total){return Math.floor((Date.now()-LOOP_START)/1000)%total}
 function findV(pos){let a=0;for(let i=0;i<list.length;i++){if(pos<a+list[i].dur)return{index:i,seek:pos-a,start:a};a+=list[i].dur}return{index:0,seek:0,start:0}}
-
 function playEntry(idx, seek){
   if(!list[idx]) return;
   let v=list[idx];
@@ -60,7 +60,6 @@ function playEntry(idx, seek){
     document.getElementById('fullBadge').innerText='📺 FULL: '+v.handle;
     try{
       let h = v.handle.replace('@','').trim();
-      // FIX: Tumia user pekee - search ndio inaleta error ya Google Help
       player.loadPlaylist({list:h, listType:'user'});
       setTimeout(()=>{try{player.unMute();player.setVolume(100);player.playVideo();}catch{}},1200);
     }catch(e){ goNext(); }
@@ -88,16 +87,12 @@ function updateUIFromVideo(v){document.getElementById('title').innerText=v.title
 async function checkLive(){try{let r=await fetch('live.json?v='+Date.now(),{cache:'no-store'});if(!r.ok)throw 'no live';let d=await r.json();if(d.live&&d.room){if(!isLiveMode||window._currentLiveRoom!==d.room)startPublicLive(d.room,d.bg);}else{if(isLiveMode)stopPublicLive();}}catch{if(isLiveMode)stopPublicLive();}}
 function startPublicLive(room,bg){isLiveMode=true;window._currentLiveRoom=room;document.getElementById('player').style.display='none';document.getElementById('liveWrap').style.display='block';document.getElementById('liveBadge').style.display='block';document.getElementById('badge').innerText='● TRUE LIVE 3HRS';document.getElementById('badge').style.background='#00b300';document.getElementById('title').innerText='🔴 TRUE LIVE - SCREEN 1 - WOTE PAMOJA';document.getElementById('ticker').innerText='🔴 TRUE LIVE - WOTE PAMOJA - HAIISHI MPAKA 3HRS | TILL 3624692';document.getElementById('count').innerText='LIVE 3HRS';document.getElementById('pbar').style.width='100%';document.getElementById('ptext').innerText='LIVE';if(bg)document.getElementById('liveBg').style.backgroundImage='url('+bg+')';let container=document.getElementById('liveJitsi');if(jitsiApi)try{jitsiApi.dispose();}catch{}jitsiApi=new JitsiMeetExternalAPI("meet.jit.si",{roomName:room,parentNode:container,width:"100%",height:"100%",configOverwrite:{prejoinPageEnabled:false,startWithVideoMuted:false,startWithAudioMuted:true},userInfo:{displayName:"MTAZAMAJI TV"}});}
 function stopPublicLive(){isLiveMode=false;document.getElementById('player').style.display='block';document.getElementById('liveWrap').style.display='none';document.getElementById('liveBadge').style.display='none';document.getElementById('badge').innerText='● LIVE';document.getElementById('badge').style.background='red';if(jitsiApi)try{jitsiApi.dispose();jitsiApi=null;}catch{}if(player&&list.length>0){let total=list.reduce((s,x)=>s+x.dur,0);let live=findV(getLivePos(total));try{ playEntry(live.index, live.seek); }catch{}}}
-
 async function checkNewVideos(){if(isLiveMode)return;try{let newList=await getVideos();if(newList.length===0)return;if(!lastVideoId){lastVideoId=newList[0].raw||newList[0].id;list=newList;return;}let newFirst=(newList[0].raw||newList[0].id);if(newFirst!==lastVideoId){list=newList;lastVideoId=newFirst;playNowVideo=newList[0];isPlayNowMode=true;document.getElementById('playNowBadge').style.display='block';document.getElementById('playNowBadge').innerText='▶️ PLAY NOW: '+playNowVideo.title.substring(0,25);document.getElementById('count').innerText='PLAY NOW';updateUIFromVideo(playNowVideo);if(player) playPlayNow(playNowVideo);}else{if(isPlayNowMode) return; list=newList;}}catch(e){}}
-
 function onYouTubeIframeAPIReady(){getVideos().then(v=>{list=v;if(list.length>0)lastVideoId=list[0].raw||list[0].id;let total=list.reduce((s,x)=>s+x.dur,0);let live=findV(getLivePos(total));updateUI(live.index);document.getElementById('count').innerText=(live.index+1)+"/"+list.length;player=new YT.Player('player',{playerVars:{autoplay:1,mute:0,controls:0,rel:0,modestbranding:1,playsinline:1,fs:0,disablekb:1,vq:'small'},events:{onReady:e=>{
   playEntry(live.index, live.seek);
   e.target.setVolume(100);e.target.unMute();e.target.playVideo();
   setTimeout(()=>{try{e.target.unMute();e.target.setVolume(100);}catch{}},1500);
 },onError:e=>{
-  console.log("YT ERROR",e.data);
-  // ERROR 150 / 101 = FULL CHANNEL imekataa - ruka next badala ya monkey
   if(list[_lastIdx] && list[_lastIdx].isFullChannel){
     document.getElementById('ptext').innerText='FULL BLOCKED - NEXT...';
     setTimeout(()=>{ goNext(); },1000);
@@ -126,4 +121,5 @@ function goNext(){if(isLiveMode||isPlayNowMode)return;let total=list.reduce((s,x
 function updateClock(){let now=new Date();document.getElementById('clock').innerText=String(now.getHours()).padStart(2,'0')+":"+String(now.getMinutes()).padStart(2,'0')+":"+String(now.getSeconds()).padStart(2,'0');}setInterval(updateClock,1000);updateClock();
 document.addEventListener('click',()=>{try{if(!isLiveMode){player.unMute();player.setVolume(100);player.playVideo();}}catch{}});
 async function loadAds(){let ads=[];try{let r=await fetch('ads.json?v='+Date.now(),{cache:'no-store'});let d=await r.json();if(Array.isArray(d)&&d.length>0)ads=d;}catch{}if(!ads.length)ads=[{title:'📢 TANGAZA HAPA!',msg:'Watu 1000+ LIVE',contact:'💰 TILL: 3624692'}];let i=0;function show(){let a=ads[i%ads.length];document.getElementById('adT').innerText=a.title;document.getElementById('adM').innerText=a.msg;document.getElementById('adC').innerText=a.contact;i++;}show();setInterval(show,5000);}loadAds();
-</script></body></html>
+</script>
+</body></html>
