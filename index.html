@@ -29,14 +29,14 @@ header{background:#001a4d;padding:14px 16px;display:flex;justify-content:space-b
 </div>
 <div id="progress"><b id="ptext">0%</b><div id="pbar"></div></div>
 <div class="bar"><span id="title">MTAANI TV LIVE...</span><span id="count">LIVE</span></div>
-<div id="tick"><span id="ticker">MTAANI TV TRUE LIVE 24/7 | PHONE NO 0751 768763 TILL 3624692</span></div>
+<div id="tick"><span id="ticker">MTAANI TV TRUE LIVE 24/7 | PHONE NUMBER  0751 768763 TILL 3624692</span></div>
 <div id="ad-box"><h2 id="adT">📢 TANGAZA HAPA!</h2><p id="adM">Watu 1000+ LIVE</p><span id="adC" style="background:#000;color:#ffcc00;padding:5px 12px;border-radius:20px;margin-top:8px;display:inline-block">💰 TILL: 3624692</span></div>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
 function isChannelLink(t){ if(!t) return false; t=t.toLowerCase(); return t.includes('@') || t.includes('/channel/') || t.includes('/c/') || t.includes('youtube.com/@'); }
 function cleanHandle(t){ if(!t) return t; t=t.trim(); let m=t.match(/@([a-zA-Z0-9_.-]+)/); if(m) return '@'+m[1]; return t; }
 function extractID(t){if(!t)return null;t=t.trim();if(isChannelLink(t)) return t; if(/^[a-zA-Z0-9_-]{11}$/.test(t))return t;let m=t.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);if(m)return m[1];try{let u=new URL(t);let v=u.searchParams.get('v');if(v&&v.length===11)return v;}catch{}let m2=t.match(/[a-zA-Z0-9_-]{11}/);return m2?m2[0]:null;}
-let player,list=[],jitsiApi=null,isLiveMode=false,isPlayNowMode=false,lastVideoId="",_lastIdx=-1;const LOOP_START=new Date('2025-01-01T00:00:00Z').getTime();
+let player,list=[],jitsiApi=null,isLiveMode=false,isPlayNowMode=false,lastVideoId="",_lastIdx=-1,playNowVideo=null;const LOOP_START=new Date('2025-01-01T00:00:00Z').getTime();
 async function getVideos(){try{let r=await fetch('videos.json?v='+Date.now(),{cache:'no-store'});let d=await r.json();
 let f=d.map(v=>{
   let raw=v.id||v.url||'';
@@ -51,6 +51,8 @@ let f=d.map(v=>{
 if(f.length>0)return f;}catch(e){console.log(e)}return [{id:'4EDkfksVFdE',dur:300,title:'MTAANI TV',isFullChannel:false}];}
 function getLivePos(total){return Math.floor((Date.now()-LOOP_START)/1000)%total}
 function findV(pos){let a=0;for(let i=0;i<list.length;i++){if(pos<a+list[i].dur)return{index:i,seek:pos-a,start:a};a+=list[i].dur}return{index:0,seek:0,start:0}}
+
+// --- FIX 1: FULL CHANNEL SASA HAITUMII SEARCH ILIYOBLOCKIWA ---
 function playEntry(idx, seek){
   if(!list[idx]) return;
   let v=list[idx];
@@ -58,36 +60,60 @@ function playEntry(idx, seek){
     document.getElementById('fullBadge').style.display='block';
     document.getElementById('fullBadge').innerText='📺 FULL: '+v.handle;
     try{
-      let searchTerm = v.handle.replace('@','');
-      player.loadPlaylist({list:searchTerm, listType:'search'});
-      setTimeout(()=>{try{player.unMute();player.setVolume(100);player.playVideo();}catch{}},1200);
+      let h = v.handle.replace('@','').trim();
+      // Jaribu user playlist kwanza - search imeblockiwa na YouTube
+      player.loadPlaylist({list:h, listType:'user'});
+      setTimeout(()=>{try{player.unMute();player.setVolume(100);player.playVideo();}catch{}},1500);
     }catch(e){
-      try{ player.cuePlaylist({list:v.handle, listType:'user'}); }catch{}
+      try{ player.loadPlaylist({list:v.handle.replace('@','').trim(), listType:'search'}); }catch{}
     }
   } else {
     document.getElementById('fullBadge').style.display='none';
     try{ player.loadVideoById({videoId:v.id,startSeconds:seek||0}); }catch{}
   }
 }
+function playPlayNow(v){
+  try{
+    if(v.isFullChannel){
+      document.getElementById('fullBadge').style.display='block';
+      document.getElementById('fullBadge').innerText='📺 FULL: '+v.handle;
+      let h = v.handle.replace('@','').trim();
+      player.loadPlaylist({list:h, listType:'user'});
+    } else {
+      document.getElementById('fullBadge').style.display='none';
+      player.loadVideoById({videoId:v.id,startSeconds:0});
+    }
+    setTimeout(()=>{try{player.unMute();player.setVolume(100);player.playVideo();}catch{}},1000);
+  }catch{}
+}
 function updateUI(idx){if(!list[idx]||isLiveMode)return;document.getElementById('title').innerText=list[idx].title;document.getElementById('ticker').innerText=list[idx].title.toUpperCase()+" | MTAANI TV TRUE LIVE 24/7 | TILL 3624692"; if(list[idx].isFullChannel){document.getElementById('fullBadge').style.display='block';} else {document.getElementById('fullBadge').style.display='none';}}
+function updateUIFromVideo(v){document.getElementById('title').innerText=v.title;document.getElementById('ticker').innerText=v.title.toUpperCase()+" | MTAANI TV TRUE LIVE 24/7 | TILL 3624692";}
 async function checkLive(){try{let r=await fetch('live.json?v='+Date.now(),{cache:'no-store'});if(!r.ok)throw 'no live';let d=await r.json();if(d.live&&d.room){if(!isLiveMode||window._currentLiveRoom!==d.room)startPublicLive(d.room,d.bg);}else{if(isLiveMode)stopPublicLive();}}catch{if(isLiveMode)stopPublicLive();}}
 function startPublicLive(room,bg){isLiveMode=true;window._currentLiveRoom=room;document.getElementById('player').style.display='none';document.getElementById('liveWrap').style.display='block';document.getElementById('liveBadge').style.display='block';document.getElementById('badge').innerText='● TRUE LIVE 3HRS';document.getElementById('badge').style.background='#00b300';document.getElementById('title').innerText='🔴 TRUE LIVE - SCREEN 1 - WOTE PAMOJA';document.getElementById('ticker').innerText='🔴 TRUE LIVE - WOTE PAMOJA - HAIISHI MPAKA 3HRS | TILL 3624692';document.getElementById('count').innerText='LIVE 3HRS';document.getElementById('pbar').style.width='100%';document.getElementById('ptext').innerText='LIVE';if(bg)document.getElementById('liveBg').style.backgroundImage='url('+bg+')';let container=document.getElementById('liveJitsi');if(jitsiApi)try{jitsiApi.dispose();}catch{}jitsiApi=new JitsiMeetExternalAPI("meet.jit.si",{roomName:room,parentNode:container,width:"100%",height:"100%",configOverwrite:{prejoinPageEnabled:false,startWithVideoMuted:false,startWithAudioMuted:true},userInfo:{displayName:"MTAZAMAJI TV"}});}
 function stopPublicLive(){isLiveMode=false;document.getElementById('player').style.display='block';document.getElementById('liveWrap').style.display='none';document.getElementById('liveBadge').style.display='none';document.getElementById('badge').innerText='● LIVE';document.getElementById('badge').style.background='red';if(jitsiApi)try{jitsiApi.dispose();jitsiApi=null;}catch{}if(player&&list.length>0){let total=list.reduce((s,x)=>s+x.dur,0);let live=findV(getLivePos(total));try{ playEntry(live.index, live.seek); }catch{}}}
 
-// ====== FIXED HAPA TU - PLAY NOW HAITAPOTEA TENA ======
-async function checkNewVideos(){if(isLiveMode)return;try{let newList=await getVideos();if(newList.length===0)return;if(!lastVideoId){lastVideoId=newList[0].raw||newList[0].id;list=newList;return;}if((newList[0].raw||newList[0].id)!==lastVideoId){list=newList;lastVideoId=newList[0].raw||newList[0].id;isPlayNowMode=true;document.getElementById('playNowBadge').style.display='block';document.getElementById('playNowBadge').innerText='▶️ PLAY NOW: '+newList[0].title.substring(0,25);updateUI(0);document.getElementById('count').innerText='PLAY NOW';if(player){ playEntry(0,0); try{player.unMute();player.setVolume(100);player.playVideo();}catch{}}
-// IMEONDOLEWA setTimeout ya 8 sec - sasa itaisha video iishe
-}else{list=newList;}}catch(e){}}
+// --- FIX 2: PLAY NOW IME-LOCK ---
+async function checkNewVideos(){if(isLiveMode)return;try{let newList=await getVideos();if(newList.length===0)return;if(!lastVideoId){lastVideoId=newList[0].raw||newList[0].id;list=newList;return;}let newFirst=(newList[0].raw||newList[0].id);if(newFirst!==lastVideoId){console.log("PLAY NOW MPYA");list=newList;lastVideoId=newFirst;playNowVideo=newList[0];isPlayNowMode=true;document.getElementById('playNowBadge').style.display='block';document.getElementById('playNowBadge').innerText='▶️ PLAY NOW: '+playNowVideo.title.substring(0,25);document.getElementById('count').innerText='PLAY NOW';updateUIFromVideo(playNowVideo);if(player) playPlayNow(playNowVideo);}else{if(isPlayNowMode) return; list=newList;}}catch(e){}}
 
 function onYouTubeIframeAPIReady(){getVideos().then(v=>{list=v;if(list.length>0)lastVideoId=list[0].raw||list[0].id;let total=list.reduce((s,x)=>s+x.dur,0);let live=findV(getLivePos(total));updateUI(live.index);document.getElementById('count').innerText=(live.index+1)+"/"+list.length;player=new YT.Player('player',{playerVars:{autoplay:1,mute:0,controls:0,rel:0,modestbranding:1,playsinline:1,fs:0,disablekb:1,vq:'small'},events:{onReady:e=>{
   playEntry(live.index, live.seek);
   e.target.setVolume(100);e.target.unMute();e.target.playVideo();
   setTimeout(()=>{try{e.target.unMute();e.target.setVolume(100);let realDur=e.target.getDuration();if(realDur>0&&!list[live.index].isFullChannel){list[live.index].dur=Math.floor(realDur);}}catch{}},1500);
+},onError:e=>{
+  console.log("YT ERROR",e.data);
+  if(isPlayNowMode){
+    document.getElementById('ptext').innerText='RETRY PLAY NOW...';
+    setTimeout(()=>{ if(playNowVideo) playPlayNow(playNowVideo); },2000);
+  } else if(list[_lastIdx] && list[_lastIdx].isFullChannel){
+    // FULL CHANNEL ikikataa - ruka kwenda next badala ya kukwama na error screen
+    document.getElementById('ptext').innerText='FULL ERROR - NEXT';
+    setTimeout(()=>{ goNext(); },2000);
+  }
 },onStateChange:e=>{
   if(e.data===0){
     if(isPlayNowMode){
-      // VIDEO YA PLAY NOW IMEISHA NDIO RUDI LIVE
       isPlayNowMode=false;
+      playNowVideo=null;
       document.getElementById('playNowBadge').style.display='none';
       let total=list.reduce((s,x)=>s+x.dur,0);
       let live=findV(getLivePos(total));
