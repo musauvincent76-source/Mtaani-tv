@@ -138,7 +138,6 @@ function refreshKey(){ let newKey='MTAANI-'+Math.random().toString(36).substring
 function copyLink(){ let link=document.getElementById('linkOut').innerText; navigator.clipboard.writeText(link).then(()=>alert('✅ Link:\n'+link)); }
 async function pushCtrlDirect(){ let token=localStorage.getItem('gh_token')||''; if(!token) return; await pushFile('assistant_control.json', JSON.stringify(ctrlData,null,2)); }
 
-// ====== FIXED: FULL CHANNEL LOGIC ======
 function autoTitleFull(){ let l=document.getElementById('fullLink').value.trim(); if(!l) return; let handle=l; try{ if(l.includes('@')){ let m=l.match(/@([a-zA-Z0-9_.-]+)/); if(m) handle='@'+m[1]; } }catch{} document.getElementById('fullTitle').value='FULL CHANNEL: '+handle; document.getElementById('fullStatus').innerHTML='<span class="ok">✅ Tayari: '+handle+'</span>'; }
 
 function addFullChannelGlobal(){
@@ -174,7 +173,6 @@ function addFullChannelCat(cat){
 function showTab(id,btnId){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');if(btnId)document.getElementById(btnId).classList.add('active');}
 function openVCat(cat,btnId){document.querySelectorAll('[id^=vcat-]').forEach(b=>b.classList.remove('active'));document.getElementById('vcat-'+cat).classList.add('active');document.querySelectorAll('[id^=vc-]').forEach(b=>b.classList.remove('active'));if(btnId)document.getElementById(btnId).classList.add('active');}
 
-// ====== FIXED extractID - SASA INAKUBALI @ ======
 function extractID(t){
  if(!t) return null;
  t=t.trim();
@@ -193,8 +191,57 @@ async function fetchTitleCat(cat){ let raw=document.getElementById('link-'+cat).
 function saveToken(){let t=document.getElementById('token').value.trim();if(t.length<10){alert('Weka token');return;}localStorage.setItem('gh_token',t);localStorage.setItem('gh_owner',document.getElementById('owner').value);localStorage.setItem('gh_repo',document.getElementById('repo').value);document.getElementById('tokenStatus').innerHTML='<span class="ok">✅ Token Saved!</span>';}
 function loadToken(){let s=localStorage.getItem('gh_token')||'';document.getElementById('token').value=s;document.getElementById('owner').value=localStorage.getItem('gh_owner')||'musauvincent76-source';document.getElementById('repo').value=localStorage.getItem('gh_repo')||'Mtaani-tv';}
 function saveLocal(){localStorage.setItem('mtaani_videos',JSON.stringify(videos));Object.keys(videosByCat).forEach(c=>localStorage.setItem('mtaani_videos_'+c,JSON.stringify(videosByCat[c])));localStorage.setItem('mtaani_ads',JSON.stringify(ads));localStorage.setItem('mtaani_owner',JSON.stringify(ownerData));localStorage.setItem('mtaani_cat_enabled',JSON.stringify(catEnabled));}
-function renderVideos(){let h="";videos.forEach((v,i)=>{let badge=v.isFullChannel||v.full?' <span style="background:#ffcc00;color:#000;padding:2px 6px;border-radius:10px;font-size:10px">FULL</span>':'';h+=`<div class="list-item"><span><b>${v.title}</b>${badge}</span><button class="red" onclick="videos.splice(${i},1);saveLocal();renderVideos()">X</button></div>`});document.getElementById('vlist').innerHTML=h||"Hakuna";updateCount('gen');saveLocal();}
-function renderVideosCat(cat){let h="";videosByCat[cat].forEach((v,i)=>{let badge=v.isFullChannel||v.full?' <span style="background:#ffcc00;color:#000;padding:2px 6px;border-radius:10px;font-size:10px">FULL</span>':'';h+=`<div class="list-item"><span><b>${v.title}</b>${badge}<br><span class="small">${v.id.substring(0,50)}</span></span><button class="red" onclick="videosByCat['${cat}'].splice(${i},1);saveLocal();renderVideosCat('${cat}')">X</button></div>`});document.getElementById('vlist-'+cat).innerHTML=h||"Hakuna";updateCount(cat);saveLocal();}
+
+// === FIXED RENDER - SASA DELETE INAPIGA GITHUB ===
+function renderVideos(){
+ let h="";
+ videos.forEach((v,i)=>{
+  let badge=v.isFullChannel||v.full?' <span style="background:#ffcc00;color:#000;padding:2px 6px;border-radius:10px;font-size:10px">FULL</span>':'';
+  h+=`<div class="list-item"><span><b>${v.title}</b>${badge}</span><button class="red" onclick="deleteMain(${i})">X</button></div>`
+ });
+ document.getElementById('vlist').innerHTML=h||"Hakuna";
+ updateCount('gen');
+ saveLocal();
+}
+function renderVideosCat(cat){
+ let h="";
+ videosByCat[cat].forEach((v,i)=>{
+  let badge=v.isFullChannel||v.full?' <span style="background:#ffcc00;color:#000;padding:2px 6px;border-radius:10px;font-size:10px">FULL</span>':'';
+  h+=`<div class="list-item"><span><b>${v.title}</b>${badge}<br><span class="small">${v.id.substring(0,50)}</span></span><button class="red" onclick="deleteCat('${cat}',${i})">X</button></div>`
+ });
+ document.getElementById('vlist-'+cat).innerHTML=h||"Hakuna";
+ updateCount(cat);
+ saveLocal();
+}
+
+// === SMART DELETE - INAFUTA LOCAL + GITHUB ===
+async function autoPushVideos(){
+ let all=[...videos];
+ Object.keys(videosByCat).forEach(c=>{ if(catEnabled[c]){ videosByCat[c].forEach(v=>all.push(v)); } });
+ let pretty=JSON.stringify(all,null,2);
+ document.getElementById('out').value=pretty;
+ let token=localStorage.getItem('gh_token')||'';
+ if(!token||token.length<10){
+   document.getElementById('pushStatus').innerHTML='⚠️ Token hakuna - nenda PUBLIC > TUMA manual';
+   return;
+ }
+ document.getElementById('pushStatus').innerText="🗑️ Inafuta GitHub...";
+ let ok=await pushFile('videos.json',pretty);
+ if(ok) document.getElementById('pushStatus').innerHTML='<span class="ok">✅ IMEFUTWA GITHUB PIA! TV itabadilika 10sec</span>';
+}
+function deleteMain(i){
+ if(!confirm('Futa hii video? Itafutika na GitHub pia')) return;
+ videos.splice(i,1);
+ saveLocal(); renderVideos();
+ autoPushVideos();
+}
+function deleteCat(cat,i){
+ if(!confirm('Futa hii ya '+cat.toUpperCase()+'? Itafutika na GitHub pia')) return;
+ videosByCat[cat].splice(i,1);
+ saveLocal(); renderVideosCat(cat);
+ autoPushVideos();
+}
+
 function updateCount(cat){let c=cat==='gen'?videos.length:videosByCat[cat].length;let el=document.getElementById('count-'+cat);if(el)el.innerText=c+' video';}
 function addVideo(playNow=false){let raw=document.getElementById('link').value.trim();let id=extractID(raw);if(!id){alert("Link mbaya");return;}let title=document.getElementById('title').value.trim()||"MTAANI - "+id.substring(0,15);let isFull=id.includes('@')||id.includes('/channel/');let video={id:id,title:title,isFullChannel:isFull,full:isFull,duration:isFull?1800:300};if(playNow){videos.unshift(video);}else{videos.push(video);}if(isFull){catEnabled['gen']=true; let b=document.getElementById('sw-gen'); if(b){b.innerText='ON 🟢';b.style.background='#00b300';}}document.getElementById('link').value="";document.getElementById('title').value="";renderVideos(); if(playNow) alert('▶️ Imewekwa JUU! Nenda PUBLIC > TUMA');}
 function addVideoCat(cat,playNow=false){let raw=document.getElementById('link-'+cat).value.trim();let id=extractID(raw);if(!id){alert("Link mbaya");return;}let title=document.getElementById('title-'+cat).value.trim()||cat.toUpperCase()+" - "+id.substring(0,15);let isFull=id.includes('@')||id.includes('/channel/');let video={id:id,title:title,category:cat,isFullChannel:isFull,full:isFull,duration:isFull?1800:300};if(playNow){videosByCat[cat].unshift(video);}else{videosByCat[cat].push(video);}catEnabled[cat]=true; let b=document.getElementById('sw-'+cat); if(b){b.innerText='ON 🟢';b.style.background='#00b300';}document.getElementById('link-'+cat).value="";document.getElementById('title-'+cat).value="";renderVideosCat(cat); if(playNow) alert('▶️ '+cat.toUpperCase()+' JUU na ON! Nenda PUBLIC > TUMA');}
