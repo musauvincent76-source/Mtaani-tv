@@ -1,5 +1,12 @@
 [
   {
+    "id": "@fortunemwikali",
+    "title": "MTAANI - @fortunemwikali",
+    "isFullChannel": true,
+    "full": true,
+    "duration": 1800
+  },
+  {
     "id": "Mi95IkHvvyI",
     "title": "Asante Mungu  - St Francis Chorale Sirende"
   },
@@ -74,6 +81,14 @@
   {
     "id": "@davidjelina2",
     "title": "MTAANI - @davidjelina2",
+    "isFullChannel": true,
+    "full": true,
+    "duration": 1800
+  },
+  {
+    "id": "https://youtube.com/@fortunemwikali?si=qroy13YgcK4iHWIw",
+    "title": "FULL CHANNEL: @fortunemwikali",
+    "category": "gen",
     "isFullChannel": true,
     "full": true,
     "duration": 1800
