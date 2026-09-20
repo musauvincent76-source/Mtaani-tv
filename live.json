@@ -1,7 +1,7 @@
 {
-  "live": true,
+  "live": false,
   "room": "MtaaniTV-Live-Show",
   "bg": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200",
-  "time": 1789883605559,
+  "time": 1789884213404,
   "endTime": 0
 }
