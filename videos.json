@@ -1,5 +1,12 @@
 [
   {
+    "id": "https://youtube.com/@fortunemwikali?si=qroy13YgcK4iHWIw",
+    "title": "MTAANI - https://youtube",
+    "isFullChannel": true,
+    "full": true,
+    "duration": 1800
+  },
+  {
     "id": "Mi95IkHvvyI",
     "title": "Asante Mungu  - St Francis Chorale Sirende"
   },
@@ -70,6 +77,14 @@
   {
     "id": "O3CtHOsNDDA",
     "title": "FAITH MAINA:,,Hitha Mathagu-ini"
+  },
+  {
+    "id": "https://youtube.com/@fortunemwikali?si=qroy13YgcK4iHWIw",
+    "title": "FULL CHANNEL: @fortunemwikali",
+    "category": "gen",
+    "isFullChannel": true,
+    "full": true,
+    "duration": 1800
   },
   {
     "id": "https://youtube.com/@fortunemwikali?si=qroy13YgcK4iHWIw",
