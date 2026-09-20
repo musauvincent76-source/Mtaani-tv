@@ -1,8 +1,8 @@
 {
   "news": true,
-  "bizz": false,
+  "bizz": true,
   "mchezo": false,
-  "music": false,
+  "music": true,
   "drama": true,
   "gen": true
 }
