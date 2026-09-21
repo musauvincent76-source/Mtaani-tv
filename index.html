@@ -28,15 +28,50 @@ header{background:#001a4d;padding:14px 16px;display:flex;justify-content:space-b
 <div id="playNowBadge">▶️ PLAY NOW</div>
 <a id="tiktokBtn" href="https://www.tiktok.com/@mtaani_tv/live" target="_blank"><span>🔴 TIKTOK LIVE - INGIA HAPA</span><b>LIVE ▶️</b></a>
 <div id="clock">00:00:00</div>
+
+<!-- HII NDIO AD YAKO YA 5 SEC - IMEWEKWA NDANI YA TV -->
+<div id="adBox" style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:99;">
+  <div id="closeX" onclick="toaAd()" style="position:absolute; top:15px; right:20px; background:red; color:white; width:40px; height:40px; border-radius:50%; display:flex; justify-content:center; align-items:center; font-weight:bold; font-size:22px; cursor:pointer; display:none; z-index:100;">X</div>
+  <p id="txt" style="color:#ffcc00; font-size:20px; font-weight:900;">⏳ Ad ina-play... 5</p>
+  <p style="color:white; font-size:13px; margin-top:10px;">Ad ita-jitoa yenyewe</p>
+  <div style="margin-top:15px; text-align:center; color:#aaa; font-size:10px;">Advertisement</div>
+</div>
+
 </div>
 <div id="progress"><b id="ptext">0%</b><div id="pbar"></div></div>
 <div class="bar"><span id="title">MTAANI TV LIVE...</span><span id="count">LIVE</span></div>
 <div id="tick"><span id="ticker">MTAANI TV TRUE LIVE 24/7 | TILL 3624692 | 0751 768763</span></div>
 <div id="ad-box"><h2 id="adT">📢 TANGAZA HAPA!</h2><p id="adM">Watu 1000+ LIVE</p><span id="adC" style="background:#000;color:#ffcc00;padding:5px 12px;border-radius:20px;margin-top:8px;display:inline-block">💰 TILL: 3624692</span></div>
+
+<script src="https://pl31432496.profitableratecpmnetwork.com/7d/03/a9/7d03a9d62b9939ab15837d28a0a09a1c09.js"></script>
+
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
 function extractID(t){if(!t)return null;t=t.trim();if(/^[a-zA-Z0-9_-]{11}$/.test(t))return t;let m=t.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);if(m)return m[1];try{let u=new URL(t);let v=u.searchParams.get('v');if(v&&v.length===11)return v;}catch{}let x=t.match(/[a-zA-Z0-9_-]{11}/);return x?x[0]:null;}
 let player,list=[],jitsiApi=null,isLiveMode=false,isPlayNowMode=false,lastVideoId="",_lastIdx=-1,playNowVideo=null;const LOOP_START=new Date('2025-01-01T00:00:00Z').getTime();
+
+// --- LOGIC YA AD ---
+var sec = 5;
+var ad = document.getElementById('adBox');
+var txt = document.getElementById('txt');
+var x = document.getElementById('closeX');
+
+var timer = setInterval(function(){
+  sec--;
+  if(txt) txt.innerHTML = "⏳ Ad ina-play... " + sec;
+  if(sec <= 3 && x){ x.style.display = "flex"; }
+  if(sec <= 0){
+    clearInterval(timer);
+    toaAd();
+  }
+}, 1000);
+
+function toaAd(){
+  if(ad) ad.style.display = "none";
+  try{ if(player) { player.unMute(); player.setVolume(100); player.playVideo(); } }catch{}
+}
+// --- MWISHO WA AD ---
+
 async function getVideos(){try{let r=await fetch('videos.json?v='+Date.now(),{cache:'no-store'});let d=await r.json();let f=d.map(v=>{let raw=v.id||v.url||'';let vid=extractID(raw);if(!vid)return null;return{id:vid,raw:raw,dur:parseInt(v.duration)||300,title:v.title||'MTAANI TV'}}).filter(v=>v!==null);if(f.length>0)return f;}catch(e){}return[{id:'4EDkfksVFdE',dur:300,title:'MTAANI TV'}];}
 function getLivePos(total){return Math.floor((Date.now()-LOOP_START)/1000)%total}
 function findV(pos){let a=0;for(let i=0;i<list.length;i++){if(pos<a+list[i].dur)return{index:i,seek:pos-a,start:a};a+=list[i].dur}return{index:0,seek:0,start:0}}
@@ -48,7 +83,7 @@ async function checkLive(){try{let r=await fetch('live.json?v='+Date.now(),{cach
 function startPublicLive(room,bg){isLiveMode=true;window._currentLiveRoom=room;document.getElementById('player').style.display='none';document.getElementById('liveWrap').style.display='block';document.getElementById('liveBadge').style.display='block';document.getElementById('badge').innerText='● TRUE LIVE 3HRS';document.getElementById('badge').style.background='#00b300';document.getElementById('title').innerText='🔴 TRUE LIVE - WOTE PAMOJA';document.getElementById('ticker').innerText='🔴 TRUE LIVE - WOTE PAMOJA - 3HRS | TILL 3624692';document.getElementById('count').innerText='LIVE 3HRS';document.getElementById('pbar').style.width='100%';document.getElementById('ptext').innerText='LIVE';if(bg)document.getElementById('liveBg').style.backgroundImage='url('+bg+')';let container=document.getElementById('liveJitsi');if(jitsiApi)try{jitsiApi.dispose()}catch{}jitsiApi=new JitsiMeetExternalAPI("meet.jit.si",{roomName:room,parentNode:container,width:"100%",height:"100%",configOverwrite:{prejoinPageEnabled:false,startWithVideoMuted:false,startWithAudioMuted:true},userInfo:{displayName:"MTAZAMAJI TV"}})}
 function stopPublicLive(){isLiveMode=false;document.getElementById('player').style.display='block';document.getElementById('liveWrap').style.display='none';document.getElementById('liveBadge').style.display='none';document.getElementById('badge').innerText='● LIVE';document.getElementById('badge').style.background='red';if(jitsiApi)try{jitsiApi.dispose();jitsiApi=null}catch{}if(player&&list.length>0){let total=list.reduce((s,x)=>s+x.dur,0);let live=findV(getLivePos(total));try{playEntry(live.index,live.seek)}catch{}}}
 async function checkNewVideos(){if(isLiveMode)return;try{let newList=await getVideos();if(newList.length===0)return;if(!lastVideoId){lastVideoId=newList[0].raw;list=newList;return}let newFirst=newList[0].raw;if(newFirst!==lastVideoId){list=newList;lastVideoId=newFirst;playNowVideo=newList[0];isPlayNowMode=true;document.getElementById('playNowBadge').style.display='block';document.getElementById('playNowBadge').innerText='▶️ PLAY NOW: '+playNowVideo.title.substring(0,25);document.getElementById('count').innerText='PLAY NOW';updateUIFromVideo(playNowVideo);if(player)playPlayNow(playNowVideo)}else{if(isPlayNowMode)return;list=newList}}catch(e){}}
-function onYouTubeIframeAPIReady(){getVideos().then(v=>{list=v;if(list.length>0)lastVideoId=list[0].raw;let total=list.reduce((s,x)=>s+x.dur,0);let live=findV(getLivePos(total));updateUI(live.index);document.getElementById('count').innerText=(live.index+1)+"/"+list.length;player=new YT.Player('player',{playerVars:{autoplay:1,mute:0,controls:0,rel:0,modestbranding:1,playsinline:1,fs:0,disablekb:1,vq:'small'},events:{onReady:e=>{playEntry(live.index,live.seek);e.target.setVolume(100);e.target.unMute();e.target.playVideo();setTimeout(()=>{try{e.target.unMute();e.target.setVolume(100)}catch{}},1500)},onError:e=>{console.log("Skipping");document.getElementById('ptext').innerText='SKIPPING...';setTimeout(()=>{goNext()},800)},onStateChange:e=>{if(e.data===0){if(isPlayNowMode){isPlayNowMode=false;playNowVideo=null;document.getElementById('playNowBadge').style.display='none';let total=list.reduce((s,x)=>s+x.dur,0);let live=findV(getLivePos(total));_lastIdx=live.index;updateUI(live.index);document.getElementById('count').innerText=(live.index+1)+"/"+list.length;playEntry(live.index,live.seek);return}if(!isLiveMode)goNext()}}}});setInterval(()=>{if(isLiveMode){document.getElementById('pbar').style.width='100%';document.getElementById('ptext').innerText='LIVE';return}if(isPlayNowMode){try{let curT=player.getCurrentTime();let durT=player.getDuration();if(durT>0){let pct=Math.floor((curT/durT)*100);document.getElementById('pbar').style.width=pct+'%';document.getElementById('ptext').innerText='PLAY NOW '+pct+'%'}}catch{}return}try{let curT=player.getCurrentTime();let durT=player.getDuration();if(durT>0){let idx=_lastIdx>=0?_lastIdx:0;if(list[idx])list[idx].dur=Math.floor(durT);let pct=Math.floor((curT/durT)*100);if(pct>=0&&pct<=100){document.getElementById('pbar').style.width=pct+'%';document.getElementById('ptext').innerText=pct+'%'}} }catch{}let total=list.reduce((s,x)=>s+x.dur,0);let pos=getLivePos(total);let cur=findV(pos);if(cur.index!==_lastIdx){try{let curT=player.getCurrentTime();let durT=player.getDuration();if(durT>0 && curT < durT-10){return}}catch{}_lastIdx=cur.index;updateUI(cur.index);document.getElementById('count').innerText=(cur.index+1)+"/"+list.length;if(player)playEntry(cur.index,cur.seek)}},1000);setInterval(checkLive,5000);setInterval(checkNewVideos,3000);checkLive()});}
+function onYouTubeIframeAPIReady(){getVideos().then(v=>{list=v;if(list.length>0)lastVideoId=list[0].raw;let total=list.reduce((s,x)=>s+x.dur,0);let live=findV(getLivePos(total));updateUI(live.index);document.getElementById('count').innerText=(live.index+1)+"/"+list.length;player=new YT.Player('player',{playerVars:{autoplay:1,mute:1,controls:0,rel:0,modestbranding:1,playsinline:1,fs:0,disablekb:1,vq:'small'},events:{onReady:e=>{playEntry(live.index,live.seek);},onError:e=>{document.getElementById('ptext').innerText='SKIPPING...';setTimeout(()=>{goNext()},800)},onStateChange:e=>{if(e.data===0){if(isPlayNowMode){isPlayNowMode=false;playNowVideo=null;document.getElementById('playNowBadge').style.display='none';let total=list.reduce((s,x)=>s+x.dur,0);let live=findV(getLivePos(total));_lastIdx=live.index;updateUI(live.index);document.getElementById('count').innerText=(live.index+1)+"/"+list.length;playEntry(live.index,live.seek);return}if(!isLiveMode)goNext()}}}});setInterval(()=>{if(isLiveMode){document.getElementById('pbar').style.width='100%';document.getElementById('ptext').innerText='LIVE';return}if(isPlayNowMode){try{let curT=player.getCurrentTime();let durT=player.getDuration();if(durT>0){let pct=Math.floor((curT/durT)*100);document.getElementById('pbar').style.width=pct+'%';document.getElementById('ptext').innerText='PLAY NOW '+pct+'%'}}catch{}return}try{let curT=player.getCurrentTime();let durT=player.getDuration();if(durT>0){let idx=_lastIdx>=0?_lastIdx:0;if(list[idx])list[idx].dur=Math.floor(durT);let pct=Math.floor((curT/durT)*100);if(pct>=0&&pct<=100){document.getElementById('pbar').style.width=pct+'%';document.getElementById('ptext').innerText=pct+'%'}} }catch{}let total=list.reduce((s,x)=>s+x.dur,0);let pos=getLivePos(total);let cur=findV(pos);if(cur.index!==_lastIdx){try{let curT=player.getCurrentTime();let durT=player.getDuration();if(durT>0 && curT < durT-10){return}}catch{}_lastIdx=cur.index;updateUI(cur.index);document.getElementById('count').innerText=(cur.index+1)+"/"+list.length;if(player)playEntry(cur.index,cur.seek)}},1000);setInterval(checkLive,5000);setInterval(checkNewVideos,3000);checkLive()});}
 function goNext(){if(isLiveMode||isPlayNowMode)return;try{_lastIdx++;if(_lastIdx>=list.length)_lastIdx=0;let total=list.reduce((s,x)=>s+x.dur,0);let live=findV(getLivePos(total));_lastIdx=live.index;playEntry(_lastIdx,live.seek);updateUI(_lastIdx);document.getElementById('count').innerText=(_lastIdx+1)+"/"+list.length}catch(e){setTimeout(goNext,1000)}}
 function updateClock(){let now=new Date();document.getElementById('clock').innerText=String(now.getHours()).padStart(2,'0')+":"+String(now.getMinutes()).padStart(2,'0')+":"+String(now.getSeconds()).padStart(2,'0')}setInterval(updateClock,1000);updateClock();
 document.addEventListener('click',()=>{try{if(!isLiveMode){player.unMute();player.setVolume(100);player.playVideo()}}catch{}});
