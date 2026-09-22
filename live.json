@@ -1,9 +1,9 @@
 {
   "live": true,
-  "room": "MtaaniTV-Live-Show",
-  "vdo_push": "https://vdo.ninja/?push=MtaaniTV-Live-Show&webcam&autostart",
-  "vdo_view": "https://vdo.ninja/?view=MtaaniTV-Live-Show&cleanoutput&transparent&noheader",
+  "room": "MtaaniTV-LIVE-3TWL-8343",
+  "vdo_push": "https://vdo.ninja/?push=MtaaniTV-LIVE-3TWL-8343&webcam&autostart",
+  "vdo_view": "https://vdo.ninja/?view=MtaaniTV-LIVE-3TWL-8343&cleanoutput&transparent&noheader",
   "type": "vdo-ninja",
-  "time": 1790063985227,
-  "endTime": 0
+  "time": 1790064018345,
+  "endTime": 1790074785233
 }
