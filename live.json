@@ -1,3 +1,12 @@
 {
-  "live": false
+  "live": false,
+  "room": "MtaaniTV-LIVE-MBHE-0613",
+  "vdo_push": "https://vdo.ninja/?push=MtaaniTV-LIVE-MBHE-0613&webcam&autostart&quality=0",
+  "vdo_view": "https://vdo.ninja/?view=MtaaniTV-LIVE-MBHE-0613&cleanoutput&autoplay&noheader&transparent",
+  "type": "vdo-ninja",
+  "bg": "https://images.unsplash.com/photo-1494314671902-399b18174975?w=600",
+  "hostFeatured": true,
+  "guests": [],
+  "time": 1790089184104,
+  "endTime": 0
 }
