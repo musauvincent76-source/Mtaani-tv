@@ -25,23 +25,29 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <div class="card" style="border:3px solid #ffcc00;background:#000">
 <button onclick="window.open('https://musauvincent76-source.github.io/Mtaani-tv/','_blank')" style="background:#ffcc00;color:#000">📺 ANGALIA TV PUBLIC</button>
 </div>
+
 <div class="card" style="border:3px solid #00e676;background:linear-gradient(180deg,#0f1e45,#0a1430)">
-<h3 style="color:#00e676">👥 MSAIDIZI CONTROL - ON/OFF + REFRESH</h3>
+<h3 style="color:#00e676">👥 MSAIDIZI CONTROL - AUTO</h3>
 <p id="ctrlStatus" style="font-size:13px;color:#aaa;margin:8px 0">Inapakia...</p>
 <input id="ctrlKey" placeholder="Key ya msaidizi - mfano: MTAANI-1234" style="background:#000;color:#ffcc00;border:1px solid #00e676">
 <div style="display:flex;gap:6px">
 <button onclick="toggleMsaidizi(true)" style="background:#00e676;color:#000;flex:1">🟢 WASHIA MSAIDIZI</button>
 <button onclick="toggleMsaidizi(false)" style="background:#cc0000;color:#fff;flex:1">🔴 ZIMA MSAIDIZI</button>
 </div>
-<button onclick="refreshKey()" style="background:#ffcc00;color:#000;margin-top:8px">🔄 REFRESH KEY</button>
-<div style="background:#000;padding:10px;border-radius:8px;margin-top:10px">
-<small style="color:#aaa">LINK YA MSAIDIZI WhatsApp:</small>
-<p id="linkOut" style="word-break:break-all;font-size:12px;color:#ffcc00;margin-top:5px"></p>
-<button onclick="copyLink()" style="background:#111;border:1px solid #fff;padding:8px;margin-top:6px">📋 COPY LINK</button>
+<button onclick="refreshKey()" style="background:#ffcc00;color:#000;margin-top:8px">🔄 REFRESH KEY (ndani)</button>
+
+<div style="background:#000;padding:10px;border-radius:8px;margin-top:10px;border:2px dashed #ffcc00">
+<small style="color:#aaa">LINK YA MSAIDIZI WhatsApp - HAPA NDIPO BUTTONS MPYA:</small>
+<p id="linkOut" style="word-break:break-all;font-size:12px;color:#ffcc00;margin-top:5px;font-weight:900"></p>
+<div style="display:flex;gap:6px">
+<button onclick="copyLink()" style="background:#111;border:1px solid #fff;padding:10px;flex:1">📋 COPY LINK</button>
+<button onclick="refreshKeyAndPush()" style="background:#ffcc00;color:#000;padding:10px;flex:1">🔄 REFRESH LINK</button>
+<button onclick="toggleMsaidizi(false)" style="background:#333;color:#ff4444;border:1px solid #ff4444;padding:10px;flex:1">⏹️ ZIMA</button>
+</div>
+<small id="autoMsg" style="color:#00e676;font-size:10px"></small>
 </div>
 <div id="ctrlDownload"></div>
 </div>
-
 <div class="card" style="border:3px solid #00ff00">
 <h3>🔑 GitHub AUTO</h3>
 <input id="token" type="password" placeholder="Weka Token ghp_..." oninput="localStorage.setItem('gh_token',this.value.trim())">
@@ -50,7 +56,6 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <div id="tokenStatus" class="small"></div>
 <button onclick="clearAllBundles()" style="background:#000;border:2px solid red;color:#ff4444;margin-top:10px">🗑️ FUTA BUNDLES ZOTE - CLEAN TV</button>
 </div>
-
 <div class="tabs">
 <button id="btn-v" class="active" onclick="showTab('v','btn-v')">🎬 VIDEOS 6 CATS</button>
 <button id="btn-a" onclick="showTab('a','btn-a')">📢 ADS</button>
@@ -58,7 +63,6 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <button id="btn-s" onclick="showTab('s','btn-s')">🚀 PUBLIC</button>
 <button id="btn-live" style="background:#cc00cc" onclick="showTab('live','btn-live')">🔴 LIVE</button>
 </div>
-
 <div id="v" class="tab active card">
 <div class="cat-tabs">
 <button id="vc-news" class="active" onclick="openVCat('news','vc-news')">NEWS <span id="count-news" class="count">0</span></button>
@@ -68,7 +72,6 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <button id="vc-drama" onclick="openVCat('drama','vc-drama')">DRAMA <span id="count-drama" class="count">0</span></button>
 <button id="vc-gen" onclick="openVCat('gen','vc-gen')">MAIN <span id="count-gen" class="count">0</span></button>
 </div>
-
 <div id="vcat-news" class="cat-box active">
 <div style="display:flex;justify-content:space-between;align-items:center"><h4>NEWS</h4><button id="sw-news" class="sw" onclick="toggleCat('news')">OFF 🔴</button></div>
 <input id="link-news" placeholder="🔗 Link YouTube" oninput="fetchTitleCat('news')">
@@ -86,7 +89,6 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <div id="vcat-drama" class="cat-box"><div style="display:flex;justify-content:space-between;align-items:center"><h4>DRAMA</h4><button id="sw-drama" class="sw" onclick="toggleCat('drama')">OFF 🔴</button></div><input id="link-drama" placeholder="🔗 Link DRAMA" oninput="fetchTitleCat('drama')"><input id="title-drama" placeholder="📝 Jina"><div style="display:flex;gap:5px"><button onclick="addVideoCat('drama', false)" style="flex:1">➕ ONGEZA</button><button onclick="addVideoCat('drama', true)" style="flex:1;background:#00ff00;color:#000">▶️ NOW</button><button onclick="startLiveCat('drama')" style="flex:1;background:#cc00cc">🔴 LIVE</button></div><div id="vlist-drama"></div></div>
 <div id="vcat-gen" class="cat-box"><div style="display:flex;justify-content:space-between;align-items:center"><h4>MAIN</h4><button id="sw-gen" class="sw" onclick="toggleCat('gen')">OFF 🔴</button></div><input id="link" placeholder="🔗 Link MAIN" oninput="fetchTitle()"><input id="title" placeholder="📝 Jina"><div style="display:flex;gap:5px"><button onclick="addVideo(false)" style="flex:1">➕ ONGEZA MAIN</button><button onclick="addVideo(true)" style="flex:1;background:#00ff00;color:#000">▶️ PLAY NOW</button><button onclick="startLiveCat('gen')" style="flex:1;background:#cc00cc">🔴 LIVE MAIN</button></div><div id="vlist"></div></div>
 </div>
-
 <div id="a" class="tab card"><h3>📢 ADS + Facebook</h3><input id="adTitle" placeholder="Title"><input id="adMsg" placeholder="Ujumbe"><input id="adContact" placeholder="FB Link"><button class="blue" onclick="addAd()">ONGEZA AD</button><div id="alist"></div></div>
 <div id="o" class="tab card"><h3>👑 OWNER</h3><input id="tvName" value="MTAANI TV"><input id="ownerName" value="MTAANI TV"><input id="ticker" value="MTAANI TV LIVE 24/7"><button class="green" onclick="saveOwner()">💾 HIFADHI</button><div id="ownerStatus" class="small"></div></div>
 <div id="s" class="tab card"><h3>🚀 PUBLIC AUTO</h3><button class="green" onclick="pushAll()">📤 TUMA KWA TV</button><div id="pushStatus" class="small"></div><textarea id="out" style="height:350px;background:#000;color:#0f0;font-size:11px"></textarea><button class="blue" onclick="copyOut()">📋 COPY CODE YOTE</button></div>
@@ -103,7 +105,6 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <button class="blue" onclick="pushLiveStatus(true)" style="margin-top:10px">📡 ONYESHA LIVE PUBLIC TV</button>
 <button class="red" onclick="pushLiveStatus(false)" style="background:#333">⏹️ ZIMA LIVE PUBLIC</button>
 </div>
-
 <script>
 let videos=[], videosByCat={news:[],bizz:[],mchezo:[],music:[],drama:[],gen:[]}, catEnabled={news:false,bizz:false,mchezo:false,music:false,drama:false,gen:false}, ads=[], ownerData={tvName:"MTAANI TV",ownerName:"MTAANI TV",ticker:"MTAANI TV LIVE"}, currentFacing="user", currentRoom="MtaaniTV-Live-Show";
 let liveEndTime=0, liveTimerInterval=null, autoStopTimeout=null;
@@ -111,16 +112,16 @@ let ctrlData={enabled:false,token:"MTAANI-1234"};
 async function loadCtrl(){ try{ let r=await fetch('assistant_control.json?v='+Date.now()); if(r.ok) ctrlData=await r.json(); }catch{} document.getElementById('ctrlKey').value=ctrlData.token; updateCtrlStatus(); }
 function updateCtrlStatus(){ let enabled=ctrlData.enabled; document.getElementById('ctrlStatus').innerHTML=enabled? `✅ <b style="color:#00e676">IMEWASHWA</b> - Key: <b style="color:#ffcc00">${ctrlData.token}</b>` : `⛔ <b style="color:#ff4444">IMEZIMWA</b>`; let base=location.origin+location.pathname.replace('admin.html',''); let link=base+'assistance.html?key='+ctrlData.token; document.getElementById('linkOut').innerText=link; }
 function downloadCtrl(){ let blob=new Blob([JSON.stringify(ctrlData,null,2)],{type:'application/json'}); let url=URL.createObjectURL(blob); document.getElementById('ctrlDownload').innerHTML=`<a href="${url}" download="assistant_control.json" style="display:block;background:#00e676;color:#000;padding:14px;border-radius:10px;text-align:center;font-weight:900;text-decoration:none;margin-top:12px">⬇️ PAKUA assistant_control.json KISHA UPLOAD GITHUB</a>`; }
-function toggleMsaidizi(on){ ctrlData.enabled=on; ctrlData.token=document.getElementById('ctrlKey').value.trim()||ctrlData.token; updateCtrlStatus(); downloadCtrl(); if(on) pushCtrlDirect(); }
+async function toggleMsaidizi(on){ ctrlData.enabled=on; ctrlData.token=document.getElementById('ctrlKey').value.trim()||ctrlData.token; updateCtrlStatus(); downloadCtrl(); document.getElementById('autoMsg').innerText= on? '⏳ Inatuma GitHub AUTO...' : '⏳ Inazima GitHub...'; await pushCtrlDirect(); }
 function refreshKey(){ let newKey='MTAANI-'+Math.random().toString(36).substring(2,7).toUpperCase()+'-'+Date.now().toString().slice(-4); ctrlData.token=newKey; document.getElementById('ctrlKey').value=newKey; updateCtrlStatus(); downloadCtrl(); }
-function copyLink(){ let link=document.getElementById('linkOut').innerText; navigator.clipboard.writeText(link).then(()=>alert('✅ Link:\n'+link)); }
-async function pushCtrlDirect(){ let token=localStorage.getItem('gh_token')||''; if(!token) return; await pushFile('assistant_control.json', JSON.stringify(ctrlData,null,2)); }
-
+async function refreshKeyAndPush(){ refreshKey(); document.getElementById('autoMsg').innerText='⏳ REFRESH + Inatuma GitHub AUTO...'; await pushCtrlDirect(); alert('✅ LINK MPYA: '+document.getElementById('linkOut').innerText); }
+function copyLink(){ let link=document.getElementById('linkOut').innerText; navigator.clipboard.writeText(link).then(()=>alert('✅ Link Copied:\n'+link)); }
+async function pushCtrlDirect(){ let token=localStorage.getItem('gh_token')||''; if(!token){ document.getElementById('autoMsg').innerText='⚠️ Weka Token kwanza juu'; return; } let ok=await pushFile('assistant_control.json', JSON.stringify(ctrlData,null,2)); if(ok) document.getElementById('autoMsg').innerText='✅ AUTO IMETUMWA GITHUB!'; else document.getElementById('autoMsg').innerText='❌ Imeshindwa kutuma - pakua manual chini'; }
 function showTab(id,btnId){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');if(btnId)document.getElementById(btnId).classList.add('active');}
 function openVCat(cat,btnId){document.querySelectorAll('[id^=vcat-]').forEach(b=>b.classList.remove('active'));document.getElementById('vcat-'+cat).classList.add('active');document.querySelectorAll('[id^=vc-]').forEach(b=>b.classList.remove('active'));if(btnId)document.getElementById(btnId).classList.add('active');}
 function extractID(t){
  if(!t) return null; t=t.trim();
- if(t.includes('@')||t.toLowerCase().includes('/channel/')||t.toLowerCase().includes('/c/')) return null; // FULL CHANNEL BLOCKED
+ if(t.includes('@')||t.toLowerCase().includes('/channel/')||t.toLowerCase().includes('/c/')) return null;
  if(/^[a-zA-Z0-9_-]{11}$/.test(t)) return t;
  let m=t.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);
  if(m) return m[1];
