@@ -99,7 +99,7 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <div id="vcat-gen" class="cat-box"><div style="display:flex;justify-content:space-between;align-items:center"><h4>MAIN</h4><button id="sw-gen" class="sw" onclick="toggleCat('gen')">OFF 🔴</button></div><input id="link" placeholder="🔗 Link MAIN" oninput="fetchTitle()"><input id="title" placeholder="📝 Jina"><div style="display:flex;gap:5px"><button onclick="addVideo(false)" style="flex:1">➕ ONGEZA MAIN</button><button onclick="addVideo(true)" style="flex:1;background:#00ff00;color:#000">▶️ PLAY NOW</button><button onclick="startLiveCat('gen')" style="flex:1;background:#cc00cc">🔴 LIVE MAIN</button></div><div id="vlist"></div></div>
 </div>
 <div id="live" class="tab card" style="border:3px solid #ff00ff">
-<h3>🔴 LIVE STUDIO</h3>
+<h3>🔴 LIVE STUDIO - FIXED VIDEO</h3>
 <div class="card" style="background:#000;border:2px solid #ff00ff;margin:5px 0">
 <h4>🖼️ BACKGROUNDS</h4>
 <div class="bg-grid">
@@ -266,7 +266,6 @@ function deletePermanent(i){
  renderPermanent();
  document.getElementById('aiStatus').innerText='🗑️ Imefutwa na mtangazaji amesimama';
 }
-// FIXED STOP & MUTE - INASIMAMISHA KWELI 100%
 function stopAI(){
   isMuted=false;
   try{ synth.pause(); }catch{}
@@ -293,7 +292,6 @@ function toggleMute(){
    document.getElementById('aiStatus').innerText='▶️ Anaendelea...';
  }
 }
-// FIXED GOOGLE NEWS - 4 APIs
 async function fetchNews(){
  document.getElementById('aiStatus').innerText='⏳ Inavuta Google News KE...';
  let rss='https://news.google.com/rss?hl=sw&gl=KE&ceid=KE:sw';
@@ -406,13 +404,46 @@ async function pushAll(){let all=[...videos];Object.keys(videosByCat).forEach(c=
 function copyOut(){let o=document.getElementById('out');o.select();document.execCommand('copy');alert('✅ Copied!');}
 function toggleFullLive(){document.getElementById('live').classList.toggle('fullscreen');}
 function switchCamera(){currentFacing=currentFacing==='user'?'environment':'user';document.getElementById('liveMsg').innerText='📷 '+(currentFacing==='user'?'FRONT':'BACK')+' - Bonyeza ANZA CAMERA tena';}
-function genShareLink(){let link=`https://vdo.ninja/?view=${currentRoom}&cleanoutput&transparent&noheader`;document.getElementById('shareLink').value=link;localStorage.setItem('live_room',currentRoom);return link;}
-function refreshLiveLink(){ currentRoom="MtaaniTV-LIVE-"+Math.random().toString(36).toUpperCase().substring(2,6)+"-"+Date.now().toString().slice(-4); genShareLink(); document.getElementById('liveMsg').innerText='🔄 LINK MPYA VDO.NINJA'; }
+// FIXED - HIZI NDIZO ZILIZOKUWA ZINAFANYA BLACK SCREEN
+function genShareLink(){
+ let link=`https://vdo.ninja/?view=${currentRoom}&cleanoutput&autoplay&noheader`;
+ document.getElementById('shareLink').value=link;
+ localStorage.setItem('live_room',currentRoom);
+ return link;
+}
+function refreshLiveLink(){ currentRoom="MtaaniTV-LIVE-"+Math.random().toString(36).toUpperCase().substring(2,6)+"-"+Date.now().toString().slice(-4); genShareLink(); document.getElementById('liveMsg').innerText='🔄 LINK MPYA VDO.NINJA - VIDEO FIXED'; }
 function copyShareLink(){let l=document.getElementById('shareLink');if(!l.value)genShareLink();navigator.clipboard.writeText(l.value).then(()=>alert('✅ Copied VIEW LINK:\n'+l.value));}
 function start3hrTimer(){clearInterval(liveTimerInterval);clearTimeout(autoStopTimeout);liveEndTime=Date.now()+(3*60*60*1000);localStorage.setItem('live_end',liveEndTime);document.getElementById('liveTimerDisplay').style.display='block';liveTimerInterval=setInterval(()=>{let left=liveEndTime-Date.now();if(left<=0){clearInterval(liveTimerInterval);document.getElementById('liveTimerDisplay').innerText='⏹️ LIVE IMEISHA';autoStopLive();return;}let h=Math.floor(left/3600000);let m=Math.floor((left%3600000)/60000);let s=Math.floor((left%60000)/1000);document.getElementById('liveTimerDisplay').innerText=`🔴 LIVE: ${h}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s left`;},1000);autoStopTimeout=setTimeout(()=>{autoStopLive();},3*60*60*1000);}
 async function autoStopLive(){alert('⏹️ 3 HRS ZIMEISHA!');await pushLiveStatus(false);document.getElementById('jitsiContainer').innerHTML='';document.getElementById('liveTimerDisplay').style.display='none';localStorage.removeItem('live_end');clearInterval(liveTimerInterval);clearTimeout(autoStopTimeout);}
-function startLive(){ let container=document.getElementById('jitsiContainer'); let facing=currentFacing==='user'?'user':'environment'; let pushURL=`https://vdo.ninja/?push=${currentRoom}&webcam&autostart&cleanoutput&transparent&maxviewers=10&facing=${facing}&stereo`; container.innerHTML=`<iframe src="${pushURL}" allow="camera;microphone;fullscreen;display-capture;autoplay" style="width:100%;height:100%;border:0;background:#000"></iframe>`; document.getElementById('liveMsg').innerHTML='<span class="ok">📷 CAMERA IMEWAKA - Sasa bonyeza 🟢 WASHIA KWA TV</span>'; }
+function startLive(){
+  let container=document.getElementById('jitsiContainer');
+  let facing=currentFacing==='user'?'user':'environment';
+  // FIXED - TOA transparent kwa PUSH, ongeza quality
+  let pushURL=`https://vdo.ninja/?push=${currentRoom}&webcam&autostart&quality=0&cleanoutput&noheader&facing=${facing}`;
+  container.innerHTML=`<iframe src="${pushURL}" allow="camera;microphone;fullscreen;display-capture;autoplay" style="width:100%;height:100%;border:0;background:#000"></iframe>`;
+  document.getElementById('liveMsg').innerHTML='<span class="ok">📷 CAMERA IMEWAKA - Hakikisha uso wako unaonekana HAPA, kisha 🟢 WASHIA KWA TV</span>';
+}
 function startLiveCat(cat){openVCat(cat,'vc-'+cat);showTab('live','btn-live');currentRoom="MtaaniTV-"+cat.toUpperCase()+"-"+Date.now();localStorage.setItem('live_room',currentRoom);startLive();}
-async function pushLiveStatus(isLive){ tvLiveActive=isLive; let room=localStorage.getItem('live_room')||currentRoom; let data={live:isLive, room:room, vdo_push:`https://vdo.ninja/?push=${room}&webcam&autostart`, vdo_view:`https://vdo.ninja/?view=${room}&cleanoutput&transparent&noheader`, type:"vdo-ninja", bg:currentBg, hostFeatured:hostFeatured, guests:guests, time:Date.now(), endTime:isLive?liveEndTime:0}; if(isLive &&!liveEndTime){ start3hrTimer(); data.endTime=liveEndTime; } let ok=await pushFile('live.json', JSON.stringify(data,null,2)); document.getElementById('liveMsg').innerHTML=isLive?'<span class="ok">🔴 LIVE IMEWASHWA KWA TV!</span>':'<span class="ok">⏹️ LIVE IMEZIMWA</span>'; if(!isLive){clearInterval(liveTimerInterval);clearTimeout(autoStopTimeout);document.getElementById('liveTimerDisplay').style.display='none';localStorage.removeItem('live_end');} return ok; }
+async function pushLiveStatus(isLive){
+  tvLiveActive=isLive;
+  let room=localStorage.getItem('live_room')||currentRoom;
+  let data={
+    live:isLive,
+    room:room,
+    vdo_push:`https://vdo.ninja/?push=${room}&webcam&autostart&quality=0`,
+    vdo_view:`https://vdo.ninja/?view=${room}&cleanoutput&autoplay&noheader&transparent`,
+    type:"vdo-ninja",
+    bg:currentBg,
+    hostFeatured:hostFeatured,
+    guests:guests,
+    time:Date.now(),
+    endTime:isLive?liveEndTime:0
+  };
+  if(isLive &&!liveEndTime){ start3hrTimer(); data.endTime=liveEndTime; }
+  let ok=await pushFile('live.json', JSON.stringify(data,null,2));
+  document.getElementById('liveMsg').innerHTML=isLive?'<span class="ok">🔴 LIVE IMEWASHWA KWA TV - VIDEO ITAONEKANA SASA!</span>':'<span class="ok">⏹️ LIVE IMEZIMWA</span>';
+  if(!isLive){clearInterval(liveTimerInterval);clearTimeout(autoStopTimeout);document.getElementById('liveTimerDisplay').style.display='none';localStorage.removeItem('live_end');}
+  return ok;
+}
 async function clearAllBundles(){ if(!confirm('FUTA BUNDLES ZOTE?')) return; videos=[]; Object.keys(videosByCat).forEach(c=>videosByCat[c]=[]); localStorage.setItem('mtaani_videos','[]'); Object.keys(videosByCat).forEach(c=>localStorage.setItem('mtaani_videos_'+c,'[]')); renderVideos(); Object.keys(videosByCat).forEach(c=>renderVideosCat(c)); let empty='[{"id":"4EDkfksVFdE","title":"MTAANI TV LIVE","duration":300}]'; document.getElementById('out').value=empty; let ok=await pushFile('videos.json',empty); if(ok){ alert('✅ BUNDLES ZOTE ZIMEFUTWA!'); } }
 </script></body></html>
