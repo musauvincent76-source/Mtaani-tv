@@ -37,7 +37,7 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <button onclick="refreshKey()" style="background:#ffcc00;color:#000;margin-top:8px">🔄 REFRESH KEY (ndani)</button>
 
 <div style="background:#000;padding:10px;border-radius:8px;margin-top:10px;border:2px dashed #ffcc00">
-<small style="color:#aaa">LINK YA MSAIDIZI WhatsApp - HAPA NDIPO BUTTONS MPYA:</small>
+<small style="color:#aaa">LINK YA MSAIDIZI WhatsApp:</small>
 <p id="linkOut" style="word-break:break-all;font-size:12px;color:#ffcc00;margin-top:5px;font-weight:900"></p>
 <div style="display:flex;gap:6px">
 <button onclick="copyLink()" style="background:#111;border:1px solid #fff;padding:10px;flex:1">📋 COPY LINK</button>
@@ -48,6 +48,7 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 </div>
 <div id="ctrlDownload"></div>
 </div>
+
 <div class="card" style="border:3px solid #00ff00">
 <h3>🔑 GitHub AUTO</h3>
 <input id="token" type="password" placeholder="Weka Token ghp_..." oninput="localStorage.setItem('gh_token',this.value.trim())">
@@ -56,6 +57,7 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <div id="tokenStatus" class="small"></div>
 <button onclick="clearAllBundles()" style="background:#000;border:2px solid red;color:#ff4444;margin-top:10px">🗑️ FUTA BUNDLES ZOTE - CLEAN TV</button>
 </div>
+
 <div class="tabs">
 <button id="btn-v" class="active" onclick="showTab('v','btn-v')">🎬 VIDEOS 6 CATS</button>
 <button id="btn-a" onclick="showTab('a','btn-a')">📢 ADS</button>
@@ -63,6 +65,7 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <button id="btn-s" onclick="showTab('s','btn-s')">🚀 PUBLIC</button>
 <button id="btn-live" style="background:#cc00cc" onclick="showTab('live','btn-live')">🔴 LIVE</button>
 </div>
+
 <div id="v" class="tab active card">
 <div class="cat-tabs">
 <button id="vc-news" class="active" onclick="openVCat('news','vc-news')">NEWS <span id="count-news" class="count">0</span></button>
@@ -89,22 +92,31 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <div id="vcat-drama" class="cat-box"><div style="display:flex;justify-content:space-between;align-items:center"><h4>DRAMA</h4><button id="sw-drama" class="sw" onclick="toggleCat('drama')">OFF 🔴</button></div><input id="link-drama" placeholder="🔗 Link DRAMA" oninput="fetchTitleCat('drama')"><input id="title-drama" placeholder="📝 Jina"><div style="display:flex;gap:5px"><button onclick="addVideoCat('drama', false)" style="flex:1">➕ ONGEZA</button><button onclick="addVideoCat('drama', true)" style="flex:1;background:#00ff00;color:#000">▶️ NOW</button><button onclick="startLiveCat('drama')" style="flex:1;background:#cc00cc">🔴 LIVE</button></div><div id="vlist-drama"></div></div>
 <div id="vcat-gen" class="cat-box"><div style="display:flex;justify-content:space-between;align-items:center"><h4>MAIN</h4><button id="sw-gen" class="sw" onclick="toggleCat('gen')">OFF 🔴</button></div><input id="link" placeholder="🔗 Link MAIN" oninput="fetchTitle()"><input id="title" placeholder="📝 Jina"><div style="display:flex;gap:5px"><button onclick="addVideo(false)" style="flex:1">➕ ONGEZA MAIN</button><button onclick="addVideo(true)" style="flex:1;background:#00ff00;color:#000">▶️ PLAY NOW</button><button onclick="startLiveCat('gen')" style="flex:1;background:#cc00cc">🔴 LIVE MAIN</button></div><div id="vlist"></div></div>
 </div>
+
 <div id="a" class="tab card"><h3>📢 ADS + Facebook</h3><input id="adTitle" placeholder="Title"><input id="adMsg" placeholder="Ujumbe"><input id="adContact" placeholder="FB Link"><button class="blue" onclick="addAd()">ONGEZA AD</button><div id="alist"></div></div>
 <div id="o" class="tab card"><h3>👑 OWNER</h3><input id="tvName" value="MTAANI TV"><input id="ownerName" value="MTAANI TV"><input id="ticker" value="MTAANI TV LIVE 24/7"><button class="green" onclick="saveOwner()">💾 HIFADHI</button><div id="ownerStatus" class="small"></div></div>
 <div id="s" class="tab card"><h3>🚀 PUBLIC AUTO</h3><button class="green" onclick="pushAll()">📤 TUMA KWA TV</button><div id="pushStatus" class="small"></div><textarea id="out" style="height:350px;background:#000;color:#0f0;font-size:11px"></textarea><button class="blue" onclick="copyOut()">📋 COPY CODE YOTE</button></div>
+
 <div id="live" class="tab card" style="border:3px solid #ff00ff">
-<h3>🔴 LIVE STUDIO - 3 HRS AUTO</h3>
+<h3>🔴 LIVE STUDIO - 3 HRS AUTO (FIXED NO GST)</h3>
 <div class="card" style="background:#000;border:2px solid #ff00ff;margin:5px 0">
-<h4>📤 SHARE LINK</h4>
+<h4>📤 SHARE LINK + CONTROLS</h4>
 <input id="shareLink" readonly style="background:#222;color:#0f0">
-<div style="display:flex;gap:5px"><button class="blue" onclick="genShareLink()" style="flex:1">🔗 TENGENEZA LINK</button><button class="green" onclick="copyShareLink()" style="flex:1">📋 COPY</button></div>
+<div style="display:flex;gap:5px;margin-top:6px">
+<button class="blue" onclick="genShareLink()" style="flex:1">📋 COPY LINK</button>
+<button onclick="refreshLiveLink()" style="flex:1;background:#ffcc00;color:#000">🔄 REFRESH LINK</button>
+</div>
+<div style="display:flex;gap:6px;margin-top:8px">
+<button onclick="pushLiveStatus(true)" style="flex:1;background:#00e676;color:#000">🟢 WASHIA LIVE</button>
+<button onclick="pushLiveStatus(false)" style="flex:1;background:#cc0000;color:#fff">⏹️ ZIMA LIVE</button>
+</div>
 <div id="liveTimerDisplay" style="background:#ff0000;color:#fff;padding:8px;border-radius:8px;margin-top:8px;text-align:center;font-weight:900;font-size:14px;display:none">⏱️ LIVE: 3h 00m 00s left</div>
+<small id="liveMsg" style="color:#00e676;font-size:11px"></small>
 </div>
 <div style="display:flex;gap:5px"><button class="green" onclick="startLive()" style="background:#ff0000;flex:1">🔴 ANZA LIVE (3 HRS)</button><button class="blue" onclick="toggleFull()" style="flex:1">🔳 FULL</button><button class="blue" onclick="switchCamera()" style="flex:1;background:#ff6600">📷 FRONT/BACK</button></div>
 <div id="studioWrap"><video id="bgVideo" loop muted autoplay playsinline></video><div id="bgLayer"></div><div id="jitsiContainer"></div></div>
-<button class="blue" onclick="pushLiveStatus(true)" style="margin-top:10px">📡 ONYESHA LIVE PUBLIC TV</button>
-<button class="red" onclick="pushLiveStatus(false)" style="background:#333">⏹️ ZIMA LIVE PUBLIC</button>
 </div>
+
 <script>
 let videos=[], videosByCat={news:[],bizz:[],mchezo:[],music:[],drama:[],gen:[]}, catEnabled={news:false,bizz:false,mchezo:false,music:false,drama:false,gen:false}, ads=[], ownerData={tvName:"MTAANI TV",ownerName:"MTAANI TV",ticker:"MTAANI TV LIVE"}, currentFacing="user", currentRoom="MtaaniTV-Live-Show";
 let liveEndTime=0, liveTimerInterval=null, autoStopTimeout=null;
@@ -113,10 +125,10 @@ async function loadCtrl(){ try{ let r=await fetch('assistant_control.json?v='+Da
 function updateCtrlStatus(){ let enabled=ctrlData.enabled; document.getElementById('ctrlStatus').innerHTML=enabled? `✅ <b style="color:#00e676">IMEWASHWA</b> - Key: <b style="color:#ffcc00">${ctrlData.token}</b>` : `⛔ <b style="color:#ff4444">IMEZIMWA</b>`; let base=location.origin+location.pathname.replace('admin.html',''); let link=base+'assistance.html?key='+ctrlData.token; document.getElementById('linkOut').innerText=link; }
 function downloadCtrl(){ let blob=new Blob([JSON.stringify(ctrlData,null,2)],{type:'application/json'}); let url=URL.createObjectURL(blob); document.getElementById('ctrlDownload').innerHTML=`<a href="${url}" download="assistant_control.json" style="display:block;background:#00e676;color:#000;padding:14px;border-radius:10px;text-align:center;font-weight:900;text-decoration:none;margin-top:12px">⬇️ PAKUA assistant_control.json KISHA UPLOAD GITHUB</a>`; }
 async function toggleMsaidizi(on){ ctrlData.enabled=on; ctrlData.token=document.getElementById('ctrlKey').value.trim()||ctrlData.token; updateCtrlStatus(); downloadCtrl(); document.getElementById('autoMsg').innerText= on? '⏳ Inatuma GitHub AUTO...' : '⏳ Inazima GitHub...'; await pushCtrlDirect(); }
-function refreshKey(){ let newKey='MTAANI-'+Math.random().toString(36).substring(2,7).toUpperCase()+'-'+Date.now().toString().slice(-4); ctrlData.token=newKey; document.getElementById('ctrlKey').value=newKey; updateCtrlStatus(); downloadCtrl(); }
-async function refreshKeyAndPush(){ refreshKey(); document.getElementById('autoMsg').innerText='⏳ REFRESH + Inatuma GitHub AUTO...'; await pushCtrlDirect(); alert('✅ LINK MPYA: '+document.getElementById('linkOut').innerText); }
+function refreshKey(){ let newKey='MTAANI-'+Math.random().toString(36).substring(2,7).toUpperCase()+'-'+Date.now().toString().slice(-4); ctrlData.token=newKey; ctrlData.enabled=true; document.getElementById('ctrlKey').value=newKey; updateCtrlStatus(); downloadCtrl(); }
+async function refreshKeyAndPush(){ refreshKey(); document.getElementById('autoMsg').innerText='⏳ REFRESH + Inatuma GitHub AUTO...'; await pushCtrlDirect(); alert('✅ LINK MPYA:\n'+document.getElementById('linkOut').innerText); }
 function copyLink(){ let link=document.getElementById('linkOut').innerText; navigator.clipboard.writeText(link).then(()=>alert('✅ Link Copied:\n'+link)); }
-async function pushCtrlDirect(){ let token=localStorage.getItem('gh_token')||''; if(!token){ document.getElementById('autoMsg').innerText='⚠️ Weka Token kwanza juu'; return; } let ok=await pushFile('assistant_control.json', JSON.stringify(ctrlData,null,2)); if(ok) document.getElementById('autoMsg').innerText='✅ AUTO IMETUMWA GITHUB!'; else document.getElementById('autoMsg').innerText='❌ Imeshindwa kutuma - pakua manual chini'; }
+async function pushCtrlDirect(){ let token=localStorage.getItem('gh_token')||''; if(!token){ document.getElementById('autoMsg').innerText='⚠️ Weka Token kwanza juu'; return false; } let ok=await pushFile('assistant_control.json', JSON.stringify(ctrlData,null,2)); document.getElementById('autoMsg').innerText= ok? '✅ AUTO IMETUMWA GITHUB!' : '❌ Imeshindwa - pakua manual chini'; return ok; }
 function showTab(id,btnId){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');if(btnId)document.getElementById(btnId).classList.add('active');}
 function openVCat(cat,btnId){document.querySelectorAll('[id^=vcat-]').forEach(b=>b.classList.remove('active'));document.getElementById('vcat-'+cat).classList.add('active');document.querySelectorAll('[id^=vc-]').forEach(b=>b.classList.remove('active'));if(btnId)document.getElementById(btnId).classList.add('active');}
 function extractID(t){
@@ -155,12 +167,24 @@ function copyOut(){let o=document.getElementById('out');o.select();document.exec
 function toggleFull(){document.getElementById('live').classList.toggle('fullscreen');}
 function switchCamera(){currentFacing=currentFacing==='user'?'environment':'user';alert('📷 '+(currentFacing==='user'?'FRONT':'BACK'));}
 function genShareLink(){let room=currentRoom;let link='https://musauvincent76-source.github.io/Mtaani-tv/live-join.html?room='+room;document.getElementById('shareLink').value=link;localStorage.setItem('live_room',room);return link;}
+function refreshLiveLink(){ currentRoom="MtaaniTV-LIVE-"+Math.random().toString(36).toUpperCase().substring(2,6)+"-"+Date.now().toString().slice(-4); genShareLink(); document.getElementById('liveMsg').innerText='🔄 LINK MPYA - Inatuma AUTO...'; pushLiveStatus(true); }
 function copyShareLink(){let l=document.getElementById('shareLink');if(!l.value)genShareLink();l.select();document.execCommand('copy');alert('✅ Copied: '+l.value);}
 function start3hrTimer(){clearInterval(liveTimerInterval);clearTimeout(autoStopTimeout);liveEndTime=Date.now()+(3*60*60*1000);localStorage.setItem('live_end',liveEndTime);document.getElementById('liveTimerDisplay').style.display='block';liveTimerInterval=setInterval(()=>{let left=liveEndTime-Date.now();if(left<=0){clearInterval(liveTimerInterval);document.getElementById('liveTimerDisplay').innerText='⏹️ LIVE IMEISHA';autoStopLive();return;}let h=Math.floor(left/3600000);let m=Math.floor((left%3600000)/60000);let s=Math.floor((left%60000)/1000);document.getElementById('liveTimerDisplay').innerText=`🔴 LIVE: ${h}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s left`;},1000);autoStopTimeout=setTimeout(()=>{autoStopLive();},3*60*60*1000);}
 async function autoStopLive(){alert('⏹️ 3 HRS ZIMEISHA!');await pushLiveStatus(false);if(window.jitsiApi)try{window.jitsiApi.dispose();}catch{}document.getElementById('liveTimerDisplay').style.display='none';localStorage.removeItem('live_end');clearInterval(liveTimerInterval);clearTimeout(autoStopTimeout);}
-function startLive(){let room=currentRoom;let container=document.getElementById('jitsiContainer');container.style.display='block';if(window.jitsiApi)try{window.jitsiApi.dispose();}catch{}let opts={roomName:room,width:"100%",height:"100%",parentNode:container,configOverwrite:{prejoinPageEnabled:false},userInfo:{displayName:"MTAANI TV HOST"}};window.jitsiApi=new JitsiMeetExternalAPI("meet.jit.si",opts);document.getElementById('live').classList.add('fullscreen');genShareLink();pushLiveStatus(true);start3hrTimer();}
+function startLive(){
+ let room=currentRoom;let container=document.getElementById('jitsiContainer');container.style.display='block';
+ if(window.jitsiApi)try{window.jitsiApi.dispose();}catch{}
+ let opts={
+   roomName:room,width:"100%",height:"100%",parentNode:container,
+   configOverwrite:{prejoinPageEnabled:false,prejoinConfig:{enabled:false},disableDeepLinking:true,startWithVideoMuted:false,startWithAudioMuted:false},
+   interfaceConfigOverwrite:{SHOW_JITSI_WATERMARK:false,MOBILE_APP_PROMO:false,SHOW_CHROME_EXTENSION_BANNER:false,SHOW_PROMOTIONAL_CLOSE_PAGE:false},
+   userInfo:{displayName:"MTAANI TV HOST"}
+ };
+ window.jitsiApi=new JitsiMeetExternalAPI("meet.jit.si",opts);
+ document.getElementById('live').classList.add('fullscreen');genShareLink();pushLiveStatus(true);start3hrTimer();
+}
 function startLiveCat(cat){openVCat(cat,'vc-'+cat);showTab('live','btn-live');currentRoom="MtaaniTV-"+cat.toUpperCase()+"-"+Date.now();localStorage.setItem('live_room',currentRoom);startLive();}
-async function pushLiveStatus(isLive){let room=localStorage.getItem('live_room')||currentRoom;let bg=localStorage.getItem('live_bg')||'';let data={live:isLive,room:room,bg:bg,time:Date.now(),endTime:isLive?liveEndTime:0};await pushFile('live.json', JSON.stringify(data,null,2));document.getElementById('pushStatus').innerHTML=isLive?'<span class="ok">🔴 LIVE PUBLIC TV!</span>':'<span class="ok">⏹️ LIVE IMEZIMWA</span>';if(!isLive){clearInterval(liveTimerInterval);clearTimeout(autoStopTimeout);document.getElementById('liveTimerDisplay').style.display='none';localStorage.removeItem('live_end');}}
+async function pushLiveStatus(isLive){let room=localStorage.getItem('live_room')||currentRoom;let bg=localStorage.getItem('live_bg')||'';let data={live:isLive,room:room,bg:bg,time:Date.now(),endTime:isLive?liveEndTime:0};let ok=await pushFile('live.json', JSON.stringify(data,null,2));document.getElementById('liveMsg').innerHTML=isLive?'<span class="ok">🔴 LIVE PUBLIC ON!</span>':'<span class="ok">⏹️ LIVE ZIMEZIMWA</span>';document.getElementById('pushStatus').innerHTML=isLive?'<span class="ok">🔴 LIVE PUBLIC TV!</span>':'<span class="ok">⏹️ LIVE IMEZIMWA</span>';if(!isLive){clearInterval(liveTimerInterval);clearTimeout(autoStopTimeout);document.getElementById('liveTimerDisplay').style.display='none';localStorage.removeItem('live_end');}return ok;}
 async function clearAllBundles(){
  if(!confirm('FUTA BUNDLES ZOTE?')) return;
  videos=[]; Object.keys(videosByCat).forEach(c=>videosByCat[c]=[]);
