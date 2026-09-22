@@ -29,10 +29,14 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 .ai-logo{position:absolute;top:10px;left:12px;background:#ffcc00;color:#000;font-weight:900;padding:5px 12px;border-radius:6px;font-size:12px;z-index:5}
 .ai-live{position:absolute;top:10px;right:12px;background:#ff0000;color:#fff;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:900;z-index:5;animation:blink 1s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
-.ai-presenter{position:relative;z-index:4;width:180px;height:180px;background:#000;border-radius:50%;border:4px solid #ffcc00;overflow:hidden;margin-bottom:-25px;box-shadow:0 10px 30px rgba(0,0,0,0.8)}
+.ai-presenter{position:relative;z-index:4;width:180px;height:180px;background:#000;border-radius:50%;border:4px solid #ffcc00;overflow:hidden;margin-bottom:-25px;box-shadow:0 10px 30px rgba(0,0,0,0.8);transition:transform 0.12s}
+.ai-presenter.talking{transform:translateY(-5px) scale(1.04) rotate(-0.5deg)}
 .ai-presenter img{width:100%;height:100%;object-fit:cover}
-.ai-mouth{position:absolute;bottom:35px;left:50%;transform:translateX(-50%);width:24px;height:8px;background:#300;border-radius:0 0 12px 12px;transition:all 0.08s;z-index:6}
-.ai-mouth.talk{height:18px;background:#700;border-radius:50%}
+.ai-mouth{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);width:28px;height:6px;background:#200;border-radius:0 0 14px 14px;transition:all 0.06s;z-index:6}
+.ai-mouth.a{height:24px;width:36px;background:#800;border-radius:50%}
+.ai-mouth.o{height:20px;width:24px;background:#600;border-radius:50%}
+.ai-mouth.m{height:4px;width:26px;background:#222}
+.ai-mouth.e{height:14px;width:40px;background:#700;border-radius:4px}
 .ai-desk{width:96%;height:95px;background:linear-gradient(180deg,#8B4513,#5D2906);border-radius:14px 14px 0 0;z-index:3;border-top:4px solid #ffcc00;display:flex;align-items:center;justify-content:center;position:relative}
 .ai-desk::before{content:'MTAANI TV';color:#ffcc00;font-weight:900;letter-spacing:3px;font-size:18px;text-shadow:0 2px 6px #000}
 .ai-ticker{position:absolute;bottom:0;left:0;width:100%;background:#ff0000;color:#fff;font-size:11px;padding:6px;white-space:nowrap;overflow:hidden;z-index:5}
@@ -152,7 +156,7 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <div class="ai-logo">MTAANI TV</div>
 <div class="ai-live">🔴 AI LIVE</div>
 <div class="ai-presenter" id="presenterBox">
-<img id="avatarImg" src="https://musauvincent76-source.github.io/Mtaani-tv/mtaani_presenter.jpg" onerror="this.src='https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400'" alt="presenter">
+<img id="avatarImg" src="https://musauvincent76-source.github.io/Mtaani-tv/IMG-20260922-WA8208.jpg" onerror="this.src='https://musauvincent76-source.github.io/Mtaani-tv/IMG-20260922-WA8208.jpg'" alt="presenter">
 <div class="ai-mouth" id="mouth"></div>
 </div>
 <div class="ai-desk"></div>
@@ -175,7 +179,7 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <div class="card" style="background:#000;border:1px dashed #ffcc00">
 <h4>🎨 Chagua Uso - Katuni Kama Mtu</h4>
 <div class="bg-grid">
-<div class="bg-item active" onclick="changeAvatar('https://musauvincent76-source.github.io/Mtaani-tv/mtaani_presenter.jpg')" style="background-image:url('https://musauvincent76-source.github.io/Mtaani-tv/mtaani_presenter.jpg')"><span>MIMI PRESENTER</span></div>
+<div class="bg-item active" onclick="changeAvatar('https://musauvincent76-source.github.io/Mtaani-tv/IMG-20260922-WA8208.jpg')" style="background-image:url('https://musauvincent76-source.github.io/Mtaani-tv/IMG-20260922-WA8208.jpg')"><span>MIMI PRESENTER</span></div>
 <div class="bg-item" onclick="changeAvatar('https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400')" style="background-image:url('https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200')"><span>MAMA SWAHILI</span></div>
 <div class="bg-item" onclick="changeAvatar('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400')" style="background-image:url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200')"><span>BABA ENGLISH</span></div>
 <div class="bg-item" onclick="changeAvatar('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400')" style="background-image:url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200')"><span>BINTI</span></div>
@@ -207,15 +211,29 @@ function speakText(text){
  if(!('speechSynthesis' in window)){alert('Browser haina sauti');return;}
  speechSynthesis.cancel(); let utter=new SpeechSynthesisUtterance(text);
  let sel=document.getElementById('voiceSelect').value;
- if(sel==='en') utter.lang='en-US'; else utter.lang='sw-KE';
- utter.rate=0.95; utter.pitch=1;
- clearInterval(mouthInterval); mouthInterval=setInterval(()=>{ document.getElementById('mouth').classList.toggle('talk'); },110);
+ utter.lang = sel==='en'?'en-US':'sw-KE';
+ utter.rate=0.92; utter.pitch=1;
+ let mouth=document.getElementById('mouth');
+ let presenter=document.getElementById('presenterBox');
+ let idx=0;
+ utter.onboundary=(e)=>{
+   let ch=(text[e.charIndex]||'a').toLowerCase();
+   mouth.className='ai-mouth';
+   if('a'.includes(ch)) mouth.classList.add('a');
+   else if('o,u'.includes(ch)) mouth.classList.add('o');
+   else if('m,b,p'.includes(ch)) mouth.classList.add('m');
+   else mouth.classList.add('e');
+   if(idx%7===0) presenter.classList.add('talking');
+   else presenter.classList.remove('talking');
+   idx++;
+ };
+ mouthInterval=setInterval(()=>{ if(!speechSynthesis.speaking){clearInterval(mouthInterval);return;} presenter.classList.toggle('talking'); },130);
  document.getElementById('tickerText').innerText=text.substring(0,150);
- document.getElementById('aiStatus').innerText='🔊 Anaongea sasa - '+sel;
- utter.onend=()=>{ clearInterval(mouthInterval); document.getElementById('mouth').classList.remove('talk'); document.getElementById('aiStatus').innerText='✅ Amemaliza'; };
+ document.getElementById('aiStatus').innerText='🔊 ANAONGEA KAMA MTU NA VITENDO...';
+ utter.onend=()=>{ clearInterval(mouthInterval); mouth.className='ai-mouth'; presenter.classList.remove('talking'); document.getElementById('aiStatus').innerText='✅ Amemaliza - kama presenter halisi!'; };
  speechSynthesis.speak(utter);
 }
-function stopAI(){ speechSynthesis.cancel(); clearInterval(mouthInterval); document.getElementById('mouth').classList.remove('talk'); document.getElementById('aiStatus').innerText='⏹️ Imezimwa'; }
+function stopAI(){ speechSynthesis.cancel(); clearInterval(mouthInterval); document.getElementById('mouth').className='ai-mouth'; document.getElementById('presenterBox').classList.remove('talking'); document.getElementById('aiStatus').innerText='⏹️ Imezimwa'; }
 async function pushAIToTV(){ let txt=document.getElementById('customNews').value.trim()|| (newsCache[0]?newsCache[0].title:'MTAANI TV AI LIVE'); let data={live:true, type:'ai-studio', room:currentRoom, aiText:txt, aiAvatar:localStorage.getItem('ai_avatar')||document.getElementById('avatarImg').src, bg:currentBg, time:Date.now(), endTime:Date.now()+3600000*3 }; let ok=await pushFile('live.json', JSON.stringify(data,null,2)); if(ok){ document.getElementById('aiStatus').innerText='📺 AI STUDIO IMETUMWA KWA TV!'; alert('✅ AI IMEENDA TV'); } }
 async function loadCtrl(){ try{ let r=await fetch('assistant_control.json?v='+Date.now()); if(r.ok) ctrlData=await r.json(); }catch{} document.getElementById('ctrlKey').value=ctrlData.token; updateCtrlStatus(); }
 function updateCtrlStatus(){ let enabled=ctrlData.enabled; document.getElementById('ctrlStatus').innerHTML=enabled? `✅ <b style="color:#00e676">IMEWASHWA</b> - Key: <b style="color:#ffcc00">${ctrlData.token}</b>` : `⛔ <b style="color:#ff4444">IMEZIMWA</b>`; let base=location.origin+location.pathname.replace('admin.html',''); let link=base+'assistance.html?key='+ctrlData.token; document.getElementById('linkOut').innerText=link; }
