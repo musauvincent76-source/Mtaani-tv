@@ -140,7 +140,6 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <div id="guestsList"><small style="color:#aaa">Hakuna guest bado</small></div>
 </div>
 </div>
-
 <div id="ai" class="tab card" style="border:3px solid #ffcc00;background:linear-gradient(180deg,#111c44,#050a1f)">
 <h3>🤖 AI STUDIO - SINGLE SCREEN FIXED</h3>
 <div class="card" style="background:#000;border:3px solid #ffcc00;margin:5px 0">
@@ -190,7 +189,6 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <div id="a" class="tab card"><h3>📢 ADS</h3><input id="adTitle" placeholder="Title"><input id="adMsg" placeholder="Ujumbe"><input id="adContact" placeholder="FB Link"><button class="blue" onclick="addAd()">ONGEZA AD</button><div id="alist"></div></div>
 <div id="o" class="tab card"><h3>👑 OWNER</h3><input id="tvName" value="MTAANI TV"><input id="ownerName" value="MTAANI TV"><input id="ticker" value="MTAANI TV LIVE 24/7"><button class="green" onclick="saveOwner()">💾 HIFADHI</button><div id="ownerStatus" class="small"></div></div>
 <div id="s" class="tab card"><h3>🚀 PUBLIC AUTO</h3><button class="green" onclick="pushAll()">📤 TUMA KWA TV</button><div id="pushStatus" class="small"></div><textarea id="out" style="height:350px;background:#000;color:#0f0;font-size:11px"></textarea><button class="blue" onclick="copyOut()">📋 COPY CODE YOTE</button></div>
-
 <script>
 let videos=[], videosByCat={news:[],bizz:[],mchezo:[],music:[],drama:[],gen:[]}, catEnabled={news:false,bizz:false,mchezo:false,music:false,drama:false,gen:false}, ads=[], ownerData={tvName:"MTAANI TV",ownerName:"MTAANI TV",ticker:"MTAANI TV LIVE"}, currentFacing="user", currentRoom="MtaaniTV-Live-Show";
 let liveEndTime=0, liveTimerInterval=null, autoStopTimeout=null; let ctrlData={enabled:false,token:"MTAANI-1234"}; let guests=[], hostFeatured=true, currentBg="", tvLiveActive=false;
@@ -233,13 +231,8 @@ function handlePermanentUpload(input){
   permanentList.push(item);
   localStorage.setItem('mtaani_perm_v2', JSON.stringify(permanentList));
   let vidEl=document.getElementById('aiCityVideo');
-  if(file.type.startsWith('video')){ vidEl.src=dataUrl; vidEl.play(); }
-  else {
-    let img = document.createElement('div');
-    document.getElementById('aiStudio').style.backgroundImage=`url('${dataUrl}')`;
-    document.getElementById('aiStudio').style.backgroundSize='cover';
-    vidEl.style.display='none';
-  }
+  if(file.type.startsWith('video')){ vidEl.style.display='block'; vidEl.src=dataUrl; vidEl.play(); document.getElementById('aiStudio').style.backgroundImage=''; }
+  else { vidEl.style.display='none'; document.getElementById('aiStudio').style.backgroundImage=`url('${dataUrl}')`; document.getElementById('aiStudio').style.backgroundSize='cover'; }
   document.getElementById('permStatus').innerText='✅ SAVED: '+file.name;
   renderPermanent();
  };
@@ -273,24 +266,67 @@ function deletePermanent(i){
  renderPermanent();
  document.getElementById('aiStatus').innerText='🗑️ Imefutwa na mtangazaji amesimama';
 }
-function toggleMute(){
- isMuted=!isMuted;
- let btn=document.getElementById('muteBtn');
- if(isMuted){ try{synth.pause();}catch{} btn.innerText='🔊 UNMUTE / ENDELEA'; btn.style.background='#00b300'; document.getElementById('aiStatus').innerText='⏸️ PAUSED'; }
- else { try{synth.resume();}catch{} btn.innerText='⏸️ PAUSE / MUTE'; btn.style.background='#ff6600'; document.getElementById('aiStatus').innerText='▶️ Anaendelea...'; }
+// FIXED STOP & MUTE - INASIMAMISHA KWELI 100%
+function stopAI(){
+  isMuted=false;
+  try{ synth.pause(); }catch{}
+  try{ synth.cancel(); }catch{}
+  try{ speechSynthesis.pause(); }catch{}
+  try{ speechSynthesis.cancel(); }catch{}
+  setTimeout(()=>{ try{ synth.cancel(); speechSynthesis.cancel(); }catch{} },100);
+  setTimeout(()=>{ try{ synth.cancel(); speechSynthesis.cancel(); }catch{} },250);
+  document.getElementById('aiStatus').innerText='⏹️ STOP KABISA - AMESIMAMA';
+  let btn=document.getElementById('muteBtn');
+  if(btn){ btn.innerText='⏸️ PAUSE / MUTE'; btn.style.background='#ff6600'; }
 }
+function toggleMute(){
+ let btn=document.getElementById('muteBtn');
+ if(!isMuted){
+   isMuted=true;
+   try{ synth.pause(); speechSynthesis.pause(); }catch{}
+   btn.innerText='🔊 ENDELEA / UNMUTE'; btn.style.background='#00b300';
+   document.getElementById('aiStatus').innerText='⏸️ PAUSED';
+ } else {
+   isMuted=false;
+   try{ synth.resume(); speechSynthesis.resume(); }catch{}
+   btn.innerText='⏸️ PAUSE / MUTE'; btn.style.background='#ff6600';
+   document.getElementById('aiStatus').innerText='▶️ Anaendelea...';
+ }
+}
+// FIXED GOOGLE NEWS - 4 APIs
 async function fetchNews(){
  document.getElementById('aiStatus').innerText='⏳ Inavuta Google News KE...';
  let rss='https://news.google.com/rss?hl=sw&gl=KE&ceid=KE:sw';
- let apis=[`https://api.rss2json.com/v1/api?rss_url=${encodeURIComponent(rss)}`,`https://api.allorigins.win/get?url=${encodeURIComponent(rss)}`];
+ let apis=[
+  `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rss)}`,
+  `https://api.allorigins.win/raw?url=${encodeURIComponent(rss)}`,
+  `https://corsproxy.io/?${encodeURIComponent(rss)}`,
+  `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(rss)}`
+ ];
  for(let api of apis){
   try{
-   let r=await fetch(api); let d=await r.json(); let items=null;
-   if(d.items) items=d.items; else if(d.contents){ let parser=new DOMParser(); let xml=parser.parseFromString(d.contents,"text/xml"); let its=xml.querySelectorAll("item"); items=[]; its.forEach(it=>{ items.push({title:it.querySelector("title")?.textContent||"", description:it.querySelector("description")?.textContent||"", pubDate:it.querySelector("pubDate")?.textContent||""}) }); }
-   if(items && items.length>0){ newsCache=items.slice(0,5); let h=''; newsCache.forEach((n,i)=>{ h+=`<div class="list-item"><span><b>${n.title.substring(0,80)}...</b><br><span class="small">${n.pubDate||''}</span></span><button class="blue" style="width:auto" onclick="speakNews(${i})">▶️ SOMA</button></div>`; }); document.getElementById('newsList').innerHTML=h; document.getElementById('aiStatus').innerText='✅ Habari 5 ziko - ya zamani itasimama kwanza'; return; }
+   let r=await fetch(api);
+   let txt=await r.text();
+   let d; try{ d=JSON.parse(txt); }catch{ d={contents:txt}; }
+   let items=null;
+   if(d.items) items=d.items;
+   else if(d.contents){
+     let parser=new DOMParser();
+     let xml=parser.parseFromString(d.contents,"text/xml");
+     let its=xml.querySelectorAll("item");
+     items=[];
+     its.forEach(it=>{ items.push({title:it.querySelector("title")?.textContent||"", description:it.querySelector("description")?.textContent||"", pubDate:it.querySelector("pubDate")?.textContent||""}) });
+   }
+   if(items && items.length>0){
+     newsCache=items.slice(0,8);
+     let h=''; newsCache.forEach((n,i)=>{ h+=`<div class="list-item"><span><b>${n.title.substring(0,90)}...</b><br><span class="small">${n.pubDate||''}</span></span><button class="blue" style="width:auto" onclick="speakNews(${i})">▶️ SOMA</button></div>`; });
+     document.getElementById('newsList').innerHTML=h;
+     document.getElementById('aiStatus').innerText='✅ Habari '+newsCache.length+' ziko';
+     return;
+   }
   }catch(e){ continue; }
  }
- document.getElementById('aiStatus').innerText='❌ Google imezima';
+ document.getElementById('aiStatus').innerText='❌ Google imezima - andika mwenyewe kwa textarea';
 }
 function speakNews(i){ stopAI(); setTimeout(()=>{ let t=newsCache[i].title+'. '+ (newsCache[i].description||'').replace(/<[^>]*>/g,'').substring(0,300); document.getElementById('customNews').value=t; document.getElementById('tickerText').innerText=`MTAANI TV NEWS • ${voiceMode.toUpperCase()} • ${t.substring(0,100)} • `; speakText(t); },300); }
 function speakCustom(){ let t=document.getElementById('customNews').value.trim(); if(!t){alert('Andika habari');return;} stopAI(); setTimeout(()=>{ speakText(t); },300); }
@@ -308,14 +344,6 @@ function speakText(text){
   document.getElementById('aiStatus').innerText='🎙️ ANAONGEA - '+voiceMode.toUpperCase()+' - '+(voice?voice.name:'default');
   synth.speak(utter);
  },200);
-}
-function stopAI(){
- try{ synth.cancel(); }catch{}
- try{ speechSynthesis.cancel(); }catch{}
- document.getElementById('aiStatus').innerText='⏹️ STOP KABISA - Mtangazaji AMESIMAMA';
- isMuted=false;
- let btn=document.getElementById('muteBtn');
- if(btn){ btn.innerText='⏸️ PAUSE / MUTE'; btn.style.background='#ff6600'; }
 }
 async function pushAIToTV(){ let txt=document.getElementById('customNews').value.trim()||'MTAANI TV AI LIVE'; let data={live:true, type:'ai-studio', aiText:txt, voice:voiceMode, permanent:permanentList, time:Date.now()}; let ok=await pushFile('live.json', JSON.stringify(data,null,2)); if(ok){ alert('✅ IMEENDA TV - '+voiceMode.toUpperCase()); } }
 async function loadCtrl(){ try{ let r=await fetch('assistant_control.json?v='+Date.now()); if(r.ok) ctrlData=await r.json(); }catch{} document.getElementById('ctrlKey').value=ctrlData.token; updateCtrlStatus(); }
