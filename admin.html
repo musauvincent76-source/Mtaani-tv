@@ -24,15 +24,14 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 .bg-item{height:50px;border-radius:8px;background-size:cover;background-position:center;border:2px solid #333;cursor:pointer;position:relative}
 .bg-item.active{border-color:#00ff00}
 .bg-item span{position:absolute;bottom:0;left:0;background:rgba(0,0,0,0.7);font-size:8px;padding:2px 4px;width:100%}
-/* === CITIZEN TV STUDIO - NO CIRCLE === */
-#aiStudio{position:relative;width:100%;height:72vh;background:#000;border-radius:14px;overflow:hidden;border:3px solid #ffcc00;display:flex;flex-direction:column;justify-content:end}
-.ai-city{position:absolute;top:0;left:0;width:100%;height:100%;background:url('https://images.unsplash.com/photo-1590602847861-f357a933c5d3?w=800') center/cover;opacity:0.85}
+#aiStudio{position:relative;width:100%;height:72vh;background:#000;border-radius:14px;overflow:hidden;border:3px solid #ffcc00}
+.ai-city{position:absolute;top:0;left:0;width:100%;height:100%;background:url('https://images.unsplash.com/photo-1590602847861-f357a933c5d3?w=1200') center/cover;opacity:0.9}
 .ai-logo{position:absolute;top:10px;left:12px;background:#ffcc00;color:#000;font-weight:900;padding:5px 12px;border-radius:6px;font-size:12px;z-index:5}
 .ai-live{position:absolute;top:10px;right:12px;background:#ff0000;color:#fff;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:900;z-index:5;animation:blink 1s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
-.ai-presenter{position:absolute;bottom:0;left:0;width:100%;height:100%;background:transparent;border:none;border-radius:0;margin:0;box-shadow:none;z-index:2;overflow:visible;transition:transform 0.15s}
+.ai-presenter{position:absolute;bottom:0;left:0;width:100%;height:100%;background:transparent;border:none;border-radius:0;z-index:2;overflow:hidden;transition:transform 0.15s}
 .ai-presenter.talking{transform:scale(1.02)}
-.ai-presenter img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.ai-presenter img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
 .ai-mouth{display:none}
 .ai-desk{position:absolute;bottom:28px;left:0;width:100%;height:110px;background:linear-gradient(180deg,#1e1e1e,#000);z-index:4;border-top:4px solid #ffcc00;display:flex;align-items:center;justify-content:center}
 .ai-desk::before{content:'MTAANI TV';color:#ffcc00;font-weight:900;letter-spacing:4px;font-size:20px;text-shadow:0 2px 8px #000}
@@ -147,14 +146,13 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 </div>
 </div>
 <div id="ai" class="tab card" style="border:3px solid #ffcc00;background:linear-gradient(180deg,#111c44,#050a1f)">
-<h3>🤖 AI STUDIO - KAMA CITIZEN TV</h3>
+<h3>🤖 AI STUDIO - BOX - NO CIRCLE</h3>
 <div id="aiStudio">
 <div class="ai-city"></div>
 <div class="ai-logo">MTAANI TV</div>
 <div class="ai-live">🔴 AI LIVE</div>
 <div class="ai-presenter" id="presenterBox">
 <img id="avatarImg" src="https://musauvincent76-source.github.io/Mtaani-tv/IMG-20260922-WA8208.jpg" alt="presenter">
-<div class="ai-mouth" id="mouth"></div>
 </div>
 <div class="ai-desk"></div>
 <div class="ai-ticker"><span id="tickerText">MTAANI TV AI STUDIO - Karibu - Habari za Kenya Live...</span></div>
@@ -172,6 +170,16 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <button onclick="pushAIToTV()" style="flex:1;background:#ffcc00;color:#000">📺 TUMA AI KWA TV</button>
 </div>
 <small id="aiStatus" style="color:#00e676"></small>
+</div>
+<div class="card" style="background:#000;border:1px dashed #ffcc00">
+<h4>🎨 Chagua Uso - Hapa</h4>
+<div class="bg-grid">
+<div class="bg-item active" onclick="changeAvatar('https://musauvincent76-source.github.io/Mtaani-tv/IMG-20260922-WA8208.jpg')" style="background-image:url('https://musauvincent76-source.github.io/Mtaani-tv/IMG-20260922-WA8208.jpg')"><span>MIMI</span></div>
+<div class="bg-item" onclick="changeAvatar('https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400')" style="background-image:url('https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200')"><span>MAMA SWAHILI</span></div>
+<div class="bg-item" onclick="changeAvatar('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400')" style="background-image:url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200')"><span>BABA ENGLISH</span></div>
+<div class="bg-item" onclick="changeAvatar('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400')" style="background-image:url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200')"><span>BINTI</span></div>
+</div>
+<small>Bonyeza uso ubadilike - bado ni Citizen TV style, sio circle</small>
 </div>
 </div>
 <div id="a" class="tab card"><h3>📢 ADS + Facebook</h3><input id="adTitle" placeholder="Title"><input id="adMsg" placeholder="Ujumbe"><input id="adContact" placeholder="FB Link"><button class="blue" onclick="addAd()">ONGEZA AD</button><div id="alist"></div></div>
@@ -200,8 +208,8 @@ function speakText(text){
  utter.lang = document.getElementById('voiceSelect').value==='en'?'en-US':'sw-KE';
  utter.rate=0.92;
  let presenter=document.getElementById('presenterBox');
- utter.onboundary=()=>{ presenter.classList.add('talking'); setTimeout(()=>presenter.classList.remove('talking'),120); };
- mouthInterval=setInterval(()=>{ if(!speechSynthesis.speaking){clearInterval(mouthInterval);return;} presenter.classList.toggle('talking'); },150);
+ utter.onboundary=()=>{ presenter.classList.add('talking'); setTimeout(()=>presenter.classList.remove('talking'),150); };
+ mouthInterval=setInterval(()=>{ if(!speechSynthesis.speaking){clearInterval(mouthInterval);return;} presenter.classList.toggle('talking'); },180);
  document.getElementById('tickerText').innerText=text.substring(0,150);
  document.getElementById('aiStatus').innerText='🔊 ANAONGEA KAMA CITIZEN TV...';
  utter.onend=()=>{ clearInterval(mouthInterval); presenter.classList.remove('talking'); document.getElementById('aiStatus').innerText='✅ Amemaliza'; };
