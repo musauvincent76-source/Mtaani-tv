@@ -29,17 +29,17 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 .ai-logo{position:absolute;top:10px;left:12px;background:#ffcc00;color:#000;font-weight:900;padding:5px 12px;border-radius:6px;font-size:12px;z-index:5}
 .ai-live{position:absolute;top:10px;right:12px;background:#ff0000;color:#fff;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:900;z-index:5;animation:blink 1s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
-/* === HUMAN TALKING REAL === */
+/* === HUMAN TALKING REAL - FIXED ONLY HERE === */
 .ai-presenter{position:absolute;bottom:0;left:0;width:100%;height:100%;background:transparent;border:none;border-radius:0;z-index:2;overflow:hidden;transform-origin:center bottom}
 .ai-presenter img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;transition:filter 0.2s}
-.ai-presenter.talking{animation:humanTalk 0.4s infinite alternate ease-in-out}
-.ai-presenter.talking img{filter:brightness(1.15) contrast(1.1)}
+.ai-presenter.talking{animation:humanTalk 3.5s infinite ease-in-out}
+.ai-presenter.talking img{filter:brightness(1.12) contrast(1.05)}
 @keyframes humanTalk{
- 0%{transform:translateY(0px) rotate(0deg)}
- 25%{transform:translateY(-4px) rotate(-0.6deg)}
- 50%{transform:translateY(-1px) rotate(0.6deg)}
- 75%{transform:translateY(-5px) rotate(-0.3deg)}
- 100%{transform:translateY(-2px) rotate(0.3deg)}
+ 0%{transform:translateY(0px) rotateX(0deg)}
+ 25%{transform:translateY(3px) rotateX(12deg)}
+ 50%{transform:translateY(-4px) rotateX(-2deg)}
+ 75%{transform:translateY(2px) rotateX(10deg)}
+ 100%{transform:translateY(0px) rotateX(0deg)}
 }
 .human-mouth{position:absolute;bottom:32%;left:50%;width:22px;height:6px;background:linear-gradient(180deg,#300,#000);border-radius:0 0 12px 12px;transform:translateX(-50%);z-index:9;display:none;border:1px solid #500}
 .ai-presenter.talking.human-mouth{display:block;animation:mouthMove 0.19s infinite alternate}
@@ -53,11 +53,9 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 @keyframes barPulse{0%{height:5px}100%{height:22px}}
 .talk-badge{position:absolute;top:48px;left:12px;background:#00ff00;color:#000;font-weight:900;padding:4px 12px;border-radius:20px;font-size:11px;z-index:11;display:none}
 .ai-presenter.talking.talk-badge{display:block;animation:blink 0.5s infinite}
-.ai-desk{position:absolute;bottom:28px;left:0;width:100%;height:110px;background:linear-gradient(180deg,#1e1e1e,#000);z-index:4;border-top:4px solid #ffcc00;display:flex;align-items:center;justify-content:center}
-.ai-desk::before{content:'MTAANI TV';color:#ffcc00;font-weight:900;letter-spacing:4px;font-size:20px;text-shadow:0 2px 8px #000}
-.ai-ticker{position:absolute;bottom:0;left:0;width:100%;background:#ff0000;color:#fff;font-size:11px;padding:6px;white-space:nowrap;overflow:hidden;z-index:6}
-.ai-ticker span{display:inline-block;animation:scroll 30s linear infinite}
-@keyframes scroll{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+.ai-desk{position:absolute;bottom:0;left:0;width:100%;height:38px;background:linear-gradient(180deg,#002a6b,#001a44);z-index:4;border-top:3px solid #ffcc00;display:flex;align-items:center;justify-content:center}
+.ai-desk::before{content:'MTAANI TV';color:#fff;font-weight:900;letter-spacing:3px;font-size:14px}
+.ai-ticker{display:none!important}
 </style></head><body>
 <h1>📺 MTAANI TV - FINAL KILLER BOX + AI STUDIO</h1>
 <div class="card" style="border:3px solid #ffcc00;background:#000">
@@ -251,7 +249,6 @@ function speakText(text){
  let utter=new SpeechSynthesisUtterance(text);
  utter.lang = document.getElementById('voiceSelect').value==='en'?'en-US':'sw-KE';
  utter.rate=0.92; utter.pitch=1;
- // HUMAN ACTION START
  presenter.classList.add('talking');
  document.getElementById('aiStatus').innerText='🎙️ ANAONGEA KAMA MTU...';
  utter.onend=()=>{ presenter.classList.remove('talking'); document.getElementById('aiStatus').innerText='✅ Amemaliza'; };
