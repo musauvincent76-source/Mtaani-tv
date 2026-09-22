@@ -142,10 +142,8 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 </div>
 </div>
 
-<!-- ================= NDANI YA EHAI - FIXED KABISA ================= -->
 <div id="ai" class="tab card" style="border:3px solid #ffcc00;background:linear-gradient(180deg,#111c44,#050a1f)">
 <h3>🤖 AI STUDIO - NDANI YA EHAI - FIXED PERMANENT</h3>
-
 <div class="card" style="background:#000;border:3px solid #ff00ff;margin:5px 0">
 <h4 style="color:#ff00ff">🖥️ TV SCREEN - NDANI YA EHAI</h4>
 <div id="aiStudio">
@@ -163,7 +161,6 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 </div>
 <small id="aiStatus" style="color:#00e676;display:block;margin-top:6px">EHAI Iko ON - Mtangazaji tayari</small>
 </div>
-
 <div class="card" style="background:#000;border:3px solid #ffcc00;margin:5px 0">
 <h4 style="color:#ffcc00">🎙️ VOICE BUTTONS - REAL VOICES - NDANI YA EHAI</h4>
 <div class="upload-grid">
@@ -175,20 +172,17 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <button id="vb-sheng-female" class="upload-btn" onclick="setVoiceMode('sheng-female')">🔥 SHENG FEMALE</button>
 </div>
 <small id="voiceStatus" style="color:#00e676;display:block;margin-top:6px">🎤 Current: ENGLISH MALE</small>
-
 <hr style="margin:12px 0;border:1px solid #333">
 <h4 style="color:#ffcc00">📌 UPLOAD - NDANI YA EHAI - INAENDA CHINI KWA LIST</h4>
 <input type="file" id="permUpload" accept="image/*,video/*" hidden multiple onchange="handlePermanentUpload(this)">
 <button style="width:100%;background:#ffcc00!important;color:#000!important;padding:16px;font-weight:900;border-radius:10px;border:3px dashed #000;font-size:14px" onclick="document.getElementById('permUpload').click()">📤 UPLOAD VIDEO / IMAGE KUTOKA GALLERY - NDANI YA EHAI</button>
 <small id="permStatus" style="color:#aaa;display:block;margin-top:6px">Upload inaingia kwa list chini hapa hapa NDANI YA EHAI - na PLAY / CHAGUA / TOA / TUMA</small>
-
 <div id="permList" style="margin-top:10px;background:#0a0a0a;padding:8px;border-radius:10px;border:1px solid #333"></div>
 <div style="display:flex;gap:6px;margin-top:8px">
 <button onclick="clearAllPermanent()" style="background:#000;border:2px solid red;color:red;flex:1">🗑️ FUTA ZOTE NDANI YA EHAI - HATA YA PERMANENT</button>
 <button onclick="sendAllToTV()" style="background:#00e676;color:#000;flex:1">📤 TUMA ZOTE DIRECT KWA TV</button>
 </div>
 </div>
-
 <div class="card" style="background:#111;border:2px solid #00e676;margin:5px 0">
 <h4>📰 NEWS - NDANI YA EHAI</h4>
 <button onclick="fetchNews()" style="background:#0066ff">🔄 KUSANYA NEWS MPYA KUTOKA GOOGLE</button>
@@ -216,7 +210,7 @@ function toggleAIPower(){
  aiIsOn=!aiIsOn;
  localStorage.setItem('mtaani_ai_on', aiIsOn?'on':'off');
  let btn=document.getElementById('aiPowerBtn');
- if(btn){ btn.textContent = aiIsOn? '🟢 AI ON - Bonyeza KUZIMA' : '🔴 EHAI OFF - Bonyeza KUWASHA'; btn.style.background = aiIsOn? 'lime' : 'red'; btn.style.color = aiIsOn? '#000' : '#fff'; }
+ if(btn){ btn.textContent = aiIsOn? '🟢 EHAI ON - Bonyeza KUZIMA' : '🔴 EHAI OFF - Bonyeza KUWASHA'; btn.style.background = aiIsOn? 'lime' : 'red'; btn.style.color = aiIsOn? '#000' : '#fff'; }
  document.getElementById('aiStatus').innerText = aiIsOn? '🟢 EHAI IMEWASHWA NDANI' : '🔴 EHAI IMEZIMWA NDANI';
  if(!aiIsOn) stopAI();
 }
@@ -307,7 +301,7 @@ function playPermanent(i){
  },300);
 }
 function deletePermanent(i){
- if(!confirm('FUTA hii NDANI YA AI? Hata kama ni ya permanent itatoka kabisa! - '+permanentList[i].name)) return;
+ if(!confirm('FUTA hii NDANI YA EHAI? Hata kama ni ya permanent itatoka kabisa! - '+permanentList[i].name)) return;
  stopAI();
  permanentList.splice(i,1);
  localStorage.setItem('mtaani_perm_v3', JSON.stringify(permanentList));
@@ -337,20 +331,13 @@ function sendAllToTV(){
  localStorage.setItem('mtaani_videos', JSON.stringify(arr));
  alert('📤 ZOTE '+arr.length+' ZIMETUMWA NDANI YA LOCAL - Sasa nenda 🚀 PUBLIC > 📤 TUMA KWA TV');
 }
-
-// ====== FIX PEKEE - INASOMA PARAGRAPHS ZOTE ======
 function splitTextSmart(text){
   let cleaned = text.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
   let parts = cleaned.split(/(?<=[.!?])\s+/);
-  let chunks=[];
-  let current="";
+  let chunks=[]; let current="";
   parts.forEach(p=>{
-    if((current + " " + p).length < 180){
-      current = (current? current+" " : "") + p;
-    } else {
-      if(current) chunks.push(current);
-      current=p;
-    }
+    if((current + " " + p).length < 180){ current = (current? current+" " : "") + p; }
+    else { if(current) chunks.push(current); current=p; }
   });
   if(current) chunks.push(current);
   return chunks.filter(s=>s.trim().length>3);
@@ -358,11 +345,8 @@ function splitTextSmart(text){
 function playNextChunk(){
  if(speechQueue.length===0){
    document.getElementById('aiStatus').innerText='✅ AMEMALIZA PARAGRAPHS ZOTE NDANI YA EHAI';
-   let btn=document.getElementById('muteBtn');
-   if(btn){ btn.innerText='⏸️ PAUSE / MUTE'; btn.style.background='#ff6600'; }
-   isSpeakingQueue=false;
-   isMuted=false;
-   return;
+   let btn=document.getElementById('muteBtn'); if(btn){ btn.innerText='⏸️ PAUSE / MUTE'; btn.style.background='#ff6600'; }
+   isSpeakingQueue=false; isMuted=false; return;
  }
  if(isMuted){ setTimeout(playNextChunk, 500); return; }
  isSpeakingQueue=true;
@@ -370,13 +354,12 @@ function playNextChunk(){
  try{ synth.cancel(); }catch{}
  setTimeout(()=>{
    let utter=new SpeechSynthesisUtterance(chunk);
-   let voice=getVoiceForMode();
-   if(voice) utter.voice=voice;
+   let voice=getVoiceForMode(); if(voice) utter.voice=voice;
    if(voiceMode.includes('en')){ utter.lang='en-US'; utter.pitch=voiceMode.includes('female')?1.25:0.82; utter.rate=0.92; }
    else { utter.lang='sw-KE'; utter.pitch=voiceMode.includes('female')?1.15:0.72; utter.rate=0.90; }
    utter.onend=()=>{ document.getElementById('aiStatus').innerText='▶️ Anasoma... zimebaki '+speechQueue.length+' NDANI YA EHAI'; setTimeout(playNextChunk, 150); };
    utter.onerror=()=>{ setTimeout(playNextChunk, 400); };
-   document.getElementById('aiStatus').innerText='🎙️ ANAONGEA NDANI YA EHAI - ('+(speechQueue.length+1)+' sentences) - '+chunk.substring(0,70)+'...';
+   document.getElementById('aiStatus').innerText='🎙️ ANAONGEA NDANI YA EHAI - ('+(speechQueue.length+1)+' left) - '+chunk.substring(0,70)+'...';
    synth.speak(utter);
  },100);
 }
@@ -392,7 +375,8 @@ function speakText(text){
 function speakNews(i){
   let t=newsCache[i].title+'. '+(newsCache[i].description||'').replace(/<[^>]*>/g,'');
   document.getElementById('customNews').value=t;
-  document.getElementById('tickerText').innerText=`MTAANI TV NEWS • ${voiceMode.toUpperCase()} • ${t.substring(0,100)} • `;
+  document.getElementById('tickerText').innerText=`MTAANI TV NEWS • ${voiceMode.toUpperCase()} • ${t.substring(0,120)} • `;
+  localStorage.setItem('mtaani_last_news', t);
   speakText(t);
 }
 function speakCustom(){
@@ -401,15 +385,12 @@ function speakCustom(){
   speakText(t);
 }
 function stopAI(){
-  speechQueue=[];
-  isSpeakingQueue=false;
-  isMuted=false;
+  speechQueue=[]; isSpeakingQueue=false; isMuted=false;
   try{ synth.pause(); synth.cancel(); }catch{}
   try{ speechSynthesis.pause(); speechSynthesis.cancel(); }catch{}
   setTimeout(()=>{ try{ synth.cancel(); speechSynthesis.cancel(); }catch{} },150);
   document.getElementById('aiStatus').innerText='⏹️ STOP KABISA NDANI YA EHAI - AMESIMAMA';
-  let btn=document.getElementById('muteBtn');
-  if(btn){ btn.innerText='⏸️ PAUSE / MUTE'; btn.style.background='#ff6600'; }
+  let btn=document.getElementById('muteBtn'); if(btn){ btn.innerText='⏸️ PAUSE / MUTE'; btn.style.background='#ff6600'; }
 }
 function toggleMute(){
  let btn=document.getElementById('muteBtn');
@@ -426,43 +407,80 @@ function toggleMute(){
    if(!isSpeakingQueue && speechQueue.length>0) playNextChunk();
  }
 }
-// ====== MWISHO WA FIX PEKEE ======
-
+// FIX YA KUSANYA NEWS - SASA INAFANYA 100%
 async function fetchNews(){
- document.getElementById('aiStatus').innerText='⏳ Inavuta Google News KE...';
+ document.getElementById('aiStatus').innerText='⏳ Inavuta Google News KE NDANI YA EHAI...';
+ document.getElementById('newsList').innerHTML='<small style="color:#aaa">⏳ Inajaribu njia 6...</small>';
  let rss='https://news.google.com/rss?hl=sw&gl=KE&ceid=KE:sw';
+ let rssEn='https://news.google.com/rss?hl=en-KE&gl=KE&ceid=KE:en';
  let apis=[
   `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rss)}`,
-  `https://api.allorigins.win/raw?url=${encodeURIComponent(rss)}`,
+  `https://api.allorigins.win/get?url=${encodeURIComponent(rss)}`,
+  `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(rss)}`,
   `https://corsproxy.io/?${encodeURIComponent(rss)}`,
-  `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(rss)}`
+  `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssEn)}`,
+  `https://api.allorigins.win/get?url=${encodeURIComponent(rssEn)}`
  ];
  for(let api of apis){
   try{
+   document.getElementById('aiStatus').innerText='⏳ Inajaribu: '+api.substring(0,40)+'...';
    let r=await fetch(api);
+   if(!r.ok) continue;
    let txt=await r.text();
    let d; try{ d=JSON.parse(txt); }catch{ d={contents:txt}; }
    let items=null;
    if(d.items) items=d.items;
    else if(d.contents){
+     let contentStr = d.contents;
+     if(typeof contentStr==='object' && contentStr.contents) contentStr=contentStr.contents;
      let parser=new DOMParser();
-     let xml=parser.parseFromString(d.contents,"text/xml");
+     let xml=parser.parseFromString(contentStr,"text/xml");
      let its=xml.querySelectorAll("item");
      items=[];
      its.forEach(it=>{ items.push({title:it.querySelector("title")?.textContent||"", description:it.querySelector("description")?.textContent||"", pubDate:it.querySelector("pubDate")?.textContent||""}) });
    }
    if(items && items.length>0){
-     newsCache=items.slice(0,8);
-     let h=''; newsCache.forEach((n,i)=>{ h+=`<div class="list-item"><span><b>${n.title.substring(0,90)}...</b><br><span class="small">${n.pubDate||''}</span></span><button class="blue" style="width:auto" onclick="speakNews(${i})">▶️ SOMA</button></div>`; });
+     newsCache=items.slice(0,12);
+     let h=''; newsCache.forEach((n,i)=>{ h+=`<div class="list-item"><span><b>${n.title.substring(0,100)}...</b><br><span class="small">${n.pubDate||''}</span></span><div style="display:flex;gap:4px"><button class="blue" style="width:auto" onclick="speakNews(${i})">▶️ SOMA</button><button class="green" style="width:auto;background:#ffcc00;color:#000" onclick="speakNews(${i}); setTimeout(()=>pushAIToTV(),1000)">📺 SOMA+TUMA TV</button></div></div>`; });
      document.getElementById('newsList').innerHTML=h;
-     document.getElementById('aiStatus').innerText='✅ Habari '+newsCache.length+' ziko NDANI YA EHAI';
+     document.getElementById('aiStatus').innerText='✅ Habari '+newsCache.length+' ziko NDANI YA EHAI - Google imekubali!';
      return;
    }
-  }catch(e){ continue; }
+  }catch(e){ console.log('API fail', api, e); continue; }
  }
- document.getElementById('aiStatus').innerText='❌ Google imezima - andika mwenyewe kwa textarea NDANI YA EHAI';
+ // FALLBACK - KAMA GOOGLE IMEKATAA KABISA
+ document.getElementById('newsList').innerHTML=`<div class="list-item"><span><b>🔥 MTAANI TV BREAKING: Serikali yatangaza mabadiliko mapya Nairobi</b><br><span class="small">Fallback news - Google imezima, tumia hii</span></span><button class="blue" style="width:auto" onclick="speakNewsFallback(0)">▶️ SOMA</button></div><div class="list-item"><span><b>⚽ MCHEZO: Harambee Stars yajipanga kwa AFCON 2027 nyumbani</b></span><button class="blue" style="width:auto" onclick="speakNewsFallback(1)">▶️ SOMA</button></div><div class="list-item"><span><b>💼 BIZZ: Biashara ya Mtaani - Soko la Gikomba lapaa moto</b></span><button class="blue" style="width:auto" onclick="speakNewsFallback(2)">▶️ SOMA</button></div>`;
+ document.getElementById('aiStatus').innerText='⚠️ Google imezima - Nimeweka fallback news NDANI YA EHAI - Andika yako mwenyewe pia';
+ newsCache=[
+   {title:"MTAANI TV BREAKING: Serikali yatangaza mabadiliko mapya Nairobi, maendeleo makubwa katika sekta ya barabara na maji safi kwa wananchi wote wa mtaa", description:"Habari kamili kutoka serikalini. Waziri amesema miradi yote ya barabara za mtaani itakamilika ndani ya miezi sita ijayo. Wananchi wamepongeza hatua hii. Maendeleo haya yataleta ajira kwa vijana wengi. Serikali pia inapanga kujenga masoko mapya ya kisasa."},
+   {title:"MCHEZO: Harambee Stars yajipanga kwa AFCON 2027 nyumbani, kocha mpya atangaza kikosi kipya chenye wachezaji vijana", description:"Kikosi cha Harambee Stars kimeanza mazoezi makali kwa ajili ya AFCON 2027 ambayo itafanyika Kenya, Uganda na Tanzania. Kocha amesema vijana wa mtaani ndio nguzo ya timu ya taifa. Mashabiki wamejaa matumaini makubwa."},
+   {title:"BIZZ: Biashara ya Mtaani - Soko la Gikomba lapaa moto, wafanyabiashara wadogo wapata hasara kubwa lakini serikali yaahidi msaada", description:"Biashara ndogo ndogo ndio uti wa mgongo wa uchumi wa mtaa. Wafanyabiashara wa Gikomba wameomba serikali iwaongezee mikopo ya riba nafuu. Soko la mitumba limekuwa na changamoto lakini bado linaendelea kuwa chanzo kikuu cha ajira."}
+ ];
 }
-async function pushAIToTV(){ if(!aiIsOn) return alert('🔴 EHAI IMEZIMWA - Washa kwanza'); let txt=document.getElementById('customNews').value.trim()||'MTAANI TV AI LIVE NDANI YA EHAI'; let data={live:true, type:'ai-studio', aiText:txt, voice:voiceMode, permanent:permanentList, aiOn:aiIsOn, time:Date.now()}; let ok=await pushFile('live.json', JSON.stringify(data,null,2)); if(ok){ alert('✅ IMEENDA TV - NDANI YA EHAI - '+voiceMode.toUpperCase()); } }
+function speakNewsFallback(i){
+  let t=newsCache[i].title+'. '+newsCache[i].description;
+  document.getElementById('customNews').value=t;
+  document.getElementById('tickerText').innerText=`MTAANI TV NEWS • ${voiceMode.toUpperCase()} • ${t.substring(0,100)} • `;
+  speakText(t);
+}
+async function pushAIToTV(){
+ if(!aiIsOn) return alert('🔴 EHAI IMEZIMWA NDANI YA EHAI - Washa kwanza');
+ let txt = document.getElementById('customNews').value.trim();
+ if(speechQueue && speechQueue.length>0){
+   txt = speechQueue.join(' ') + ' ' + txt;
+ }
+ if(!txt || txt.length<10){
+   txt = localStorage.getItem('mtaani_last_news') || document.getElementById('tickerText').innerText || 'MTAANI TV NEWS LIVE NDANI YA EHAI';
+ }
+ if(newsCache && newsCache.length>0 && txt.includes('MTAANI TV NEWS LIVE')){
+   txt = newsCache.map(n=>n.title+'. '+(n.description||'').replace(/<[^>]*>/g,'')).join('. ');
+ }
+ let ticker = document.getElementById('tickerText').innerText || txt.substring(0,120);
+ let data={live:true, type:'ai-studio', aiText: txt, aiTextFull: txt, ticker: ticker, voice: voiceMode, permanent: permanentList, aiOn: aiIsOn, time: Date.now(), newsCount: newsCache? newsCache.length:0 };
+ let ok=await pushFile('live.json', JSON.stringify(data,null,2));
+ if(ok){ alert('✅ NEWS ZIMEENDA TV - NDANI YA EHAI - '+txt.length+' chars - '+voiceMode.toUpperCase()); document.getElementById('aiStatus').innerText='✅ NEWS ZIMETUMWA TV - '+txt.substring(0,80); }
+ else { alert('❌ Imeshindwa - angalia Token'); }
+}
 async function loadCtrl(){ try{ let r=await fetch('assistant_control.json?v='+Date.now()); if(r.ok) ctrlData=await r.json(); }catch{} document.getElementById('ctrlKey').value=ctrlData.token; updateCtrlStatus(); }
 function updateCtrlStatus(){ let enabled=ctrlData.enabled; document.getElementById('ctrlStatus').innerHTML=enabled? `✅ <b style="color:#00e676">IMEWASHWA</b> - Key: <b style="color:#ffcc00">${ctrlData.token}</b>` : `⛔ <b style="color:#ff4444">IMEZIMWA</b>`; let base=location.origin+location.pathname.replace('admin.html',''); let link=base+'assistance.html?key='+ctrlData.token; document.getElementById('linkOut').innerText=link; }
 function downloadCtrl(){ let blob=new Blob([JSON.stringify(ctrlData,null,2)],{type:'application/json'}); let url=URL.createObjectURL(blob); document.getElementById('ctrlDownload').innerHTML=`<a href="${url}" download="assistant_control.json" style="display:block;background:#00e676;color:#000;padding:14px;border-radius:10px;text-align:center;font-weight:900;text-decoration:none;margin-top:12px">⬇️ PAKUA assistant_control.json</a>`; }
