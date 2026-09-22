@@ -24,41 +24,18 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 .bg-item{height:50px;border-radius:8px;background-size:cover;background-position:center;border:2px solid #333;cursor:pointer;position:relative}
 .bg-item.active{border-color:#00ff00}
 .bg-item span{position:absolute;bottom:0;left:0;background:rgba(0,0,0,0.7);font-size:8px;padding:2px 4px;width:100%}
-#aiStudio{position:relative;width:100%;height:72vh;background:#000;border-radius:14px;overflow:hidden;border:3px solid #ffcc00}
-.ai-city{position:absolute;top:0;left:0;width:100%;height:100%;background:url('https://images.unsplash.com/photo-1590602847861-f357a933c5d3?w=1200') center/cover;opacity:0.9;transition:background-image 1s ease}
-.ai-city::after{content:'MTAANI TV NEWS';position:absolute;top:45%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.75);color:#ffcc00;padding:12px 22px;border-radius:8px;font-weight:900;font-size:20px;border:2px solid #ffcc00;letter-spacing:3px;z-index:1}
+#aiStudio{position:relative;width:100%;height:56vh;background:#000;border-radius:14px;overflow:hidden;border:3px solid #ffcc00}
+#aiCityVideo{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;background:#000}
 .ai-logo{position:absolute;top:10px;left:12px;background:#ffcc00;color:#000;font-weight:900;padding:5px 12px;border-radius:6px;font-size:12px;z-index:5}
 .ai-live{position:absolute;top:10px;right:12px;background:#ff0000;color:#fff;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:900;z-index:5;animation:blink 1s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
-/* FIXED CAM - HAKUNA KUTIKISIKA */
-.ai-presenter{position:absolute;bottom:0;left:0;width:100%;height:100%;z-index:3;display:flex;align-items:flex-end;justify-content:center}
-.rasta-man{position:relative;width:260px;height:340px;margin-bottom:30px}
-.rasta-dreads{position:absolute;top:0;left:50%;transform:translateX(-50%);width:220px;height:240px;z-index:1}
-.dread{position:absolute;width:18px;background:#111;border-radius:0 0 10px 10px;top:10px}
-.dread:after{content:'';position:absolute;bottom:-8px;left:0;width:100%;height:10px;background:#111;border-radius:0 0 8px 8px}
-.rasta-face{position:absolute;top:40px;left:50%;transform:translateX(-50%);width:150px;height:170px;background:linear-gradient(#8d5a36,#6b3e24);border-radius:60px 60px 50px 50px;z-index:2;border:2px solid #000}
-.rasta-eyes{display:flex;justify-content:space-between;padding:45px 18px 0}
-.eye{width:28px;height:22px;background:#fff;border-radius:50%;position:relative;overflow:hidden;border:2px solid #000}
-.eye:after{content:'';position:absolute;top:3px;left:7px;width:12px;height:12px;background:#000;border-radius:50%}
-.rasta-mouth{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);width:42px;height:12px;background:#000;border-radius:0 0 20px 20px;border:2px solid #300;overflow:hidden;transition:0.1s}
-.ai-presenter.talking.rasta-mouth{height:32px!important;width:54px!important;background:radial-gradient(circle at center,#500,#000);animation:mouthReal 0.19s infinite alternate}
-@keyframes mouthReal{0%{height:10px}100%{height:34px}}
-.rasta-beard{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:90px;height:28px;background:#111;border-radius:0 0 40px 40px;z-index:3;opacity:0.8}
-.rasta-suit{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:220px;height:80px;background:linear-gradient(#1a365d,#0f1e45);border-top:4px solid #ffcc00;border-radius:10px 10px 0 0;z-index:1}
-.voice-bars{position:absolute;bottom:150px;left:50%;transform:translateX(-50%);display:none;gap:4px;z-index:10;align-items:end}
-.ai-presenter.talking.voice-bars{display:flex!important}
-.voice-bars span{width:6px;background:#00ff00;border-radius:10px;animation:barPulse 0.25s infinite alternate}
-@keyframes barPulse{0%{height:6px}100%{height:24px}}
-.talk-badge{position:absolute;top:48px;left:12px;background:#00ff00;color:#000;font-weight:900;padding:4px 12px;border-radius:20px;font-size:11px;z-index:11;display:none}
-.ai-presenter.talking.talk-badge{display:block!important}
 .ai-desk{position:absolute;bottom:0;left:0;width:100%;height:38px;background:linear-gradient(180deg,#002a6b,#001a44);z-index:4;border-top:3px solid #ffcc00;display:flex;align-items:center;justify-content:center}
-.ai-desk::before{content:'MTAANI TV - RASTA MAN';color:#fff;font-weight:900;letter-spacing:3px;font-size:13px}
+.ai-desk::before{content:'MTAANI TV - LIVE NEWS';color:#fff;font-weight:900;letter-spacing:3px;font-size:13px}
 .ai-ticker{position:absolute;bottom:38px;left:0;width:100%;height:28px;background:#cc0000;color:#fff;display:flex;align-items:center;z-index:6;overflow:hidden;white-space:nowrap}
 .ai-ticker span{animation:tickerMove 20s linear infinite;padding-left:100%}
 @keyframes tickerMove{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
 .upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}
 .upload-btn{background:#111c44!important;border:2px solid #ffcc00!important;color:#ffcc00!important;font-size:11px!important;padding:10px 6px!important}
-.upload-btn:hover{background:#ffcc00!important;color:#000!important}
 .upload-btn.active{background:#00ff00!important;color:#000!important;border-color:#00ff00!important}
 </style></head><body>
 <h1>📺 MTAANI TV - FINAL KILLER BOX + AI STUDIO</h1>
@@ -68,14 +45,14 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <div class="card" style="border:3px solid #00e676;background:linear-gradient(180deg,#0f1e45,#0a1430)">
 <h3 style="color:#00e676">👥 MSAIDIZI CONTROL - AUTO</h3>
 <p id="ctrlStatus" style="font-size:13px;color:#aaa;margin:8px 0">Inapakia...</p>
-<input id="ctrlKey" placeholder="Key ya msaidizi - mfano: MTAANI-1234" style="background:#000;color:#ffcc00;border:1px solid #00e676">
+<input id="ctrlKey" placeholder="Key ya msaidizi" style="background:#000;color:#ffcc00;border:1px solid #00e676">
 <div style="display:flex;gap:6px">
 <button onclick="toggleMsaidizi(true)" style="background:#00e676;color:#000;flex:1">🟢 WASHIA MSAIDIZI</button>
 <button onclick="toggleMsaidizi(false)" style="background:#cc0000;color:#fff;flex:1">🔴 ZIMA MSAIDIZI</button>
 </div>
-<button onclick="refreshKey()" style="background:#ffcc00;color:#000;margin-top:8px">🔄 REFRESH KEY (ndani)</button>
+<button onclick="refreshKey()" style="background:#ffcc00;color:#000;margin-top:8px">🔄 REFRESH KEY</button>
 <div style="background:#000;padding:10px;border-radius:8px;margin-top:10px;border:2px dashed #ffcc00">
-<small style="color:#aaa">LINK YA MSAIDIZI WhatsApp - BUTTON 2 TU (Bonyeza link ku-COPY):</small>
+<small style="color:#aaa">LINK YA MSAIDIZI - Bonyeza ku-COPY:</small>
 <p id="linkOut" onclick="copyLink()" style="word-break:break-all;font-size:12px;color:#ffcc00;margin-top:5px;font-weight:900;border:1px solid #333;padding:8px;border-radius:6px;cursor:pointer"></p>
 <div style="display:flex;gap:8px">
 <button onclick="refreshKeyAndPush()" style="background:#ffcc00;color:#000;padding:14px;flex:1">🔄 REFRESH LINK</button>
@@ -91,7 +68,7 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <div style="display:flex;gap:5px"><input id="owner" value="musauvincent76-source"><input id="repo" value="Mtaani-tv"></div>
 <button class="blue" onclick="saveToken()">💾 HIFADHI TOKEN</button>
 <div id="tokenStatus" class="small"></div>
-<button onclick="clearAllBundles()" style="background:#000;border:2px solid red;color:#ff4444;margin-top:10px">🗑️ FUTA BUNDLES ZOTE - CLEAN TV</button>
+<button onclick="clearAllBundles()" style="background:#000;border:2px solid red;color:#ff4444;margin-top:10px">🗑️ FUTA BUNDLES ZOTE</button>
 </div>
 <div class="tabs">
 <button id="btn-v" class="active" onclick="showTab('v','btn-v')">🎬 VIDEOS 6 CATS</button>
@@ -122,16 +99,13 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <div id="vcat-gen" class="cat-box"><div style="display:flex;justify-content:space-between;align-items:center"><h4>MAIN</h4><button id="sw-gen" class="sw" onclick="toggleCat('gen')">OFF 🔴</button></div><input id="link" placeholder="🔗 Link MAIN" oninput="fetchTitle()"><input id="title" placeholder="📝 Jina"><div style="display:flex;gap:5px"><button onclick="addVideo(false)" style="flex:1">➕ ONGEZA MAIN</button><button onclick="addVideo(true)" style="flex:1;background:#00ff00;color:#000">▶️ PLAY NOW</button><button onclick="startLiveCat('gen')" style="flex:1;background:#cc00cc">🔴 LIVE MAIN</button></div><div id="vlist"></div></div>
 </div>
 <div id="live" class="tab card" style="border:3px solid #ff00ff">
-<h3>🔴 LIVE STUDIO - KILLER BOX + BACKGROUNDS</h3>
+<h3>🔴 LIVE STUDIO</h3>
 <div class="card" style="background:#000;border:2px solid #ff00ff;margin:5px 0">
 <h4>🖼️ BACKGROUNDS</h4>
 <div class="bg-grid">
 <div class="bg-item active" onclick="setBg('')" style="background:#000"><span>❌ HAKUNA</span></div>
 <div class="bg-item" onclick="setBg('https://images.unsplash.com/photo-1494314671902-399b18174975?w=600')" style="background-image:url('https://images.unsplash.com/photo-1494314671902-399b18174975?w=200')"><span>NAIROBI CBD</span></div>
 <div class="bg-item" onclick="setBg('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=600')" style="background-image:url('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=200')"><span>MOMBASA BEACH</span></div>
-<div class="bg-item" onclick="setBg('https://images.unsplash.com/photo-1519608487953-e999c86e7455?w=600')" style="background-image:url('https://images.unsplash.com/photo-1519608487953-e999c86e7455?w=200')"><span>CITY NIGHT</span></div>
-<div class="bg-item" onclick="setBg('https://images.unsplash.com/photo-1518834107812-67b0b288f498?w=600')" style="background-image:url('https://images.unsplash.com/photo-1518834107812-67b0b288f498?w=200')"><span>STUDIO LIGHTS</span></div>
-<div class="bg-item" onclick="setBg('https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=600')" style="background-image:url('https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=200')"><span>OFFICE MODERN</span></div>
 </div>
 </div>
 <div class="card" style="background:#000;border:2px solid #00e676;margin:5px 0">
@@ -153,12 +127,12 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <button onclick="pushLiveStatus(false)" style="flex:1;background:#cc0000;color:#fff">⏹️ ZIMA KWA TV</button>
 </div>
 <div id="liveTimerDisplay" style="background:#ff0000;color:#fff;padding:8px;border-radius:8px;margin-top:8px;text-align:center;font-weight:900;font-size:14px;display:none">⏱️ LIVE: 3h 00m 00s left</div>
-<small id="liveMsg" style="color:#00e676;font-size:11px">Camera itawaka lakini TV haiwashi mpaka ubonyeze WASHIA KWA TV</small>
+<small id="liveMsg" style="color:#00e676;font-size:11px"></small>
 </div>
 <div style="display:flex;gap:5px"><button class="green" onclick="startLive()" style="background:#ff0000;flex:1">🔴 ANZA CAMERA</button><button class="blue" onclick="toggleFullLive()" style="flex:1">🔳 FULL</button></div>
 <div id="studioWrap"><div id="bgLayer"></div><div id="jitsiContainer"></div></div>
 <div class="card" style="background:#000;border:2px solid #ff00ff;margin:10px 0">
-<h4>👥 KILLER BOX - GUESTS</h4>
+<h4>👥 GUESTS</h4>
 <div style="display:flex;gap:5px;margin-bottom:8px">
 <input id="guestName" placeholder="Jina la guest" style="flex:1">
 <button onclick="addGuest()" style="width:auto;background:#00e676;color:#000;padding:8px 15px">➕ ONGEZA GUEST</button>
@@ -168,88 +142,51 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 </div>
 
 <div id="ai" class="tab card" style="border:3px solid #ffcc00;background:linear-gradient(180deg,#111c44,#050a1f)">
-<h3>🤖 AI STUDIO - RASTA FIXED CAM + PERMANENT UPLOAD + VOICE BUTTONS</h3>
-
-<!-- VOICE BUTTONS ENGLISH + PERMANENT UPLOAD MOJA TU -->
+<h3>🤖 AI STUDIO - SINGLE SCREEN FIXED</h3>
 <div class="card" style="background:#000;border:3px solid #ffcc00;margin:5px 0">
-<h4 style="color:#ffcc00">🎙️ VOICE BUTTONS - SELECT VOICE (ENGLISH LABELS)</h4>
+<h4 style="color:#ffcc00">🎙️ VOICE BUTTONS - REAL VOICES</h4>
 <div class="upload-grid">
-<button id="vb-en-male" class="upload-btn active" onclick="setVoiceMode('en-male')">🇬🇧 ENGLISH VOICE - MALE</button>
-<button id="vb-en-female" class="upload-btn" onclick="setVoiceMode('en-female')">🇬🇧 ENGLISH VOICE - FEMALE</button>
-<button id="vb-sw-male" class="upload-btn" onclick="setVoiceMode('sw-male')">🇰🇪 SWAHILI VOICE - MALE</button>
-<button id="vb-sw-female" class="upload-btn" onclick="setVoiceMode('sw-female')">🇰🇪 SWAHILI VOICE - FEMALE</button>
-<button id="vb-sheng-male" class="upload-btn" onclick="setVoiceMode('sheng-male')">🔥 SHENG VOICE - MALE</button>
-<button id="vb-sheng-female" class="upload-btn" onclick="setVoiceMode('sheng-female')">🔥 SHENG VOICE - FEMALE</button>
+<button id="vb-en-male" class="upload-btn active" onclick="setVoiceMode('en-male')">🇬🇧 ENGLISH MALE</button>
+<button id="vb-en-female" class="upload-btn" onclick="setVoiceMode('en-female')">🇬🇧 ENGLISH FEMALE</button>
+<button id="vb-sw-male" class="upload-btn" onclick="setVoiceMode('sw-male')">🇰🇪 SWAHILI MALE</button>
+<button id="vb-sw-female" class="upload-btn" onclick="setVoiceMode('sw-female')">🇰🇪 SWAHILI FEMALE</button>
+<button id="vb-sheng-male" class="upload-btn" onclick="setVoiceMode('sheng-male')">🔥 SHENG MALE</button>
+<button id="vb-sheng-female" class="upload-btn" onclick="setVoiceMode('sheng-female')">🔥 SHENG FEMALE</button>
 </div>
-<small id="voiceStatus" style="color:#00e676;display:block;margin-top:6px">🎤 Current: ENGLISH MALE - Serious anchor</small>
-
+<small id="voiceStatus" style="color:#00e676;display:block;margin-top:6px">🎤 Current: ENGLISH MALE - Bonyeza ku-test sauti</small>
 <hr style="margin:12px 0;border:1px solid #333">
-
-<h4 style="color:#ffcc00">📌 PERMANENT UPLOAD - ONE BUTTON ONLY (STAYS FOREVER)</h4>
+<h4 style="color:#ffcc00">📌 UPLOAD - ONE BUTTON ONLY</h4>
 <input type="file" id="permUpload" accept="image/*,video/*" hidden onchange="handlePermanentUpload(this)">
-<button style="width:100%;background:#ffcc00!important;color:#000!important;padding:14px;font-weight:900;border-radius:8px;" onclick="document.getElementById('permUpload').click()">📤 UPLOAD VIDEO / IMAGE FOR TV SCREENS - PERMANENT</button>
-<small id="permStatus" style="color:#aaa;display:block;margin-top:6px">Upload one file - it will stay permanent on TV screens behind anchor</small>
+<button style="width:100%;background:#ffcc00!important;color:#000!important;padding:14px;font-weight:900;border-radius:8px;" onclick="document.getElementById('permUpload').click()">📤 UPLOAD VIDEO / IMAGE FOR TV SCREEN</button>
+<small id="permStatus" style="color:#aaa;display:block;margin-top:6px">Upload inaingia kwa list chini - PLAY kuiona</small>
 <div id="permList" style="margin-top:8px"></div>
-<div id="permPreview" style="margin-top:8px;display:none"><img id="permImg" style="width:100%;border-radius:8px;border:2px solid #ffcc00"><video id="permVid" controls loop muted autoplay style="width:100%;border-radius:8px;border:2px solid #ffcc00;display:none"></video></div>
 </div>
-
 <div class="card" style="background:#111;border:2px solid #00e676;margin:5px 0">
-<h4>🎛️ LIVE CONTROLS - WHEN NEWS IS READING</h4>
+<h4>🎛️ LIVE CONTROLS - FIXED</h4>
 <div style="display:flex;gap:6px">
-<button id="muteBtn" onclick="toggleMute()" style="flex:1;background:#ff6600">🔇 MUTE</button>
-<button onclick="stopAI()" style="flex:1;background:#cc0000">⏹️ STOP FIRST - THEN PLAY NEXT</button>
+<button id="muteBtn" onclick="toggleMute()" style="flex:1;background:#ff6600">⏸️ PAUSE / MUTE</button>
+<button onclick="stopAI()" style="flex:1;background:#cc0000">⏹️ STOP KABISA</button>
 </div>
-<small style="color:#aaa">If you click another news, first one stops automatically - then next starts (actions in ticker)</small>
+<small style="color:#00e676">STOP = Mtangazaji anasimama kabisa. News mpya = ya zamani inasimama kwanza.</small>
 </div>
-
 <div id="aiStudio">
-<div class="ai-city" id="aiCityBg"></div>
+<video id="aiCityVideo" loop muted autoplay playsinline></video>
 <div class="ai-logo">MTAANI TV</div>
-<div class="ai-live">🔴 AI LIVE - CAMERA FIXED SERIOUS</div>
-<div class="ai-ticker" style="display:flex!important"><span id="tickerText">MTAANI TV NEWS • BREAKING NEWS • NAIROBI • GOVERNMENT ACTIONS LIVE • MTAANI TV LIVE 24/7 • SERIKALI IMETANGAZA HATUA MPYA • </span></div>
-<div class="ai-presenter" id="presenterBox">
-  <div class="rasta-man">
-    <div class="rasta-dreads">
-      <div class="dread" style="left:0;height:120px;transform:rotate(-12deg)"></div>
-      <div class="dread" style="left:22px;height:150px;transform:rotate(-8deg)"></div>
-      <div class="dread" style="left:44px;height:180px;transform:rotate(-4deg)"></div>
-      <div class="dread" style="left:70px;height:190px"></div>
-      <div class="dread" style="left:96px;height:190px"></div>
-      <div class="dread" style="left:122px;height:180px;transform:rotate(4deg)"></div>
-      <div class="dread" style="left:148px;height:150px;transform:rotate(8deg)"></div>
-      <div class="dread" style="left:174px;height:120px;transform:rotate(12deg)"></div>
-      <div class="dread" style="left:195px;height:100px;transform:rotate(16deg)"></div>
-    </div>
-    <div class="rasta-face">
-      <div class="rasta-eyes"><div class="eye"></div><div class="eye"></div></div>
-      <div class="rasta-mouth" id="cartoonMouth"></div>
-      <div class="rasta-beard"></div>
-    </div>
-    <div class="rasta-suit"></div>
-  </div>
-  <div class="voice-bars" id="voiceBars"><span style="height:8px"></span><span style="height:16px"></span><span style="height:12px"></span><span style="height:20px"></span></div>
-  <div class="talk-badge">🎙️ SERIOUS ANCHOR LIVE</div>
-</div>
+<div class="ai-live">🔴 LIVE</div>
+<div class="ai-ticker"><span id="tickerText">MTAANI TV NEWS • BREAKING • NAIROBI • GOVERNMENT ACTIONS LIVE • MTAANI TV LIVE 24/7 • </span></div>
 <div class="ai-desk"></div>
 </div>
-
 <div class="card" style="background:#000;border:1px solid #ffcc00;margin:8px 0">
-<div style="display:flex;gap:5px">
-<select id="voiceSelect" style="flex:1;display:none"><option value="sw">Kiswahili - Mama</option><option value="en">English - Female</option><option value="male">Kiswahili - Baba</option></select>
-<button onclick="stopAI()" style="width:auto;background:#cc0000">⏹️ ZIMA SAUTI</button>
-</div>
 <button onclick="fetchNews()" style="background:#0066ff">🔄 KUSANYA NEWS MPYA KUTOKA GOOGLE</button>
 <div id="newsList" style="max-height:200px;overflow:auto;margin-top:8px"></div>
 <textarea id="customNews" placeholder="Andika habari hapa..."></textarea>
 <div style="display:flex;gap:6px">
-<button onclick="speakCustom()" style="flex:1;background:#00b300">▶️ SOMA SASA - RASTA AONGEA</button>
-<button onclick="pushAIToTV()" style="flex:1;background:#ffcc00;color:#000">📺 TUMA AI KWA TV</button>
+<button onclick="speakCustom()" style="flex:1;background:#00b300">▶️ SOMA SASA</button>
+<button onclick="pushAIToTV()" style="flex:1;background:#ffcc00;color:#000">📺 TUMA KWA TV</button>
 </div>
 <small id="aiStatus" style="color:#00e676"></small>
-<audio id="fallbackAudio" controls style="width:100%;display:none;margin-top:8px;background:#000"></audio>
 </div>
 </div>
-
 <div id="a" class="tab card"><h3>📢 ADS</h3><input id="adTitle" placeholder="Title"><input id="adMsg" placeholder="Ujumbe"><input id="adContact" placeholder="FB Link"><button class="blue" onclick="addAd()">ONGEZA AD</button><div id="alist"></div></div>
 <div id="o" class="tab card"><h3>👑 OWNER</h3><input id="tvName" value="MTAANI TV"><input id="ownerName" value="MTAANI TV"><input id="ticker" value="MTAANI TV LIVE 24/7"><button class="green" onclick="saveOwner()">💾 HIFADHI</button><div id="ownerStatus" class="small"></div></div>
 <div id="s" class="tab card"><h3>🚀 PUBLIC AUTO</h3><button class="green" onclick="pushAll()">📤 TUMA KWA TV</button><div id="pushStatus" class="small"></div><textarea id="out" style="height:350px;background:#000;color:#0f0;font-size:11px"></textarea><button class="blue" onclick="copyOut()">📋 COPY CODE YOTE</button></div>
@@ -257,16 +194,34 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <script>
 let videos=[], videosByCat={news:[],bizz:[],mchezo:[],music:[],drama:[],gen:[]}, catEnabled={news:false,bizz:false,mchezo:false,music:false,drama:false,gen:false}, ads=[], ownerData={tvName:"MTAANI TV",ownerName:"MTAANI TV",ticker:"MTAANI TV LIVE"}, currentFacing="user", currentRoom="MtaaniTV-Live-Show";
 let liveEndTime=0, liveTimerInterval=null, autoStopTimeout=null; let ctrlData={enabled:false,token:"MTAANI-1234"}; let guests=[], hostFeatured=true, currentBg="", tvLiveActive=false;
-let newsCache=[]; let bgImages=["https://images.unsplash.com/photo-1494314671902-399b18174975?w=800","https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800","https://images.unsplash.com/photo-1519608487953-e999c86e7455?w=800","https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800","https://images.unsplash.com/photo-1590602847861-f357a933c5d3?w=800"]; let bgIndex=0;
-let voiceMode="en-male"; let permanentList=JSON.parse(localStorage.getItem('mtaani_perm_v2')||'[]'); let isMuted=false;
-
+let newsCache=[]; let voiceMode="en-male"; let permanentList=JSON.parse(localStorage.getItem('mtaani_perm_v2')||'[]'); let isMuted=false;
+let synth = window.speechSynthesis; let allVoices=[];
+function loadVoices(){ allVoices = synth.getVoices(); }
+loadVoices(); if(synth.onvoiceschanged!== undefined){ synth.onvoiceschanged = loadVoices; }
 function setVoiceMode(mode){
  voiceMode=mode;
  document.querySelectorAll('.upload-btn').forEach(b=>b.classList.remove('active'));
  let btn=document.getElementById('vb-'+mode);
  if(btn) btn.classList.add('active');
- document.getElementById('voiceStatus').innerText='🎤 Current: '+mode.toUpperCase().replace('-',' ')+' - Serious anchor ready';
+ document.getElementById('voiceStatus').innerText='🎤 Current: '+mode.toUpperCase()+' - Inajaribu sauti...';
  localStorage.setItem('mtaani_voice', mode);
+ stopAI();
+ setTimeout(()=>{ speakText(mode.includes('en')? "Hello, this is "+mode+" voice from Mtaani TV News live" : "Habari, hii ni sauti ya "+mode+" kutoka Mtaani TV"); }, 400);
+}
+function getVoiceForMode(){
+ if(!allVoices.length) allVoices = synth.getVoices();
+ if(voiceMode.includes('en')){
+   let maleNames = ['david','mark','alex','daniel','male'];
+   let femaleNames = ['zira','samantha','karen','female','susan','linda'];
+   let want = voiceMode.includes('female')? femaleNames : maleNames;
+   let v = allVoices.find(v=> v.lang.toLowerCase().includes('en') && want.some(n=>v.name.toLowerCase().includes(n)));
+   if(!v) v = allVoices.find(v=> v.lang==='en-US' || v.lang==='en-GB') || allVoices.find(v=> v.lang.startsWith('en'));
+   return v;
+ } else {
+   let v = allVoices.find(v=> v.lang.toLowerCase().startsWith('sw'));
+   if(!v) v = allVoices.find(v=> v.lang==='en-US');
+   return v;
+ }
 }
 function handlePermanentUpload(input){
  if(!input.files[0]) return;
@@ -277,73 +232,53 @@ function handlePermanentUpload(input){
   let item={id:Date.now(), name:file.name, data:dataUrl, type:file.type, voice:voiceMode};
   permanentList.push(item);
   localStorage.setItem('mtaani_perm_v2', JSON.stringify(permanentList));
-  showPermanentPreview(dataUrl, file.type);
-  document.getElementById('aiCityBg').style.backgroundImage=`url('${dataUrl}')`;
-  document.getElementById('permStatus').innerText='✅ PERMANENT SAVED: '+file.name+' - Inabaki kwa TV screens';
-  document.getElementById('tickerText').innerText=`MTAANI TV NEWS • ${voiceMode.toUpperCase()} • ${file.name} • BREAKING • ACTIONS LIVE • `;
+  let vidEl=document.getElementById('aiCityVideo');
+  if(file.type.startsWith('video')){ vidEl.src=dataUrl; vidEl.play(); }
+  else {
+    let img = document.createElement('div');
+    document.getElementById('aiStudio').style.backgroundImage=`url('${dataUrl}')`;
+    document.getElementById('aiStudio').style.backgroundSize='cover';
+    vidEl.style.display='none';
+  }
+  document.getElementById('permStatus').innerText='✅ SAVED: '+file.name;
   renderPermanent();
-  document.getElementById('customNews').value=`${voiceMode.toUpperCase()} NEWS: ${file.name} - MTAANI TV NEWS - Actions zinaendelea live...`;
  };
  reader.readAsDataURL(file);
-}
-function showPermanentPreview(dataUrl, type){
- document.getElementById('permPreview').style.display='block';
- if(type.startsWith('image')){
-  document.getElementById('permImg').style.display='block';
-  document.getElementById('permVid').style.display='none';
-  document.getElementById('permImg').src=dataUrl;
- } else {
-  document.getElementById('permImg').style.display='none';
-  document.getElementById('permVid').style.display='block';
-  document.getElementById('permVid').src=dataUrl;
- }
 }
 function renderPermanent(){
  let h='';
  permanentList.forEach((p,i)=>{
   h+=`<div class="list-item"><span><b>📌 ${p.name}</b><br><span class="small">${p.voice}</span></span><div style="display:flex;gap:4px"><button class="blue" style="width:auto;padding:6px" onclick="playPermanent(${i})">▶️ PLAY</button><button class="red" style="width:auto;padding:6px" onclick="deletePermanent(${i})">X</button></div></div>`;
  });
- document.getElementById('permList').innerHTML=h||'<small style="color:#aaa">No permanent yet - upload one</small>';
+ document.getElementById('permList').innerHTML=h||'<small style="color:#aaa">No file yet</small>';
 }
 function playPermanent(i){
- // SIMAMISHA KWANZA NDIO MPYA IANZE
  stopAI();
  setTimeout(()=>{
   let p=permanentList[i];
-  document.getElementById('aiCityBg').style.backgroundImage=`url('${p.data}')`;
-  showPermanentPreview(p.data, p.type);
+  let vidEl=document.getElementById('aiCityVideo');
+  if(p.type.startsWith('video')){ vidEl.style.display='block'; vidEl.src=p.data; vidEl.play(); document.getElementById('aiStudio').style.backgroundImage=''; }
+  else { vidEl.style.display='none'; document.getElementById('aiStudio').style.backgroundImage=`url('${p.data}')`; }
   setVoiceMode(p.voice);
-  let text=`${p.voice.toUpperCase()} NEWS: ${p.name}. MTAANI TV NEWS live update. Serikali imetangaza hatua mpya leo. Actions zinaendelea.`;
-  document.getElementById('customNews').value=text;
-  document.getElementById('tickerText').innerText=`MTAANI TV NEWS • ${p.voice.toUpperCase()} • ${p.name} • BREAKING • ${text.substring(0,80)} • `;
+  let text=document.getElementById('customNews').value || `${p.voice.toUpperCase()} NEWS: ${p.name}.`;
+  document.getElementById('tickerText').innerText=`MTAANI TV NEWS • ${p.voice.toUpperCase()} • ${p.name} • ${text.substring(0,80)} • `;
   speakText(text);
- },250);
+ },300);
 }
 function deletePermanent(i){
- if(!confirm('Futa hii permanent?')) return;
+ if(!confirm('Futa? Mtangazaji atasimama pia')) return;
+ stopAI();
  permanentList.splice(i,1);
  localStorage.setItem('mtaani_perm_v2', JSON.stringify(permanentList));
  renderPermanent();
+ document.getElementById('aiStatus').innerText='🗑️ Imefutwa na mtangazaji amesimama';
 }
 function toggleMute(){
  isMuted=!isMuted;
  let btn=document.getElementById('muteBtn');
- if(isMuted){
-  try{speechSynthesis.pause();}catch{}
-  btn.innerText='🔊 UNMUTE';
-  btn.style.background='#00b300';
- } else {
-  try{speechSynthesis.resume();}catch{}
-  btn.innerText='🔇 MUTE';
-  btn.style.background='#ff6600';
- }
+ if(isMuted){ try{synth.pause();}catch{} btn.innerText='🔊 UNMUTE / ENDELEA'; btn.style.background='#00b300'; document.getElementById('aiStatus').innerText='⏸️ PAUSED'; }
+ else { try{synth.resume();}catch{} btn.innerText='⏸️ PAUSE / MUTE'; btn.style.background='#ff6600'; document.getElementById('aiStatus').innerText='▶️ Anaendelea...'; }
 }
-setInterval(()=>{
- if(permanentList.length>0) return; // usibadilishe kama kuna permanent
- let city=document.getElementById('aiCityBg');
- if(city){ bgIndex=(bgIndex+1)%bgImages.length; city.style.backgroundImage=`url('${bgImages[bgIndex]}')`; }
-},3000);
-
 async function fetchNews(){
  document.getElementById('aiStatus').innerText='⏳ Inavuta Google News KE...';
  let rss='https://news.google.com/rss?hl=sw&gl=KE&ceid=KE:sw';
@@ -352,65 +287,45 @@ async function fetchNews(){
   try{
    let r=await fetch(api); let d=await r.json(); let items=null;
    if(d.items) items=d.items; else if(d.contents){ let parser=new DOMParser(); let xml=parser.parseFromString(d.contents,"text/xml"); let its=xml.querySelectorAll("item"); items=[]; its.forEach(it=>{ items.push({title:it.querySelector("title")?.textContent||"", description:it.querySelector("description")?.textContent||"", pubDate:it.querySelector("pubDate")?.textContent||""}) }); }
-   if(items && items.length>0){ newsCache=items.slice(0,5); let h=''; newsCache.forEach((n,i)=>{ h+=`<div class="list-item"><span><b>${n.title.substring(0,80)}...</b><br><span class="small">${n.pubDate||''}</span></span><button class="blue" style="width:auto" onclick="speakNews(${i})">▶️ SOMA</button></div>`; }); document.getElementById('newsList').innerHTML=h; document.getElementById('aiStatus').innerText='✅ Habari 5 ziko - bonyeza SOMA (ya zamani itasimama kwanza)'; return; }
+   if(items && items.length>0){ newsCache=items.slice(0,5); let h=''; newsCache.forEach((n,i)=>{ h+=`<div class="list-item"><span><b>${n.title.substring(0,80)}...</b><br><span class="small">${n.pubDate||''}</span></span><button class="blue" style="width:auto" onclick="speakNews(${i})">▶️ SOMA</button></div>`; }); document.getElementById('newsList').innerHTML=h; document.getElementById('aiStatus').innerText='✅ Habari 5 ziko - ya zamani itasimama kwanza'; return; }
   }catch(e){ continue; }
  }
- document.getElementById('aiStatus').innerText='❌ Google imezima - andika chini';
+ document.getElementById('aiStatus').innerText='❌ Google imezima';
 }
-function speakNews(i){
- stopAI();
- setTimeout(()=>{
-  let t=newsCache[i].title+'. '+ (newsCache[i].description||'').replace(/<[^>]*>/g,'').substring(0,300);
-  document.getElementById('customNews').value=t;
-  document.getElementById('tickerText').innerText=`MTAANI TV NEWS • ${voiceMode.toUpperCase()} • ${t.substring(0,100)} • ACTIONS LIVE • `;
-  speakText(t);
- },250);
-}
-function speakCustom(){
- let t=document.getElementById('customNews').value.trim();
- if(!t){alert('Andika habari');return;}
- stopAI();
- setTimeout(()=>{ speakText(t); },250);
-}
-let fallbackAudioEl=null;
+function speakNews(i){ stopAI(); setTimeout(()=>{ let t=newsCache[i].title+'. '+ (newsCache[i].description||'').replace(/<[^>]*>/g,'').substring(0,300); document.getElementById('customNews').value=t; document.getElementById('tickerText').innerText=`MTAANI TV NEWS • ${voiceMode.toUpperCase()} • ${t.substring(0,100)} • `; speakText(t); },300); }
+function speakCustom(){ let t=document.getElementById('customNews').value.trim(); if(!t){alert('Andika habari');return;} stopAI(); setTimeout(()=>{ speakText(t); },300); }
 function speakText(text){
- let presenter=document.getElementById('presenterBox');
- if(!fallbackAudioEl) fallbackAudioEl=document.getElementById('fallbackAudio');
- presenter.classList.add('talking');
- document.getElementById('aiStatus').innerText='🎙️ RASTA ANAONGEA - '+voiceMode.toUpperCase()+'... CAMERA FIXED SERIOUS';
- try{speechSynthesis.cancel();}catch{}
- let utter=new SpeechSynthesisUtterance(text.substring(0,300));
- if(voiceMode.includes('en')){ utter.lang='en-US'; utter.pitch=voiceMode.includes('female')?1.15:0.85; utter.rate=0.95; }
- else { utter.lang='sw-KE'; utter.pitch=voiceMode.includes('female')?1.05:0.78; utter.rate=0.92; }
- utter.onend=()=>{ presenter.classList.remove('talking'); document.getElementById('aiStatus').innerText='✅ Amemaliza - Ticker: ACTIONS ZINAENDELEA'; };
- utter.onerror=()=>{
-   presenter.classList.add('talking');
-   fallbackAudioEl.style.display='block';
-   fallbackAudioEl.src=`https://translate.googleapis.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text.substring(0,180))}&tl=${voiceMode.includes('en')?'en':'sw'}&client=tw-ob`;
-   fallbackAudioEl.play();
-   fallbackAudioEl.onended=()=>{presenter.classList.remove('talking');};
- };
- speechSynthesis.speak(utter);
+ if(!text) return;
+ try{ synth.cancel(); }catch{}
+ setTimeout(()=>{
+  let utter=new SpeechSynthesisUtterance(text.substring(0,350));
+  let voice=getVoiceForMode();
+  if(voice) utter.voice=voice;
+  if(voiceMode.includes('en')){ utter.lang='en-US'; utter.pitch=voiceMode.includes('female')?1.25:0.82; utter.rate=0.92; }
+  else { utter.lang='sw-KE'; utter.pitch=voiceMode.includes('female')?1.15:0.72; utter.rate=0.90; }
+  utter.onend=()=>{ document.getElementById('aiStatus').innerText='✅ Amemaliza'; document.getElementById('muteBtn').innerText='⏸️ PAUSE / MUTE'; };
+  utter.onerror=()=>{ document.getElementById('aiStatus').innerText='❌ Sauti imeshindwa'; };
+  document.getElementById('aiStatus').innerText='🎙️ ANAONGEA - '+voiceMode.toUpperCase()+' - '+(voice?voice.name:'default');
+  synth.speak(utter);
+ },200);
 }
 function stopAI(){
+ try{ synth.cancel(); }catch{}
  try{ speechSynthesis.cancel(); }catch{}
- if(fallbackAudioEl){ fallbackAudioEl.pause(); fallbackAudioEl.style.display='none'; }
- document.getElementById('presenterBox').classList.remove('talking');
- document.getElementById('aiStatus').innerText='⏹️ Imezimwa - Tayari kwa news inayofuata';
+ document.getElementById('aiStatus').innerText='⏹️ STOP KABISA - Mtangazaji AMESIMAMA';
  isMuted=false;
- document.getElementById('muteBtn').innerText='🔇 MUTE';
- document.getElementById('muteBtn').style.background='#ff6600';
+ let btn=document.getElementById('muteBtn');
+ if(btn){ btn.innerText='⏸️ PAUSE / MUTE'; btn.style.background='#ff6600'; }
 }
-async function pushAIToTV(){ let txt=document.getElementById('customNews').value.trim()|| (newsCache[0]?newsCache[0].title:'MTAANI TV AI LIVE'); let data={live:true, type:'ai-studio-rasta', room:currentRoom, aiText:txt, aiAvatar:'rasta-cartoon-male', bg:currentBg, voice:voiceMode, permanent:permanentList, time:Date.now(), endTime:Date.now()+3600000*3 }; let ok=await pushFile('live.json', JSON.stringify(data,null,2)); if(ok){ document.getElementById('aiStatus').innerText='📺 RASTA AI IMETUMWA KWA TV! VOICE: '+voiceMode; alert('✅ RASTA IMEENDA TV - '+voiceMode.toUpperCase()); } }
-
+async function pushAIToTV(){ let txt=document.getElementById('customNews').value.trim()||'MTAANI TV AI LIVE'; let data={live:true, type:'ai-studio', aiText:txt, voice:voiceMode, permanent:permanentList, time:Date.now()}; let ok=await pushFile('live.json', JSON.stringify(data,null,2)); if(ok){ alert('✅ IMEENDA TV - '+voiceMode.toUpperCase()); } }
 async function loadCtrl(){ try{ let r=await fetch('assistant_control.json?v='+Date.now()); if(r.ok) ctrlData=await r.json(); }catch{} document.getElementById('ctrlKey').value=ctrlData.token; updateCtrlStatus(); }
 function updateCtrlStatus(){ let enabled=ctrlData.enabled; document.getElementById('ctrlStatus').innerHTML=enabled? `✅ <b style="color:#00e676">IMEWASHWA</b> - Key: <b style="color:#ffcc00">${ctrlData.token}</b>` : `⛔ <b style="color:#ff4444">IMEZIMWA</b>`; let base=location.origin+location.pathname.replace('admin.html',''); let link=base+'assistance.html?key='+ctrlData.token; document.getElementById('linkOut').innerText=link; }
-function downloadCtrl(){ let blob=new Blob([JSON.stringify(ctrlData,null,2)],{type:'application/json'}); let url=URL.createObjectURL(blob); document.getElementById('ctrlDownload').innerHTML=`<a href="${url}" download="assistant_control.json" style="display:block;background:#00e676;color:#000;padding:14px;border-radius:10px;text-align:center;font-weight:900;text-decoration:none;margin-top:12px">⬇️ PAKUA assistant_control.json KISHA UPLOAD GITHUB</a>`; }
-async function toggleMsaidizi(on){ ctrlData.enabled=on; ctrlData.token=document.getElementById('ctrlKey').value.trim()||ctrlData.token; updateCtrlStatus(); downloadCtrl(); document.getElementById('autoMsg').innerText= on? '⏳ Inatuma GitHub AUTO...' : '⏳ Inazima GitHub...'; await pushCtrlDirect(); }
+function downloadCtrl(){ let blob=new Blob([JSON.stringify(ctrlData,null,2)],{type:'application/json'}); let url=URL.createObjectURL(blob); document.getElementById('ctrlDownload').innerHTML=`<a href="${url}" download="assistant_control.json" style="display:block;background:#00e676;color:#000;padding:14px;border-radius:10px;text-align:center;font-weight:900;text-decoration:none;margin-top:12px">⬇️ PAKUA assistant_control.json</a>`; }
+async function toggleMsaidizi(on){ ctrlData.enabled=on; ctrlData.token=document.getElementById('ctrlKey').value.trim()||ctrlData.token; updateCtrlStatus(); downloadCtrl(); document.getElementById('autoMsg').innerText= on? '⏳ Inatuma GitHub...' : '⏳ Inazima...'; await pushCtrlDirect(); }
 function refreshKey(){ let newKey='MTAANI-'+Math.random().toString(36).substring(2,7).toUpperCase()+'-'+Date.now().toString().slice(-4); ctrlData.token=newKey; ctrlData.enabled=true; document.getElementById('ctrlKey').value=newKey; updateCtrlStatus(); downloadCtrl(); }
-async function refreshKeyAndPush(){ refreshKey(); document.getElementById('autoMsg').innerText='⏳ REFRESH + Inatuma GitHub AUTO...'; await pushCtrlDirect(); }
+async function refreshKeyAndPush(){ refreshKey(); document.getElementById('autoMsg').innerText='⏳ REFRESH + Inatuma...'; await pushCtrlDirect(); }
 function copyLink(){ let link=document.getElementById('linkOut').innerText; navigator.clipboard.writeText(link).then(()=>alert('✅ Link Copied:\n'+link)); }
-async function pushCtrlDirect(){ let token=localStorage.getItem('gh_token')||''; if(!token){ document.getElementById('autoMsg').innerText='⚠️ Weka Token kwanza juu'; return false; } let ok=await pushFile('assistant_control.json', JSON.stringify(ctrlData,null,2)); document.getElementById('autoMsg').innerText= ok? '✅ AUTO IMETUMWA GITHUB!' : '❌ Imeshindwa - pakua manual chini'; return ok; }
+async function pushCtrlDirect(){ let token=localStorage.getItem('gh_token')||''; if(!token){ document.getElementById('autoMsg').innerText='⚠️ Weka Token kwanza'; return false; } let ok=await pushFile('assistant_control.json', JSON.stringify(ctrlData,null,2)); document.getElementById('autoMsg').innerText= ok? '✅ AUTO IMETUMWA GITHUB!' : '❌ Imeshindwa'; return ok; }
 function showTab(id,btnId){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');if(btnId)document.getElementById(btnId).classList.add('active');}
 function openVCat(cat,btnId){document.querySelectorAll('[id^=vcat-]').forEach(b=>b.classList.remove('active'));document.getElementById('vcat-'+cat).classList.add('active');document.querySelectorAll('[id^=vc-]').forEach(b=>b.classList.remove('active'));if(btnId)document.getElementById(btnId).classList.add('active');}
 function extractID(t){ if(!t) return null; t=t.trim(); if(t.includes('@')||t.toLowerCase().includes('/channel/')||t.toLowerCase().includes('/c/')) return null; if(/^[a-zA-Z0-9_-]{11}$/.test(t)) return t; let m=t.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/); if(m) return m[1]; if(t.includes('facebook.com')||t.includes('fb.watch')) return t; try{let u=new URL(t);let v=u.searchParams.get('v');if(v&&v.length===11) return v;}catch{} return t.length>5? t : null; }
@@ -421,18 +336,18 @@ function loadToken(){let s=localStorage.getItem('gh_token')||'';document.getElem
 function saveLocal(){localStorage.setItem('mtaani_videos',JSON.stringify(videos));Object.keys(videosByCat).forEach(c=>localStorage.setItem('mtaani_videos_'+c,JSON.stringify(videosByCat[c])));localStorage.setItem('mtaani_ads',JSON.stringify(ads));localStorage.setItem('mtaani_owner',JSON.stringify(ownerData));localStorage.setItem('mtaani_cat_enabled',JSON.stringify(catEnabled));localStorage.setItem('mtaani_guests',JSON.stringify(guests));localStorage.setItem('mtaani_bg',currentBg);localStorage.setItem('mtaani_host_featured',hostFeatured);}
 function renderVideos(){let h="";videos.forEach((v,i)=>{h+=`<div class="list-item"><span><b>${v.title}</b></span><button class="red" onclick="deleteMain(${i})">X</button></div>`});document.getElementById('vlist').innerHTML=h||"Hakuna";updateCount('gen');saveLocal();}
 function renderVideosCat(cat){let h="";videosByCat[cat].forEach((v,i)=>{h+=`<div class="list-item"><span><b>${v.title}</b><br><span class="small">${v.id.substring(0,50)}</span></span><button class="red" onclick="deleteCat('${cat}',${i})">X</button></div>`});document.getElementById('vlist-'+cat).innerHTML=h||"Hakuna";updateCount(cat);saveLocal();}
-async function autoPushVideos(){let all=[...videos];Object.keys(videosByCat).forEach(c=>{if(catEnabled[c]){videosByCat[c].forEach(v=>all.push(v));}});let pretty=JSON.stringify(all,null,2);document.getElementById('out').value=pretty;let token=localStorage.getItem('gh_token')||'';if(!token)return;document.getElementById('pushStatus').innerText="🗑️ Inafuta GitHub...";let ok=await pushFile('videos.json',pretty);if(ok)document.getElementById('pushStatus').innerHTML='<span class="ok">✅ IMEFUTWA GITHUB PIA! TV itabadilika 10sec</span>';}
-function deleteMain(i){if(!confirm('Futa? Itafutika na GitHub pia'))return;videos.splice(i,1);saveLocal();renderVideos();autoPushVideos();}
+async function autoPushVideos(){let all=[...videos];Object.keys(videosByCat).forEach(c=>{if(catEnabled[c]){videosByCat[c].forEach(v=>all.push(v));}});let pretty=JSON.stringify(all,null,2);document.getElementById('out').value=pretty;let token=localStorage.getItem('gh_token')||'';if(!token)return;document.getElementById('pushStatus').innerText="🗑️ Inafuta GitHub...";let ok=await pushFile('videos.json',pretty);if(ok)document.getElementById('pushStatus').innerHTML='<span class="ok">✅ IMEFUTWA GITHUB PIA!</span>';}
+function deleteMain(i){if(!confirm('Futa?'))return;videos.splice(i,1);saveLocal();renderVideos();autoPushVideos();}
 function deleteCat(cat,i){if(!confirm('Futa hii ya '+cat.toUpperCase()+'?'))return;videosByCat[cat].splice(i,1);saveLocal();renderVideosCat(cat);autoPushVideos();}
 function updateCount(cat){let c=cat==='gen'?videos.length:videosByCat[cat].length;let el=document.getElementById('count-'+cat);if(el)el.innerText=c+' video';}
-function addVideo(playNow=false){let raw=document.getElementById('link').value.trim();let id=extractID(raw);if(!id){alert("Link mbaya - FULL CHANNEL imezuiwa, weka video moja");return;}let title=document.getElementById('title').value.trim()||"MTAANI - "+id.substring(0,15);let video={id:id,title:title,duration:300};if(playNow){videos.unshift(video);}else{videos.push(video);}document.getElementById('link').value="";document.getElementById('title').value="";renderVideos();if(playNow)alert('▶️ JUU! Nenda PUBLIC > TUMA');}
-function addVideoCat(cat,playNow=false){let raw=document.getElementById('link-'+cat).value.trim();let id=extractID(raw);if(!id){alert("Link mbaya - FULL CHANNEL imezuiwa");return;}let title=document.getElementById('title-'+cat).value.trim()||cat.toUpperCase()+" - "+id.substring(0,15);let video={id:id,title:title,category:cat,duration:300};if(playNow){videosByCat[cat].unshift(video);}else{videosByCat[cat].push(video);}catEnabled[cat]=true;let b=document.getElementById('sw-'+cat);if(b){b.innerText='ON 🟢';b.style.background='#00b300';}document.getElementById('link-'+cat).value="";document.getElementById('title-'+cat).value="";renderVideosCat(cat);}
+function addVideo(playNow=false){let raw=document.getElementById('link').value.trim();let id=extractID(raw);if(!id){alert("Link mbaya");return;}let title=document.getElementById('title').value.trim()||"MTAANI - "+id.substring(0,15);let video={id:id,title:title,duration:300};if(playNow){videos.unshift(video);}else{videos.push(video);}document.getElementById('link').value="";document.getElementById('title').value="";renderVideos();if(playNow)alert('▶️ JUU! Nenda PUBLIC > TUMA');}
+function addVideoCat(cat,playNow=false){let raw=document.getElementById('link-'+cat).value.trim();let id=extractID(raw);if(!id){alert("Link mbaya");return;}let title=document.getElementById('title-'+cat).value.trim()||cat.toUpperCase()+" - "+id.substring(0,15);let video={id:id,title:title,category:cat,duration:300};if(playNow){videosByCat[cat].unshift(video);}else{videosByCat[cat].push(video);}catEnabled[cat]=true;let b=document.getElementById('sw-'+cat);if(b){b.innerText='ON 🟢';b.style.background='#00b300';}document.getElementById('link-'+cat).value="";document.getElementById('title-'+cat).value="";renderVideosCat(cat);}
 function renderAds(){let h="";ads.forEach((a,i)=>{h+=`<div class="list-item"><span><b>${a.title}</b> - ${a.msg}</span><button class="red" onclick="ads.splice(${i},1);saveLocal();renderAds()">X</button></div>`});document.getElementById('alist').innerHTML=h||"Hakuna";saveLocal();}
 function addAd(){ads.push({title:document.getElementById('adTitle').value,msg:document.getElementById('adMsg').value,contact:document.getElementById('adContact').value});renderAds();}
 function saveOwner(){ownerData={tvName:document.getElementById('tvName').value,ownerName:document.getElementById('ownerName').value,ticker:document.getElementById('ticker').value};localStorage.setItem('mtaani_owner',JSON.stringify(ownerData));document.getElementById('ownerStatus').innerHTML='<span class="ok">✅ Saved</span>';}
 function toggleCat(cat){catEnabled[cat]=!catEnabled[cat];let btn=document.getElementById('sw-'+cat);if(btn){btn.innerText=catEnabled[cat]? 'ON 🟢' : 'OFF 🔴';btn.style.background=catEnabled[cat]? '#00b300' : '#cc0000';}saveLocal();}
 function addGuest(){ let name=document.getElementById('guestName').value.trim()||"Guest "+(guests.length+1); guests.push({id:Date.now(),name:name,showOnTV:true,muted:false}); document.getElementById('guestName').value=""; renderGuests(); saveLocal(); if(tvLiveActive) pushLiveStatus(true); }
-function renderGuests(){ let h=""; if(guests.length===0){ h='<small style="color:#aaa">Hakuna guest - ongeza hapa au mpe mtu link</small>'; } guests.forEach((g,i)=>{ h+=`<div class="killer-box"><div style="display:flex;justify-content:space-between"><b>👤 ${g.name}</b><span style="font-size:10px;color:${g.showOnTV?'#00ff00':'#ff4444'}">${g.showOnTV?'ON TV':'HIDDEN'}</span></div><div style="display:flex;gap:4px;margin-top:6px"><button onclick="toggleGuestTV(${i})" style="flex:1;padding:6px;font-size:10px;background:${g.showOnTV?'#0066ff':'#333'}">${g.showOnTV?'🔵 FICHA':'🔵 ONYESHA TV'}</button><button onclick="toggleGuestMute(${i})" style="flex:1;padding:6px;font-size:10px;background:${g.muted?'#ff6600':'#222'}">${g.muted?'🔊 WASHIA':'🔇 ZIMA'}</button><button onclick="kickGuest(${i})" style="flex:1;padding:6px;font-size:10px;background:#cc0000">🥾 FUKUZA</button></div></div>`; }); document.getElementById('guestsList').innerHTML=h; }
+function renderGuests(){ let h=""; if(guests.length===0){ h='<small style="color:#aaa">Hakuna guest</small>'; } guests.forEach((g,i)=>{ h+=`<div class="killer-box"><div style="display:flex;justify-content:space-between"><b>👤 ${g.name}</b><span style="font-size:10px;color:${g.showOnTV?'#00ff00':'#ff4444'}">${g.showOnTV?'ON TV':'HIDDEN'}</span></div><div style="display:flex;gap:4px;margin-top:6px"><button onclick="toggleGuestTV(${i})" style="flex:1;padding:6px;font-size:10px;background:${g.showOnTV?'#0066ff':'#333'}">${g.showOnTV?'🔵 FICHA':'🔵 ONYESHA TV'}</button><button onclick="toggleGuestMute(${i})" style="flex:1;padding:6px;font-size:10px;background:${g.muted?'#ff6600':'#222'}">${g.muted?'🔊 WASHIA':'🔇 ZIMA'}</button><button onclick="kickGuest(${i})" style="flex:1;padding:6px;font-size:10px;background:#cc0000">🥾 FUKUZA</button></div></div>`; }); document.getElementById('guestsList').innerHTML=h; }
 function toggleGuestTV(i){ guests[i].showOnTV=!guests[i].showOnTV; renderGuests(); saveLocal(); if(tvLiveActive) pushLiveStatus(true); }
 function toggleGuestMute(i){ guests[i].muted=!guests[i].muted; renderGuests(); saveLocal(); if(tvLiveActive) pushLiveStatus(true); }
 function kickGuest(i){ if(!confirm('Mfukuze '+guests[i].name+'?')) return; guests.splice(i,1); renderGuests(); saveLocal(); if(tvLiveActive) pushLiveStatus(true); }
@@ -447,10 +362,14 @@ function loadAll(){
  try{let g=localStorage.getItem('mtaani_guests');if(g)guests=JSON.parse(g);}catch{}
  currentBg=localStorage.getItem('mtaani_bg')||""; if(currentBg){ document.getElementById('bgLayer').style.backgroundImage=`url('${currentBg}')`; }
  let hf=localStorage.getItem('mtaani_host_featured'); if(hf!==null) hostFeatured=hf==='true';
- let vm=localStorage.getItem('mtaani_voice'); if(vm){ voiceMode=vm; setTimeout(()=>setVoiceMode(vm),500); }
- if(permanentList.length>0){ document.getElementById('aiCityBg').style.backgroundImage=`url('${permanentList[permanentList.length-1].data}')`; showPermanentPreview(permanentList[permanentList.length-1].data, permanentList[permanentList.length-1].type); }
+ let vm=localStorage.getItem('mtaani_voice'); if(vm){ voiceMode=vm; setTimeout(()=>setVoiceMode(vm),600); }
+ if(permanentList.length>0){
+   let last = permanentList[permanentList.length-1];
+   if(last.type.startsWith('video')){ let v=document.getElementById('aiCityVideo'); v.src=last.data; v.play(); }
+   else { document.getElementById('aiStudio').style.backgroundImage=`url('${last.data}')`; }
+ }
  renderVideos();Object.keys(videosByCat).forEach(c=>{renderVideosCat(c);let btn=document.getElementById('sw-'+c);if(btn){btn.innerText=catEnabled[c]? 'ON 🟢' : 'OFF 🔴';btn.style.background=catEnabled[c]? '#00b300' : '#cc0000';}});renderAds();renderGuests();loadToken();loadCtrl(); renderPermanent();
- let btnF=document.getElementById('btnFeature'); if(btnF){ btnF.innerText=hostFeatured?'⭐ FEATURE USO WANGU - ON':'⭐ FEATURE USO WANGU - OFF (Umejificha)'; btnF.style.background=hostFeatured?'#ffcc00':'#333'; btnF.style.color=hostFeatured?'#000':'#fff'; }
+ let btnF=document.getElementById('btnFeature'); if(btnF){ btnF.innerText=hostFeatured?'⭐ FEATURE USO WANGU - ON':'⭐ FEATURE OFF'; btnF.style.background=hostFeatured?'#ffcc00':'#333'; }
 }
 loadAll();
 function b64(s){return btoa(unescape(encodeURIComponent(s)))}
@@ -460,12 +379,12 @@ function copyOut(){let o=document.getElementById('out');o.select();document.exec
 function toggleFullLive(){document.getElementById('live').classList.toggle('fullscreen');}
 function switchCamera(){currentFacing=currentFacing==='user'?'environment':'user';document.getElementById('liveMsg').innerText='📷 '+(currentFacing==='user'?'FRONT':'BACK')+' - Bonyeza ANZA CAMERA tena';}
 function genShareLink(){let link=`https://vdo.ninja/?view=${currentRoom}&cleanoutput&transparent&noheader`;document.getElementById('shareLink').value=link;localStorage.setItem('live_room',currentRoom);return link;}
-function refreshLiveLink(){ currentRoom="MtaaniTV-LIVE-"+Math.random().toString(36).toUpperCase().substring(2,6)+"-"+Date.now().toString().slice(-4); genShareLink(); document.getElementById('liveMsg').innerText='🔄 LINK MPYA VDO.NINJA - Inatuma AUTO...'; }
+function refreshLiveLink(){ currentRoom="MtaaniTV-LIVE-"+Math.random().toString(36).toUpperCase().substring(2,6)+"-"+Date.now().toString().slice(-4); genShareLink(); document.getElementById('liveMsg').innerText='🔄 LINK MPYA VDO.NINJA'; }
 function copyShareLink(){let l=document.getElementById('shareLink');if(!l.value)genShareLink();navigator.clipboard.writeText(l.value).then(()=>alert('✅ Copied VIEW LINK:\n'+l.value));}
 function start3hrTimer(){clearInterval(liveTimerInterval);clearTimeout(autoStopTimeout);liveEndTime=Date.now()+(3*60*60*1000);localStorage.setItem('live_end',liveEndTime);document.getElementById('liveTimerDisplay').style.display='block';liveTimerInterval=setInterval(()=>{let left=liveEndTime-Date.now();if(left<=0){clearInterval(liveTimerInterval);document.getElementById('liveTimerDisplay').innerText='⏹️ LIVE IMEISHA';autoStopLive();return;}let h=Math.floor(left/3600000);let m=Math.floor((left%3600000)/60000);let s=Math.floor((left%60000)/1000);document.getElementById('liveTimerDisplay').innerText=`🔴 LIVE: ${h}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s left`;},1000);autoStopTimeout=setTimeout(()=>{autoStopLive();},3*60*60*1000);}
 async function autoStopLive(){alert('⏹️ 3 HRS ZIMEISHA!');await pushLiveStatus(false);document.getElementById('jitsiContainer').innerHTML='';document.getElementById('liveTimerDisplay').style.display='none';localStorage.removeItem('live_end');clearInterval(liveTimerInterval);clearTimeout(autoStopTimeout);}
-function startLive(){ let container=document.getElementById('jitsiContainer'); let facing=currentFacing==='user'?'user':'environment'; let pushURL=`https://vdo.ninja/?push=${currentRoom}&webcam&autostart&cleanoutput&transparent&maxviewers=10&facing=${facing}&stereo`; container.innerHTML=`<iframe src="${pushURL}" allow="camera;microphone;fullscreen;display-capture;autoplay" style="width:100%;height:100%;border:0;background:#000"></iframe>`; document.getElementById('liveMsg').innerHTML='<span class="ok">📷 CAMERA IMEWAKA - Sasa bonyeza 🟢 WASHIA KWA TV ndio TV ianze</span>'; }
+function startLive(){ let container=document.getElementById('jitsiContainer'); let facing=currentFacing==='user'?'user':'environment'; let pushURL=`https://vdo.ninja/?push=${currentRoom}&webcam&autostart&cleanoutput&transparent&maxviewers=10&facing=${facing}&stereo`; container.innerHTML=`<iframe src="${pushURL}" allow="camera;microphone;fullscreen;display-capture;autoplay" style="width:100%;height:100%;border:0;background:#000"></iframe>`; document.getElementById('liveMsg').innerHTML='<span class="ok">📷 CAMERA IMEWAKA - Sasa bonyeza 🟢 WASHIA KWA TV</span>'; }
 function startLiveCat(cat){openVCat(cat,'vc-'+cat);showTab('live','btn-live');currentRoom="MtaaniTV-"+cat.toUpperCase()+"-"+Date.now();localStorage.setItem('live_room',currentRoom);startLive();}
-async function pushLiveStatus(isLive){ tvLiveActive=isLive; let room=localStorage.getItem('live_room')||currentRoom; let data={live:isLive, room:room, vdo_push:`https://vdo.ninja/?push=${room}&webcam&autostart`, vdo_view:`https://vdo.ninja/?view=${room}&cleanoutput&transparent&noheader`, type:"vdo-ninja", bg:currentBg, hostFeatured:hostFeatured, guests:guests, time:Date.now(), endTime:isLive?liveEndTime:0}; if(isLive &&!liveEndTime){ start3hrTimer(); data.endTime=liveEndTime; } let ok=await pushFile('live.json', JSON.stringify(data,null,2)); document.getElementById('liveMsg').innerHTML=isLive?'<span class="ok">🔴 LIVE IMEWASHWA KWA TV! Watu wanaona sasa</span>':'<span class="ok">⏹️ LIVE IMEZIMWA KWA TV</span>'; if(!isLive){clearInterval(liveTimerInterval);clearTimeout(autoStopTimeout);document.getElementById('liveTimerDisplay').style.display='none';localStorage.removeItem('live_end');} return ok; }
-async function clearAllBundles(){ if(!confirm('FUTA BUNDLES ZOTE?')) return; videos=[]; Object.keys(videosByCat).forEach(c=>videosByCat[c]=[]); localStorage.setItem('mtaani_videos','[]'); Object.keys(videosByCat).forEach(c=>localStorage.setItem('mtaani_videos_'+c,'[]')); renderVideos(); Object.keys(videosByCat).forEach(c=>renderVideosCat(c)); let empty='[{"id":"4EDkfksVFdE","title":"MTAANI TV LIVE","duration":300}]'; document.getElementById('out').value=empty; let ok=await pushFile('videos.json',empty); if(ok){ alert('✅ BUNDLES ZOTE ZIMEFUTWA!'); document.getElementById('pushStatus').innerHTML='<span class="ok">✅ CLEAN DONE!</span>'; } }
+async function pushLiveStatus(isLive){ tvLiveActive=isLive; let room=localStorage.getItem('live_room')||currentRoom; let data={live:isLive, room:room, vdo_push:`https://vdo.ninja/?push=${room}&webcam&autostart`, vdo_view:`https://vdo.ninja/?view=${room}&cleanoutput&transparent&noheader`, type:"vdo-ninja", bg:currentBg, hostFeatured:hostFeatured, guests:guests, time:Date.now(), endTime:isLive?liveEndTime:0}; if(isLive &&!liveEndTime){ start3hrTimer(); data.endTime=liveEndTime; } let ok=await pushFile('live.json', JSON.stringify(data,null,2)); document.getElementById('liveMsg').innerHTML=isLive?'<span class="ok">🔴 LIVE IMEWASHWA KWA TV!</span>':'<span class="ok">⏹️ LIVE IMEZIMWA</span>'; if(!isLive){clearInterval(liveTimerInterval);clearTimeout(autoStopTimeout);document.getElementById('liveTimerDisplay').style.display='none';localStorage.removeItem('live_end');} return ok; }
+async function clearAllBundles(){ if(!confirm('FUTA BUNDLES ZOTE?')) return; videos=[]; Object.keys(videosByCat).forEach(c=>videosByCat[c]=[]); localStorage.setItem('mtaani_videos','[]'); Object.keys(videosByCat).forEach(c=>localStorage.setItem('mtaani_videos_'+c,'[]')); renderVideos(); Object.keys(videosByCat).forEach(c=>renderVideosCat(c)); let empty='[{"id":"4EDkfksVFdE","title":"MTAANI TV LIVE","duration":300}]'; document.getElementById('out').value=empty; let ok=await pushFile('videos.json',empty); if(ok){ alert('✅ BUNDLES ZOTE ZIMEFUTWA!'); } }
 </script></body></html>
