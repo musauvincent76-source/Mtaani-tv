@@ -25,21 +25,14 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 .bg-item.active{border-color:#00ff00}
 .bg-item span{position:absolute;bottom:0;left:0;background:rgba(0,0,0,0.7);font-size:8px;padding:2px 4px;width:100%}
 #aiStudio{position:relative;width:100%;height:72vh;background:#000;border-radius:14px;overflow:hidden;border:3px solid #ffcc00}
-.ai-city{position:absolute;top:0;left:0;width:100%;height:100%;background:url('https://images.unsplash.com/photo-1590602847861-f357a933c5d3?w=1200') center/cover;opacity:0.9}
+.ai-city{position:absolute;top:0;left:0;width:100%;height:100%;background:url('https://images.unsplash.com/photo-1590602847861-f357a933c5d3?w=1200') center/cover;opacity:0.9;transition:background-image 1s ease}
+.ai-city::after{content:'MTAANI TV NEWS';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.7);color:#ffcc00;padding:10px 20px;border-radius:8px;font-weight:900;font-size:18px;border:2px solid #ffcc00;letter-spacing:2px}
 .ai-logo{position:absolute;top:10px;left:12px;background:#ffcc00;color:#000;font-weight:900;padding:5px 12px;border-radius:6px;font-size:12px;z-index:5}
 .ai-live{position:absolute;top:10px;right:12px;background:#ff0000;color:#fff;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:900;z-index:5;animation:blink 1s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
-
-/* === RASTA CARTOON MWANAUME - INAONGEA KAMA MTU === */
 .ai-presenter{position:absolute;bottom:0;left:0;width:100%;height:100%;z-index:2;display:flex;align-items:flex-end;justify-content:center;transform-origin:center bottom}
 .ai-presenter.talking{animation:humanTalk 3.5s infinite ease-in-out}
-@keyframes humanTalk{
- 0%{transform:translateY(0) rotateX(0deg)}
- 20%{transform:translateY(6px) rotateX(18deg)}
- 40%{transform:translateY(-8px) rotateX(-5deg) scale(1.02)}
- 70%{transform:translateY(4px) rotateX(12deg)}
- 100%{transform:translateY(0) rotateX(0deg)}
-}
+@keyframes humanTalk{0%{transform:translateY(0) rotateX(0deg)}20%{transform:translateY(6px) rotateX(18deg)}40%{transform:translateY(-8px) rotateX(-5deg) scale(1.02)}70%{transform:translateY(4px) rotateX(12deg)}100%{transform:translateY(0) rotateX(0deg)}}
 .rasta-man{position:relative;width:260px;height:340px;margin-bottom:30px}
 .rasta-dreads{position:absolute;top:0;left:50%;transform:translateX(-50%);width:220px;height:240px;z-index:1}
 .dread{position:absolute;width:18px;background:#111;border-radius:0 0 10px 10px;top:10px}
@@ -48,14 +41,11 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 .rasta-eyes{display:flex;justify-content:space-between;padding:45px 18px 0}
 .eye{width:28px;height:22px;background:#fff;border-radius:50%;position:relative;overflow:hidden;border:2px solid #000}
 .eye:after{content:'';position:absolute;top:3px;left:7px;width:12px;height:12px;background:#000;border-radius:50%}
-.ai-presenter.talking.eye:after{animation:eyeMove 0.8s infinite alternate}
-@keyframes eyeMove{0%{left:7px}100%{left:10px}}
 .rasta-mouth{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);width:42px;height:12px;background:#000;border-radius:0 0 20px 20px;border:2px solid #300;overflow:hidden;transition:0.1s}
 .ai-presenter.talking.rasta-mouth{height:32px!important;width:54px!important;background:radial-gradient(circle at center,#500,#000);animation:mouthReal 0.19s infinite alternate}
 @keyframes mouthReal{0%{height:10px}100%{height:34px}}
 .rasta-beard{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:90px;height:28px;background:#111;border-radius:0 0 40px 40px;z-index:3;opacity:0.8}
 .rasta-suit{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:220px;height:80px;background:linear-gradient(#1a365d,#0f1e45);border-top:4px solid #ffcc00;border-radius:10px 10px 0 0;z-index:1}
-
 .voice-bars{position:absolute;bottom:150px;left:50%;transform:translateX(-50%);display:none;gap:4px;z-index:10;align-items:end}
 .ai-presenter.talking.voice-bars{display:flex!important}
 .voice-bars span{width:6px;background:#00ff00;border-radius:10px;animation:barPulse 0.25s infinite alternate}
@@ -64,7 +54,12 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 .ai-presenter.talking.talk-badge{display:block!important;animation:blink 0.5s infinite}
 .ai-desk{position:absolute;bottom:0;left:0;width:100%;height:38px;background:linear-gradient(180deg,#002a6b,#001a44);z-index:4;border-top:3px solid #ffcc00;display:flex;align-items:center;justify-content:center}
 .ai-desk::before{content:'MTAANI TV - RASTA MAN';color:#fff;font-weight:900;letter-spacing:3px;font-size:13px}
-.ai-ticker{display:none!important}
+.ai-ticker{position:absolute;bottom:38px;left:0;width:100%;height:28px;background:#cc0000;color:#fff;display:flex;align-items:center;z-index:6;overflow:hidden;white-space:nowrap}
+.ai-ticker span{animation:tickerMove 20s linear infinite;padding-left:100%}
+@keyframes tickerMove{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+.upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}
+.upload-btn{background:#111c44!important;border:2px solid #ffcc00!important;color:#ffcc00!important;font-size:11px!important;padding:10px 6px!important}
+.upload-btn:hover{background:#ffcc00!important;color:#000!important}
 </style></head><body>
 <h1>📺 MTAANI TV - FINAL KILLER BOX + AI STUDIO</h1>
 <div class="card" style="border:3px solid #ffcc00;background:#000">
@@ -172,11 +167,29 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 </div>
 </div>
 <div id="ai" class="tab card" style="border:3px solid #ffcc00;background:linear-gradient(180deg,#111c44,#050a1f)">
-<h3>🤖 AI STUDIO - RASTA MWANAUME CARTOON</h3>
+<h3>🤖 AI STUDIO - RASTA MWANAUME CARTOON - FIXED CAM + MTAANI TV NEWS SCREENS</h3>
+
+<!-- NEW UPLOAD BUTTONS IN ENGLISH -->
+<div class="card" style="background:#000;border:3px solid #ffcc00;margin:5px 0">
+<h4 style="color:#ffcc00">📤 UPLOAD NEWS - CHOOSE LANGUAGE (ENGLISH LABELS)</h4>
+<input type="file" id="newsUploadInput" accept="image/*,video/*" hidden onchange="handleNewsUpload(this)">
+<div class="upload-grid">
+<button class="upload-btn" onclick="setUploadLang('ENGLISH');document.getElementById('newsUploadInput').click()">🇬🇧 UPLOAD ENGLISH NEWS</button>
+<button class="upload-btn" onclick="setUploadLang('SWAHILI');document.getElementById('newsUploadInput').click()">🇰🇪 UPLOAD SWAHILI NEWS</button>
+<button class="upload-btn" onclick="setUploadLang('SHENG');document.getElementById('newsUploadInput').click()">🔥 UPLOAD SHENG NEWS</button>
+<button class="upload-btn" onclick="setUploadLang('KIKUYU');document.getElementById('newsUploadInput').click()">🌽 UPLOAD KIKUYU NEWS</button>
+<button class="upload-btn" onclick="setUploadLang('KAMBA');document.getElementById('newsUploadInput').click()">🥭 UPLOAD KAMBA NEWS</button>
+<button class="upload-btn" style="background:#00b300!important;color:#000!important;border-color:#00ff00!important" onclick="document.getElementById('newsUploadInput').click()">📺 UPLOAD FOR TV SCREENS</button>
+</div>
+<small id="uploadStatus" style="color:#00e676">Camera FIXED, TV screens changing with MTAANI TV NEWS</small>
+<div id="uploadPreview" style="margin-top:10px;display:none"><img id="previewImg" style="width:100%;border-radius:8px;border:2px solid #ffcc00"><video id="previewVid" controls loop muted style="width:100%;border-radius:8px;border:2px solid #ffcc00;display:none"></video></div>
+</div>
+
 <div id="aiStudio">
-<div class="ai-city"></div>
+<div class="ai-city" id="aiCityBg"></div>
 <div class="ai-logo">MTAANI TV</div>
-<div class="ai-live">🔴 AI LIVE</div>
+<div class="ai-live">🔴 AI LIVE - CAMERA FIXED</div>
+<div class="ai-ticker" style="display:flex!important"><span id="tickerText">MTAANI TV NEWS • BREAKING NEWS • NAIROBI • GOVERNMENT UPDATE • MTAANI TV LIVE 24/7 • SERIKALI IMETANGAZA • </span></div>
 <div class="ai-presenter" id="presenterBox">
   <div class="rasta-man">
     <div class="rasta-dreads">
@@ -198,7 +211,7 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
     <div class="rasta-suit"></div>
   </div>
   <div class="voice-bars"><span></span><span></span><span></span></div>
-  <div class="talk-badge">🎙️ RASTA ANAONGEA LIVE</div>
+  <div class="talk-badge">🎙️ RASTA ANAONGEA LIVE - SERIOUS</div>
 </div>
 <div class="ai-desk"></div>
 </div>
@@ -224,8 +237,22 @@ button.green{background:#00b300}button.blue{background:#0066ff}button.red{backgr
 <script>
 let videos=[], videosByCat={news:[],bizz:[],mchezo:[],music:[],drama:[],gen:[]}, catEnabled={news:false,bizz:false,mchezo:false,music:false,drama:false,gen:false}, ads=[], ownerData={tvName:"MTAANI TV",ownerName:"MTAANI TV",ticker:"MTAANI TV LIVE"}, currentFacing="user", currentRoom="MtaaniTV-Live-Show";
 let liveEndTime=0, liveTimerInterval=null, autoStopTimeout=null; let ctrlData={enabled:false,token:"MTAANI-1234"}; let guests=[], hostFeatured=true, currentBg="", tvLiveActive=false;
-let newsCache=[];
+let newsCache=[]; let currentUploadLang="ENGLISH"; let bgImages=["https://images.unsplash.com/photo-1494314671902-399b18174975?w=800","https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800","https://images.unsplash.com/photo-1519608487953-e999c86e7455?w=800","https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800","https://images.unsplash.com/photo-1590602847861-f357a933c5d3?w=800"]; let bgIndex=0;
 function changeAvatar(url){ localStorage.setItem('ai_avatar','rasta-cartoon'); }
+function setUploadLang(lang){ currentUploadLang=lang; document.getElementById('uploadStatus').innerText='📤 Ready to UPLOAD '+lang+' NEWS - Chagua file'; }
+function handleNewsUpload(input){
+ if(input.files && input.files[0]){
+  let file=input.files[0]; let url=URL.createObjectURL(file);
+  document.getElementById('uploadPreview').style.display='block';
+  if(file.type.startsWith('image')){ document.getElementById('previewImg').style.display='block'; document.getElementById('previewVid').style.display='none'; document.getElementById('previewImg').src=url; document.getElementById('aiCityBg').style.backgroundImage=`url('${url}')`; }
+  else{ document.getElementById('previewImg').style.display='none'; document.getElementById('previewVid').style.display='block'; document.getElementById('previewVid').src=url; }
+  document.getElementById('uploadStatus').innerHTML=`✅ <b>${currentUploadLang} NEWS</b> Uploaded! Inaonyesha kwa TV Screens sasa - <b>MTAANI TV NEWS</b>`;
+  document.getElementById('customNews').value=`${currentUploadLang} NEWS: ${file.name} - MTAANI TV NEWS LIVE`;
+  document.getElementById('tickerText').innerText=`MTAANI TV NEWS • ${currentUploadLang} NEWS • ${file.name} • BREAKING NEWS • MTAANI TV LIVE 24/7 • `;
+ }
+}
+// Auto change background screens every 3 sec - MTAANI TV NEWS changing
+setInterval(()=>{ let city=document.getElementById('aiCityBg'); if(city){ bgIndex=(bgIndex+1)%bgImages.length; city.style.backgroundImage=`url('${bgImages[bgIndex]}')`; } },3000);
 async function fetchNews(){
  document.getElementById('aiStatus').innerText='⏳ Inavuta Google News KE...';
  let rss='https://news.google.com/rss?hl=sw&gl=KE&ceid=KE:sw';
@@ -246,7 +273,7 @@ function speakText(text){
  let presenter=document.getElementById('presenterBox');
  if(!fallbackAudioEl) fallbackAudioEl=document.getElementById('fallbackAudio');
  presenter.classList.add('talking');
- document.getElementById('aiStatus').innerText='🎙️ RASTA ANAONGEA KAMA MTU...';
+ document.getElementById('aiStatus').innerText='🎙️ RASTA ANAONGEA KAMA MTU... CAMERA FIXED';
  try{speechSynthesis.cancel();}catch{}
  let utter=new SpeechSynthesisUtterance(text.substring(0,250));
  utter.lang = document.getElementById('voiceSelect').value==='en'?'en-US':'sw-KE';
@@ -267,7 +294,7 @@ function stopAI(){
  document.getElementById('presenterBox').classList.remove('talking');
  document.getElementById('aiStatus').innerText='⏹️ Imezimwa';
 }
-async function pushAIToTV(){ let txt=document.getElementById('customNews').value.trim()|| (newsCache[0]?newsCache[0].title:'MTAANI TV AI LIVE'); let data={live:true, type:'ai-studio-rasta', room:currentRoom, aiText:txt, aiAvatar:'rasta-cartoon-male', bg:currentBg, time:Date.now(), endTime:Date.now()+3600000*3 }; let ok=await pushFile('live.json', JSON.stringify(data,null,2)); if(ok){ document.getElementById('aiStatus').innerText='📺 RASTA AI IMETUMWA KWA TV!'; alert('✅ RASTA IMEENDA TV'); } }
+async function pushAIToTV(){ let txt=document.getElementById('customNews').value.trim()|| (newsCache[0]?newsCache[0].title:'MTAANI TV AI LIVE'); let data={live:true, type:'ai-studio-rasta', room:currentRoom, aiText:txt, aiAvatar:'rasta-cartoon-male', bg:currentBg, lang:currentUploadLang, time:Date.now(), endTime:Date.now()+3600000*3 }; let ok=await pushFile('live.json', JSON.stringify(data,null,2)); if(ok){ document.getElementById('aiStatus').innerText='📺 RASTA AI IMETUMWA KWA TV! LANG: '+currentUploadLang; alert('✅ RASTA IMEENDA TV - '+currentUploadLang+' NEWS'); } }
 async function loadCtrl(){ try{ let r=await fetch('assistant_control.json?v='+Date.now()); if(r.ok) ctrlData=await r.json(); }catch{} document.getElementById('ctrlKey').value=ctrlData.token; updateCtrlStatus(); }
 function updateCtrlStatus(){ let enabled=ctrlData.enabled; document.getElementById('ctrlStatus').innerHTML=enabled? `✅ <b style="color:#00e676">IMEWASHWA</b> - Key: <b style="color:#ffcc00">${ctrlData.token}</b>` : `⛔ <b style="color:#ff4444">IMEZIMWA</b>`; let base=location.origin+location.pathname.replace('admin.html',''); let link=base+'assistance.html?key='+ctrlData.token; document.getElementById('linkOut').innerText=link; }
 function downloadCtrl(){ let blob=new Blob([JSON.stringify(ctrlData,null,2)],{type:'application/json'}); let url=URL.createObjectURL(blob); document.getElementById('ctrlDownload').innerHTML=`<a href="${url}" download="assistant_control.json" style="display:block;background:#00e676;color:#000;padding:14px;border-radius:10px;text-align:center;font-weight:900;text-decoration:none;margin-top:12px">⬇️ PAKUA assistant_control.json KISHA UPLOAD GITHUB</a>`; }
