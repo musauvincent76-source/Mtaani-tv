@@ -19,21 +19,18 @@ input,select,textarea{width:100%;padding:14px;margin:8px 0;border-radius:10px;bo
 <div class="box">
 <h2>📺 ADVERTISE WITH MTAANI TV</h2>
 
-<!-- STEP 1: CATEGORIES -->
 <p><b>1. Chagua Category:</b></p>
 <div class="cat-grid" id="catGrid">Loading categories...</div>
-<select id="category" style="display:none"></select>
+<select id="categorySelect" style="display:none"></select>
 
-<!-- STEP 2: MAELEZO -->
 <p><b>2. Weka Maelezo:</b></p>
-<input id="name" placeholder="Jina la Biashara / Bidhaa">
-<input id="phone" placeholder="Namba ya Simu">
-<textarea id="desc" placeholder="Maelezo ya matangazo"></textarea>
-<input type="file" id="media" accept="image/*,video/*">
+<input id="bizName" placeholder="Jina la Biashara / Bidhaa">
+<input id="bizPhone" placeholder="Namba ya Simu">
+<textarea id="bizDesc" placeholder="Maelezo ya matangazo"></textarea>
+<input type="file" id="bizMedia" accept="image/*,video/*">
 
 <button class="btn" onclick="showPay()" style="background:#333;color:#fff">CONTINUE ⏩</button>
 
-<!-- STEP 3: MALIPO - PAYMENT WILL APPEAR AFTER SUBMIT -->
 <div class="till" id="tillBox">
 <p style="margin:0">LIPA NA M-PESA</p>
 <b>BUY GOODS</b><br>
@@ -51,13 +48,12 @@ Kiasi: <span id="tillPrice" style="font-size:18px">50 KES</span>
 let chosenCat = "";
 let cats = [];
 
-// Soma categories kutoka categories.json yako
 fetch('categories.json')
 .then(r=>r.json())
 .then(data=>{
  cats=data;
  let grid=document.getElementById('catGrid');
- let sel=document.getElementById('category');
+ let sel=document.getElementById('categorySelect');
  grid.innerHTML='';
  sel.innerHTML='';
  data.forEach(c=>{
@@ -65,7 +61,7 @@ fetch('categories.json')
    grid.innerHTML+=`<div class="cat-item" onclick="pickCat(this,'${c}')">${c}</div>`;
  });
 })
-.catch(()=>{ // kama categories.json haipo
+.catch(()=>{
  cats=["Nguo","Chakula","Biashara","Habari","Bure","Matangazo"];
  let grid=document.getElementById('catGrid');
  grid.innerHTML='';
@@ -74,19 +70,18 @@ fetch('categories.json')
  });
 });
 
-function pickCat(el, name){
+function pickCat(el, cname){
  document.querySelectorAll('.cat-item').forEach(e=>e.classList.remove('active'));
  el.classList.add('active');
- chosenCat=name;
- document.getElementById('category').value=name;
- document.getElementById('chosenCatShow').innerText=name;
+ chosenCat=cname;
+ document.getElementById('categorySelect').value=cname;
+ document.getElementById('chosenCatShow').innerText=cname;
 }
 
 function showPay(){
+ let biz = document.getElementById('bizName').value.trim();
  if(!chosenCat){ alert('Chagua Category kwanza! Nguo, Chakula etc'); return; }
- if(!name.value){ alert('Weka Jina la Biashara'); return; }
- 
- // SEE PAYMENT VALUE 
+ if(!biz){ alert('Weka Jina la Biashara'); return; }
  let s=JSON.parse(localStorage.getItem('mtaani_settings')||'{"till":"3624692","price":"200","offer":"50"}');
  let price = s.offer && s.offer!="" ? s.offer : s.price;
  document.getElementById('tillNum').innerText=s.till;
@@ -96,23 +91,25 @@ function showPay(){
 }
 
 function finalSubmit(){
- let code=document.getElementById('mpesaCode').value;
+ let code=document.getElementById('mpesaCode').value.trim();
  if(code.length<8){ alert('Weka M-Pesa Code sahihi'); return; }
- 
+ let bizNameVal = document.getElementById('bizName').value;
+ let bizPhoneVal = document.getElementById('bizPhone').value;
+ let bizDescVal = document.getElementById('bizDesc').value;
+
  let ads=JSON.parse(localStorage.getItem('ads')||'[]');
  ads.push({
-  name:document.getElementById('name').value,
+  name:bizNameVal,
   category:chosenCat,
-  phone:document.getElementById('phone').value,
-  desc:document.getElementById('desc').value,
+  phone:bizPhoneVal,
+  desc:bizDescVal,
   code:code,
   time:new Date().toLocaleString()
  });
  localStorage.setItem('ads',JSON.stringify(ads));
- document.getElementById('msg').innerHTML='✅ SUBMITTED! Admin WILL APPROVE Till 3624692';
+ document.getElementById('msg').innerHTML='✅ SUBMITTED! Admin ata-check Till 3624692 na ku-approve';
  
- // SEND TO WhatsApp 
- let waMsg = `NEW AD%0ACategory: ${chosenCat}%0AJina: ${name.value}%0ACode: ${code}`;
+ let waMsg = `NEW AD%0ACategory: ${chosenCat}%0AJina: ${bizNameVal}%0ASimu: ${bizPhoneVal}%0ACode: ${code}`;
  window.open(`https://wa.me/254751768763?text=${waMsg}`,'_blank');
 }
 </script>
