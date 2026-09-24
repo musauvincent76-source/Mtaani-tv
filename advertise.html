@@ -1,56 +1,120 @@
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Advertise here- MTAANI TV</title>
+<title>ADVERTISE WITH MTAANI TV</title>
 <style>
-body{background:#000;color:#fff;font-family:sans-serif;padding:20px}
-.box{max-width:400px;margin:auto;background:#111;padding:20px;border-radius:15px;border:1px solid #333}
-input,textarea{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #444;background:#222;color:#fff}
-.btn{width:100%;padding:14px;background:#00ff88;color:#000;font-weight:bold;border:none;border-radius:8px;margin-top:10px}
-.till{background:#222;padding:15px;border-radius:10px;text-align:center;margin:15px 0;border:1px dashed #00ff88}
+body{background:#0a0a0a;color:#fff;font-family:sans-serif;padding:15px;margin:0}
+.box{max-width:420px;margin:auto;background:#111;padding:20px;border-radius:15px;border:1px solid #222}
+h2{text-align:center}
+input,select,textarea{width:100%;padding:14px;margin:8px 0;border-radius:10px;border:1px solid #333;background:#1a1a1a;color:#fff;box-sizing:border-box}
+.btn{width:100%;padding:16px;background:#00ff88;color:#000;font-weight:bold;border:none;border-radius:12px;margin-top:15px;font-size:16px}
+.till{display:none;background:#1a1a1a;padding:20px;border-radius:12px;text-align:center;margin:15px 0;border:1px dashed #00ff88}
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.cat-item{padding:12px;background:#1e1e1e;border:1px solid #333;border-radius:10px;text-align:center;cursor:pointer}
+.cat-item.active{background:#00ff88;color:#000;border-color:#00ff88;font-weight:bold}
 </style>
 </head>
 <body>
 <div class="box">
-<h2>📺 ADVERTISE MTAANI TV</h2>
-<div class="till">
-LIPA NA M-PESA<br>
-<strong>BUY GOODS</strong><br>
-<span style="font-size:28px;color:#00ff88">3624692</span><br>
-Kiasi: 50 KES
-</div>
+<h2>📺 ADVERTISE WITH MTAANI TV</h2>
 
-<input id="name" placeholder="Jina la Biashara">
+<!-- STEP 1: CATEGORIES -->
+<p><b>1. Chagua Category:</b></p>
+<div class="cat-grid" id="catGrid">Loading categories...</div>
+<select id="category" style="display:none"></select>
+
+<!-- STEP 2: MAELEZO -->
+<p><b>2. Weka Maelezo:</b></p>
+<input id="name" placeholder="Jina la Biashara / Bidhaa">
 <input id="phone" placeholder="Namba ya Simu">
 <textarea id="desc" placeholder="Maelezo ya matangazo"></textarea>
-<input id="mpesaCode" placeholder="Weka M-Pesa Code mf: QGH7RT8J2K">
 <input type="file" id="media" accept="image/*,video/*">
 
-<button class="btn" onclick="submitAd()">ADVERTISE NOW</button>
-<p id="status"></p>
+<button class="btn" onclick="showPay()" style="background:#333;color:#fff">CONTINUE ⏩</button>
+
+<!-- STEP 3: MALIPO - PAYMENT WILL APPEAR AFTER SUBMIT -->
+<div class="till" id="tillBox">
+<p style="margin:0">LIPA NA M-PESA</p>
+<b>BUY GOODS</b><br>
+<span id="tillNum" style="font-size:32px;color:#00ff88;font-weight:bold">3624692</span><br>
+Kiasi: <span id="tillPrice" style="font-size:18px">50 KES</span>
+<input id="mpesaCode" placeholder="Weka M-Pesa Code mf: QGH7RT8J2K" style="margin-top:15px">
+<button class="btn" onclick="finalSubmit()" style="background:#00ff88">ADVERTISE NOW ✅</button>
+<p style="font-size:11px;margin-top:10px;color:#888">Category: <span id="chosenCatShow"></span></p>
+</div>
+
+<p id="msg"></p>
 </div>
 
 <script>
-function submitAd(){
- const code = document.getElementById('mpesaCode').value;
- if(code.length < 8){ alert('Weka M-Pesa Code sahihi'); return; }
- 
- document.getElementById('status').innerHTML = "✅ Submitted! Subiri Admin a-approve ndani ya M-Pesa App yake (3624692)";
+let chosenCat = "";
+let cats = [];
 
- // Hapa ina-save kwa localStorage kwanza, badae tutaunganisha na ads.json yako
- let ads = JSON.parse(localStorage.getItem('ads')||'[]');
- ads.push({
-   name: document.getElementById('name').value,
-   phone: document.getElementById('phone').value,
-   desc: document.getElementById('desc').value,
-   code: code,
-   status: 'pending',
-   time: new Date().toLocaleString()
+// Soma categories kutoka categories.json yako
+fetch('categories.json')
+.then(r=>r.json())
+.then(data=>{
+ cats=data;
+ let grid=document.getElementById('catGrid');
+ let sel=document.getElementById('category');
+ grid.innerHTML='';
+ sel.innerHTML='';
+ data.forEach(c=>{
+   sel.innerHTML+=`<option value="${c}">${c}</option>`;
+   grid.innerHTML+=`<div class="cat-item" onclick="pickCat(this,'${c}')">${c}</div>`;
  });
- localStorage.setItem('ads', JSON.stringify(ads));
+})
+.catch(()=>{ // kama categories.json haipo
+ cats=["Nguo","Chakula","Biashara","Habari","Bure","Matangazo"];
+ let grid=document.getElementById('catGrid');
+ grid.innerHTML='';
+ cats.forEach(c=>{
+  grid.innerHTML+=`<div class="cat-item" onclick="pickCat(this,'${c}')">${c}</div>`;
+ });
+});
+
+function pickCat(el, name){
+ document.querySelectorAll('.cat-item').forEach(e=>e.classList.remove('active'));
+ el.classList.add('active');
+ chosenCat=name;
+ document.getElementById('category').value=name;
+ document.getElementById('chosenCatShow').innerText=name;
+}
+
+function showPay(){
+ if(!chosenCat){ alert('Chagua Category kwanza! Nguo, Chakula etc'); return; }
+ if(!name.value){ alert('Weka Jina la Biashara'); return; }
+ 
+ // SEE PAYMENT VALUE 
+ let s=JSON.parse(localStorage.getItem('mtaani_settings')||'{"till":"3624692","price":"200","offer":"50"}');
+ let price = s.offer && s.offer!="" ? s.offer : s.price;
+ document.getElementById('tillNum').innerText=s.till;
+ document.getElementById('tillPrice').innerText=price+' KES';
+ document.getElementById('tillBox').style.display='block';
+ document.getElementById('tillBox').scrollIntoView({behavior:'smooth'});
+}
+
+function finalSubmit(){
+ let code=document.getElementById('mpesaCode').value;
+ if(code.length<8){ alert('Weka M-Pesa Code sahihi'); return; }
+ 
+ let ads=JSON.parse(localStorage.getItem('ads')||'[]');
+ ads.push({
+  name:document.getElementById('name').value,
+  category:chosenCat,
+  phone:document.getElementById('phone').value,
+  desc:document.getElementById('desc').value,
+  code:code,
+  time:new Date().toLocaleString()
+ });
+ localStorage.setItem('ads',JSON.stringify(ads));
+ document.getElementById('msg').innerHTML='✅ SUBMITTED! Admin WILL APPROVE Till 3624692';
+ 
+ // SEND TO WhatsApp 
+ let waMsg = `NEW AD%0ACategory: ${chosenCat}%0AJina: ${name.value}%0ACode: ${code}`;
+ window.open(`https://wa.me/254751768763?text=${waMsg}`,'_blank');
 }
 </script>
 </body>
-  </html>
+</html>
