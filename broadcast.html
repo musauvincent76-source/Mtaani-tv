@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Broadcast - Inataja Jina</title>
+<style>
+body{font-family:sans-serif;padding:15px;background:#f0f2f5}
+.box{background:white;padding:15px;border-radius:12px;margin-bottom:15px}
+textarea,input{width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #ccc}
+button{background:#25D366;color:white;padding:12px;border:none;border-radius:8px;width:100%;font-weight:bold;margin:5px 0}
+#log{font-size:12px;max-height:200px;overflow:auto;background:#111;color:#0f0;padding:10px;border-radius:8px}
+</style>
+</head>
+<body>
+<h3>📢 Inataja Mtu + Safe</h3>
+
+<div class="box">
+<label>Ujumbe (tumia {jina} mahali unataka jina la mtu):</label>
+<textarea id="msg" rows="5">Sasa {jina} 👋 Uko aje? Nime-save number yako. Tafadhali ni-save kwa jina "ALEX" alafu ni-text tu "NIME-SAVE" </textarea>
+
+<label>Weka Namba na Majina (namba,jina):</label>
+<textarea id="numbers" rows="8" placeholder="254712345678,Kevin&#10;254711223344,Brian"></textarea>
+
+<label>Delay sekunde:</label>
+<input type="number" id="delay" value="10">
+
+<button onclick="start()">Anza Kutuma</button>
+<button onclick="stop()" style="background:#ff4444">Simamisha</button>
+</div>
+
+<div class="box">
+<p>Imetumwa: <span id="sent">0</span> / <span id="count">0</span></p>
+<div id="log">Ready...</div>
+</div>
+
+<script>
+let timer, index=0, list=[];
+function start(){
+  let raw = document.getElementById('numbers').value.split('\n');
+  list = raw.map(l=>{
+    let [num,name] = l.split(',');
+    return {num:num?.trim(), name:(name||'bro').trim()}
+  }).filter(x=>x.num);
+  
+  document.getElementById('count').innerText = list.length;
+  index=0;
+  let delay = parseInt(document.getElementById('delay').value)*1000;
+  log(`Kuanza na watu ${list.length}`);
+  
+  timer = setInterval(()=>{
+    if(index>=list.length){ log("✅ DONE!"); clearInterval(timer); return; }
+    if(index>0 && index%25==0){ log("Pumziko 60s..."); clearInterval(timer); setTimeout(start,60000); return; }
+    
+    let person = list[index];
+    let msgText = document.getElementById('msg').value.replaceAll('{jina}', person.name);
+    let link = `https://wa.me/${person.num}?text=${encodeURIComponent(msgText)}`;
+    
+    log(`[${index+1}] ${person.name} (${person.num})`);
+    window.open(link, '_blank');
+    
+    index++;
+    document.getElementById('sent').innerText = index;
+  }, delay + Math.random()*4000);
+}
+function stop(){ clearInterval(timer); log("Imesimama"); }
+function log(t){ document.getElementById('log').innerHTML += "<br>"+new Date().toLocaleTimeString()+" - "+t; }
+</script>
+</body>
+</html>
