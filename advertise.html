@@ -1,1 +1,56 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Advertise here- MTAANI TV</title>
+<style>
+body{background:#000;color:#fff;font-family:sans-serif;padding:20px}
+.box{max-width:400px;margin:auto;background:#111;padding:20px;border-radius:15px;border:1px solid #333}
+input,textarea{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #444;background:#222;color:#fff}
+.btn{width:100%;padding:14px;background:#00ff88;color:#000;font-weight:bold;border:none;border-radius:8px;margin-top:10px}
+.till{background:#222;padding:15px;border-radius:10px;text-align:center;margin:15px 0;border:1px dashed #00ff88}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>📺 ADVERTISE MTAANI TV</h2>
+<div class="till">
+LIPA NA M-PESA<br>
+<strong>BUY GOODS</strong><br>
+<span style="font-size:28px;color:#00ff88">3624692</span><br>
+Kiasi: 50 KES
+</div>
+
+<input id="name" placeholder="Jina la Biashara">
+<input id="phone" placeholder="Namba ya Simu">
+<textarea id="desc" placeholder="Maelezo ya matangazo"></textarea>
+<input id="mpesaCode" placeholder="Weka M-Pesa Code mf: QGH7RT8J2K">
+<input type="file" id="media" accept="image/*,video/*">
+
+<button class="btn" onclick="submitAd()">ADVERTISE NOW</button>
+<p id="status"></p>
+</div>
+
+<script>
+function submitAd(){
+ const code = document.getElementById('mpesaCode').value;
+ if(code.length < 8){ alert('Weka M-Pesa Code sahihi'); return; }
+ 
+ document.getElementById('status').innerHTML = "✅ Submitted! Subiri Admin a-approve ndani ya M-Pesa App yake (3624692)";
+
+ // Hapa ina-save kwa localStorage kwanza, badae tutaunganisha na ads.json yako
+ let ads = JSON.parse(localStorage.getItem('ads')||'[]');
+ ads.push({
+   name: document.getElementById('name').value,
+   phone: document.getElementById('phone').value,
+   desc: document.getElementById('desc').value,
+   code: code,
+   status: 'pending',
+   time: new Date().toLocaleString()
+ });
+ localStorage.setItem('ads', JSON.stringify(ads));
+}
+</script>
+</body>
+  </html>
