@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MTAANI TV - FULL SYSTEM + TV BUTTON</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700;900&display=swap" rel="stylesheet">
+<style>
+body{font-family:'Space Grotesk',sans-serif;background:#050507}
+.neon{box-shadow:0 0 20px currentColor}
+</style>
+</head>
+<body class="text-white p-3 pb-20">
+
+<!-- TOP TV BAR -->
+<div class="fixed top-0 left-0 right-0 bg-black/90 backdrop-blur-md p-2 flex gap-2 justify-center z-40 border-b border-[#00ff88]/30">
+<a href="index.html" class="bg-[#00ff88] text-black px-5 py-2 rounded-full font-black text-xs animate-pulse">📺 WATCH TV 36" LIVE</a>
+<a href="advertise.html" class="bg-[#ff00cc] text-white px-5 py-2 rounded-full font-black text-xs">+ ADVERTISE 50 KES</a>
+<a href="super-manager.html" class="bg-white text-black px-5 py-2 rounded-full font-black text-xs">⚙️ MANAGER</a>
+</div>
+<div class="h-14"></div>
+
+<div class="max-w-6xl mx-auto">
+
+<div class="bg-gradient-to-r from-[#00ff88] via-[#00ccff] to-[#ff00cc] p-[2px] rounded-[24px] mb-4">
+<div class="bg-black rounded-[22px] p-5 flex justify-between items-center">
+<div><h1 class="text-3xl font-black">MTAANI TV <span class="text-[#00ff88]">FULL</span></h1><p class="text-[10px] tracking-[5px] text-gray-500">ALL-IN-ONE + TV BUTTON</p></div>
+<div class="text-right"><p class="bg-[#00ff88] text-black px-3 py-1 rounded-full text-xs font-black">TILL 3624692</p><p class="text-[10px] mt-1 text-gray-400">LIVE SYSTEM</p></div>
+</div>
+</div>
+
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+<div class="bg-gradient-to-br from-[#00ff88] to-emerald-600 p-4 rounded-2xl text-black"><p class="text-[10px]">ADS</p><p class="text-3xl font-black" id="s1">0</p></div>
+<div class="bg-gradient-to-br from-[#ff00cc] to-purple-600 p-4 rounded-2xl"><p class="text-[10px]">PENDING</p><p class="text-3xl font-black" id="s2">0</p></div>
+<div class="bg-gradient-to-br from-[#00ccff] to-blue-600 p-4 rounded-2xl"><p class="text-[10px]">KES</p><p class="text-3xl font-black" id="s3">0</p></div>
+<div class="bg-gradient-to-br from-[#ffaa00] to-orange-600 p-4 rounded-2xl text-black"><p class="text-[10px]">CATS</p><p class="text-3xl font-black" id="s4">0</p></div>
+</div>
+
+<div class="flex gap-2 mb-4 overflow-x-auto pb-2">
+<button onclick="tab('ads')" id="t-ads" class="tab bg-white text-black px-5 py-3 rounded-full font-black text-sm">ADS</button>
+<button onclick="tab('cat')" id="t-cat" class="tab bg-zinc-900 px-5 py-3 rounded-full text-sm">CATEGORIES</button>
+<button onclick="tab('btn')" id="t-btn" class="tab bg-zinc-900 px-5 py-3 rounded-full text-sm border-2 border-[#ff00cc]">🔘 BUTTONS + TV</button>
+<button onclick="tab('tv')" id="t-tv" class="tab bg-zinc-900 px-5 py-3 rounded-full text-sm">📺 TV DESIGN</button>
+<button onclick="tab('set')" id="t-set" class="tab bg-zinc-900 px-5 py-3 rounded-full text-sm">SETTINGS</button>
+</div>
+
+<div id="tab-ads" class="tabBox"><div id="adsList" class="grid md:grid-cols-2 gap-3"></div></div>
+
+<div id="tab-cat" class="tabBox hidden">
+<div class="bg-zinc-900/60 p-5 rounded-[20px] border border-zinc-800">
+<h2 class="font-black text-lg mb-3">📂 CATEGORIES + COLOURS</h2>
+<div id="catGrid" class="grid grid-cols-2 gap-3 mb-4"></div>
+<div class="bg-black border-2 border-dashed border-[#00ff88] p-3 rounded-xl flex gap-2">
+<input id="newCat" placeholder="Jina: Nguo..." class="flex-1 bg-transparent outline-none p-2"><input id="catColor" type="color" value="#00ff88" class="w-12 h-12 rounded"><button onclick="addCat()" class="bg-[#00ff88] text-black px-6 rounded-xl font-black">ADD</button>
+</div>
+</div>
+</div>
+
+<div id="tab-btn" class="tabBox hidden">
+<div class="bg-zinc-900/60 p-5 rounded-[20px] border border-[#ff00cc]/50">
+<h2 class="font-black text-lg text-[#ff00cc]">🔘 BUTTON MANAGER + TV BUTTON</h2>
+<p class="text-xs text-gray-400">Ongeza buttons ngapi unataka - na TV button iko tayari!</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
+<input id="btnText" placeholder="Text: WATCH TV LIVE" class="bg-black p-4 rounded-xl border border-zinc-700">
+<input id="btnLink" placeholder="Link: index.html au https://wa.me/..." class="bg-black p-4 rounded-xl border border-zinc-700">
+<select id="btnColor" class="bg-black p-4 rounded-xl border border-zinc-700">
+<option value="bg-[#00ff88] text-black">💚 Green Neon</option>
+<option value="bg-[#ff00cc] text-white">💖 Pink Hot</option>
+<option value="bg-[#00ccff] text-black">💙 Blue Electric</option>
+<option value="bg-[#ffaa00] text-black">🧡 Orange Fire</option>
+<option value="bg-white text-black">🤍 White Pro</option>
+<option value="bg-gradient-to-r from-[#00ff88] to-[#00ccff] text-black">🌈 Green-Blue Gradient</option>
+<option value="bg-gradient-to-r from-[#ff00cc] to-[#ffaa00] text-white">🌈 Pink-Orange Gradient</option>
+</select>
+<select id="btnIcon" class="bg-black p-4 rounded-xl border border-zinc-700">
+<option value="📺">📺 TV</option><option value="📞">📞 Call</option><option value="💬">💬 WhatsApp</option><option value="🛒">🛒 Nunua</option><option value="🔥">🔥 Offer</option><option value="💰">💰 Lipa Till</option><option value="➡️">➡️ Continue</option><option value="✨">✨ New</option>
+</select>
+</div>
+<button onclick="addBtn()" class="w-full mt-3 bg-gradient-to-r from-[#ff00cc] to-[#00ff88] text-black p-4 rounded-xl font-black text-lg">+ ONGEZA BUTTON</button>
+<div id="btnList" class="mt-4 space-y-2"></div>
+<div class="mt-6 p-4 bg-black rounded-xl border border-[#00ff88]">
+<p class="text-xs text-[#00ff88] font-black">📺 PREVIEW - Kama Customer Anaona:</p>
+<div id="btnPreviewLive" class="flex flex-wrap gap-2 mt-3"></div>
+</div>
+<button onclick="addTVButtons()" class="w-full mt-3 bg-[#00ff88] text-black p-3 rounded-xl font-black text-sm">⚡ ONGEZA TV BUTTONS ZOTE AUTOMATIC</button>
+</div>
+</div>
+
+<div id="tab-tv" class="tabBox hidden">
+<div class="grid md:grid-cols-2 gap-3">
+<div class="bg-black border-2 border-[#00ff88] p-5 rounded-[20px]">
+<h3 class="font-black text-[#00ff88]">📺 TV SCREEN 36 INCH + BUTTON</h3>
+<div class="mt-3 aspect-video bg-zinc-900 rounded-xl border border-zinc-800 flex flex-col items-center justify-center relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-br from-[#00ff88]/20 to-[#ff00cc]/20 animate-pulse"></div>
+<div class="relative z-10 text-center"><p class="text-5xl">📺</p><p class="font-black mt-2">MTAANI TV LIVE</p><a href="index.html" class="mt-3 inline-block bg-[#00ff88] text-black px-6 py-2 rounded-full font-black text-xs">📺 WATCH FULL TV</a></div>
+</div>
+<input id="bannerText" value="ADVERTISE MTAANI - 50 KES ONLY!" class="w-full mt-3 bg-zinc-900 p-3 rounded-xl border border-zinc-700">
+<div id="bannerPrev" class="mt-2 h-16 bg-gradient-to-r from-[#00ff88] to-[#ff00cc] rounded-xl flex items-center justify-center font-black text-black text-sm">ADVERTISE MTAANI - 50 KES ONLY!</div>
+</div>
+<div class="bg-black border border-[#00ccff] p-5 rounded-[20px]">
+<h3 class="font-black text-[#00ccff]">🎨 THEME</h3>
+<div class="grid grid-cols-3 gap-3 mt-3">
+<button onclick="setTheme('#00ff88')" class="h-20 bg-[#00ff88] rounded-xl"></button><button onclick="setTheme('#ff00cc')" class="h-20 bg-[#ff00cc] rounded-xl"></button><button onclick="setTheme('#00ccff')" class="h-20 bg-[#00ccff] rounded-xl"></button>
+<button onclick="setTheme('#ffaa00')" class="h-20 bg-[#ffaa00] rounded-xl"></button><button onclick="setTheme('#9900ff')" class="h-20 bg-[#9900ff] rounded-xl"></button><button onclick="document.body.style.background='#050507'" class="h-20 bg-black border border-white rounded-xl">RESET</button>
+</div>
+<button onclick="saveAll()" class="w-full mt-4 bg-white text-black p-4 rounded-xl font-black">💾 SAVE KILA KITU</button>
+</div>
+</div>
+</div>
+
+<div id="tab-set" class="tabBox hidden">
+<div class="grid md:grid-cols-2 gap-3">
+<div class="bg-gradient-to-br from-[#00ff88]/20 to-black border border-[#00ff88] p-5 rounded-[20px]">
+<h3 class="font-black text-[#00ff88]">💰 TILL & BEI</h3>
+<label class="text-xs">TILL</label><input id="setTill" value="3624692" class="w-full bg-black border border-[#00ff88] p-3 rounded-xl mt-1 font-black text-[#00ff88] text-xl">
+<label class="text-xs mt-3 block">BEI KAWAI</label><input id="setPrice" value="200" class="w-full bg-black p-3 rounded-xl border border-zinc-700 mt-1">
+<label class="text-xs mt-3 block">OFFER</label><input id="setOffer" value="50" class="w-full bg-black p-3 rounded-xl border-2 border-[#ff00cc] text-[#ff00cc] font-black mt-1">
+<label class="text-xs mt-3 block">WHATSAPP</label><input id="setWa" value="254700000000" class="w-full bg-black p-3 rounded-xl border border-zinc-700 mt-1">
+</div>
+<div class="bg-zinc-900 p-5 rounded-[20px]">
+<h3 class="font-black">📦 EXPORT</h3>
+<button onclick="exportJSON()" class="w-full bg-[#00ff88] text-black p-3 rounded-xl font-black mt-3">COPY categories.json</button>
+<textarea id="jsonOut" class="w-full h-40 bg-black text-green-400 text-xs p-3 rounded-xl mt-3"></textarea>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- FLOATING TV BUTTON -->
+<a href="index.html" class="fixed bottom-6 right-6 bg-gradient-to-r from-[#00ff88] to-[#00ccff] text-black w-20 h-20 rounded-full flex flex-col items-center justify-center font-black shadow-[0_0_40px_#00ff88] animate-bounce z-50 border-4 border-black">
+<span class="text-2xl">📺</span><span class="text-[8px]">TV LIVE</span>
+</a>
+
+<script>
+let cats = JSON.parse(localStorage.getItem('mtaani_cats')||'[{"name":"Nguo","color":"#00ff88"},{"name":"Chakula","color":"#ff00cc"},{"name":"Biashara","color":"#00ccff"},{"name":"Habari","color":"#ffaa00"}]');
+let ads = JSON.parse(localStorage.getItem('ads')||'[]');
+let btns = JSON.parse(localStorage.getItem('mtaani_buttons')||'[{"text":"WATCH MTAANI TV 36\\" LIVE","link":"index.html","color":"bg-gradient-to-r from-[#00ff88] to-[#00ccff] text-black","icon":"📺"},{"text":"LIPA TILL 3624692","link":"#","color":"bg-[#00ff88] text-black","icon":"💰"},{"text":"WHATSAPP ADMIN","link":"https://wa.me/254700000000","color":"bg-[#25D366] text-white","icon":"💬"}]');
+
+function tab(n){
+ document.querySelectorAll('.tabBox').forEach(e=>e.classList.add('hidden'));
+ document.querySelectorAll('.tab').forEach(e=>{e.classList.remove('bg-white','text-black'); e.classList.add('bg-zinc-900')});
+ document.getElementById('tab-'+n).classList.remove('hidden');
+ document.getElementById('t-'+n).classList.add('bg-white','text-black');
+ render();
+}
+function render(){
+ document.getElementById('s1').innerText=ads.length+12; document.getElementById('s2').innerText=ads.length; document.getElementById('s3').innerText=ads.length*50; document.getElementById('s4').innerText=cats.length;
+ document.getElementById('adsList').innerHTML=ads.length?ads.map((a,i)=>`<div class="bg-zinc-900 p-4 rounded-2xl border-l-4" style="border-color:${a.color||'#00ff88'}"><div class="flex justify-between"><b>${a.name}</b><span class="text-[10px] bg-white text-black px-2 py-1 rounded-full">${a.category}</span></div><p class="text-xs text-gray-400 mt-1">${a.code}</p><div class="flex gap-2 mt-3"><button onclick="ads.splice(${i},1);localStorage.setItem('ads',JSON.stringify(ads));render()" class="flex-1 bg-[#00ff88] text-black p-3 rounded-xl font-black">APPROVE ✅</button><button onclick="ads.splice(${i},1);localStorage.setItem('ads',JSON.stringify(ads));render()" class="bg-red-500/20 text-red-400 p-3 rounded-xl">X</button></div></div>`).join(''):`<div class="col-span-2 bg-zinc-900 p-10 rounded-2xl text-center text-gray-500">Hakuna ads - customer akilipa Till 3624692 ataonekana hapa</div>`;
+ document.getElementById('catGrid').innerHTML=cats.map((c,i)=>`<div class="p-4 rounded-2xl flex justify-between items-center font-black text-black" style="background:${c.color}"><span>${c.name}</span><button onclick="cats.splice(${i},1);saveCats();render()" class="bg-black text-white w-7 h-7 rounded-full">x</button></div>`).join('');
+ document.getElementById('btnList').innerHTML=btns.map((b,i)=>`<div class="flex gap-2 bg-black p-2 rounded-xl items-center"><div class="flex-1 ${b.color} p-3 rounded-xl font-black text-center text-sm">${b.icon} ${b.text}</div><button onclick="btns.splice(${i},1);localStorage.setItem('mtaani_buttons',JSON.stringify(btns));render()" class="bg-red-500 w-10 h-10 rounded-full">X</button></div>`).join('');
+ document.getElementById('btnPreviewLive').innerHTML=btns.map(b=>`<a href="${b.link}" target="_blank" class="${b.color} px-5 py-3 rounded-full text-sm font-black">${b.icon} ${b.text}</a>`).join('');
+}
+function addCat(){ let v=document.getElementById('newCat').value.trim(); let c=document.getElementById('catColor').value; if(!v) return; cats.push({name:v,color:c}); document.getElementById('newCat').value=''; saveCats(); render(); }
+function saveCats(){ localStorage.setItem('mtaani_cats',JSON.stringify(cats)); }
+function addBtn(){ let t=document.getElementById('btnText').value; let l=document.getElementById('btnLink').value; let c=document.getElementById('btnColor').value; let ic=document.getElementById('btnIcon').value; if(!t) return alert('Weka text'); btns.push({text:t,link:l,color:c,icon:ic}); localStorage.setItem('mtaani_buttons',JSON.stringify(btns)); document.getElementById('btnText').value=''; document.getElementById('btnLink').value=''; render(); }
+function addTVButtons(){ btns.push({text:"WATCH TV 36\" FULLSCREEN",link:"index.html",color:"bg-gradient-to-r from-[#00ff88] to-[#00ccff] text-black",icon:"📺"},{text:"ADVERTISE 50 KES",link:"advertise.html",color:"bg-[#ff00cc] text-white",icon:"🔥"},{text:"MANAGER",link:"super-manager.html",color:"bg-white text-black",icon:"⚙️"}); localStorage.setItem('mtaani_buttons',JSON.stringify(btns)); render(); }
+function setTheme(col){ document.body.style.background=`radial-gradient(circle at top, ${col}22, #050507)`; }
+function saveAll(){ localStorage.setItem('mtaani_settings',JSON.stringify({till:document.getElementById('setTill').value,price:document.getElementById('setPrice').value,offer:document.getElementById('setOffer').value})); alert('SAVED! Till 3624692'); }
+function exportJSON(){ document.getElementById('jsonOut').value=JSON.stringify(cats.map(c=>c.name),null,2); }
+document.getElementById('bannerText').addEventListener('input',e=>document.getElementById('bannerPrev').innerText=e.target.value);
+tab('btn');
+</script>
+</body>
+  </html>
