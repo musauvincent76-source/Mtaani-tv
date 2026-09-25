@@ -1,5 +1,5 @@
 {
-  "live": true,
+  "live": false,
   "room": "MtaaniTV-Live-Show",
   "vdo_push": "https://vdo.ninja/?push=MtaaniTV-Live-Show&webcam&autostart",
   "vdo_view": "https://vdo.ninja/?view=MtaaniTV-Live-Show&cleanoutput&transparent&noheader",
@@ -7,6 +7,6 @@
   "bg": "https://images.unsplash.com/photo-1494314671902-399b18174975?w=600",
   "hostFeatured": true,
   "guests": [],
-  "time": 1790354375069,
-  "endTime": 1790365061320
+  "time": 1790354469639,
+  "endTime": 0
 }
