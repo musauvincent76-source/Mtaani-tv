@@ -1,1 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mtaani AI Studio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body style="background:#111;color:white;padding:20px;font-family:sans-serif;">
+<h2>Mtaani AI Studio</h2>
+<textarea id="aiText" style="width:100%;height:120px;" placeholder="Andika habari AI asome...">Habari, Mtaani TV inaendelea...</textarea>
+<br><br>
+<button onclick="testAI()" style="padding:15px 30px;background:red;color:white;border:none;border-radius:10px;width:100%;">JARIBU SAUTI + PRESENTER</button>
 
+<script src="ai-presenter.js"></script>
+<script>
+function testAI(){
+  let text = document.getElementById('aiText').value;
+  speakMtaani(text);
+}
+</script>
+</body>
+</html>
