@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MSAIDIZI - LIVE FINAL FIXED</title>
+<title>MSAIDIZI - LIVE FIXED V2</title>
 <script src="https://meet.jit.si/external_api.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}body{background:#050a1f;color:#fff;font-family:sans-serif;padding:10px}
@@ -16,35 +16,27 @@ button{width:100%;padding:13px;border:none;border-radius:10px;font-weight:900;ma
 #jitsiContainer{position:absolute;top:0;left:0;width:100%;height:100%;z-index:2}
 .filter-box{display:flex;gap:5px;margin:8px 0;flex-wrap:wrap}.filter-box button{flex:1;font-size:11px;padding:10px;min-width:70px}
 #linkPreview{display:none;background:#000;border-radius:10px;overflow:hidden;margin-top:10px;border:1px solid #333}
-#linkPreview img{width:100%;max-height:220px;object-fit:cover}
-.info{padding:10px}
-.badge{display:inline-block;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:900;margin-bottom:5px}
 </style>
 </head>
 <body>
-<div id="lock" style="background:#111;padding:40px;border-radius:15px;text-align:center;margin-top:50px;border:3px solid #ff4444">
-<h2>🔒 SUBIRI BOSS...</h2><p id="lockMsg" style="margin-top:10px;color:#aaa">Inaangalia access...</p>
-</div>
+<div id="lock" style="background:#111;padding:40px;border-radius:15px;text-align:center;margin-top:50px;border:3px solid #ff4444"><h2>🔒 SUBIRI BOSS...</h2><p id="lockMsg" style="margin-top:10px;color:#aaa">Inaangalia access...</p></div>
 <div id="panel" style="display:none">
 <div style="background:linear-gradient(90deg,#ff6600,#ffcc00);color:#000;padding:12px;border-radius:10px;text-align:center;font-weight:900">✅ Access Imefunguliwa na Boss</div>
-
 <div class="card-yellow">
-<h3 style="color:#ffcc00">📺 POST LINK KWA TV KUBWA / PUBLIC</h3>
-<p style="font-size:11px;color:#aaa;margin:4px 0">Weka Link ya YouTube / Facebook / TikTok - Jina litatokea yenyewe</p>
-<input id="postLink" placeholder="Weka link hapa... mf: https://youtu.be/xxxx" onpaste="setTimeout(handleLink,100)" oninput="handleLink()">
-<div id="linkPreview"><img id="prevThumb" src="" style="display:none"><div class="info"><span id="prevBadge" class="badge" style="background:#ff0000;color:#fff">YOUTUBE</span><h4 id="prevTitle" style="color:#fff;font-size:14px">Title</h4><p id="prevDesc" style="color:#aaa;font-size:11px"></p><p id="prevUrl" style="color:#00e676;font-size:10px;word-break:break-all"></p></div></div>
-<input id="postTitleManual" placeholder="✏️ Badilisha Jina (optional)" style="display:none;margin-top:8px;background:#222;color:#fff;border:1px solid #555">
-<button onclick="sendToTV()" style="background:linear-gradient(90deg,#00e676,#00b300);color:#000">🚀 TUMA KWA PUBLIC / TV KUBWA</button>
-<button onclick="clearPost()" style="background:#222;color:#fff;border:1px solid #555">🗑️ FUTA LINK</button>
+<h3 style="color:#ffcc00">📺 POST LINK KWA TV KUBWA</h3>
+<input id="postLink" placeholder="Weka link hapa..." onpaste="setTimeout(handleLink,100)" oninput="handleLink()">
+<div id="linkPreview"></div>
+<input id="postTitleManual" placeholder="✏️ Badilisha Jina" style="display:none;margin-top:8px;background:#222;color:#fff;border:1px solid #555">
+<button onclick="sendToTV()" style="background:linear-gradient(90deg,#00e676,#00b300);color:#000">🚀 TUMA KWA TV KUBWA</button>
+<button onclick="clearPost()" style="background:#222;color:#fff;border:1px solid #555">🗑️ FUTA</button>
 <p id="postStatus" style="font-size:11px;color:#ffcc00;margin-top:6px"></p>
 </div>
-
 <div class="card">
 <h3>🔴 LIVE KWA TV KUBWA</h3>
-<input id="room" placeholder="Room" value="msaidizi-live-1">
+<input id="room" value="msaidizi-live-1">
 <input type="file" id="bgInput" accept="image/*" style="background:#222;color:#fff">
 <button onclick="startLive()" style="background:#ff6600;color:#fff">🔴 ANZA LIVE</button>
-<button onclick="switchCamera()" style="background:#333;color:#fff">📷 FRONT / BACK CAMERA</button>
+<button onclick="switchCamera()" style="background:#333;color:#fff">📷 FRONT / BACK</button>
 <div class="filter-box">
 <button onclick="setFilter('pic')" style="background:#00b300;border:2px solid #ffcc00">✨ PICHA YAKO FILTER</button>
 <button onclick="setFilter('smart')" style="background:#0066ff;color:#fff">SMART</button>
@@ -52,23 +44,51 @@ button{width:100%;padding:13px;border:none;border-radius:10px;font-weight:900;ma
 <button onclick="setFilter('normal')" style="background:#222;color:#fff">NORMAL</button>
 </div>
 <div id="studioWrap"><div id="bgLayer"></div><div id="jitsiContainer"></div></div>
-<button onclick="stopLive()" style="background:#111;border:1px solid #ff4444;color:#ff4444;margin-top:10px">⏹️ ZIMA LIVE</button>
+<button onclick="stopLive()" style="background:#111;border:1px solid #ff4444;color:#ff4444">⏹️ ZIMA LIVE</button>
 <button id="dlBtn" onclick="downloadLive()" style="background:#ffcc00;color:#000;display:none">⬇️ PAKUA live.json</button>
 <p id="status" style="font-size:12px;color:#0f0;margin-top:8px"></p>
 </div>
 </div>
 <script>
-let currentFacing="user";let jitsiApi=null;let liveData=null;let postData={link:"",title:"",thumbnail:"",desc:"",type:""};
-async function checkAccess(){let params=new URLSearchParams(location.search);let key=params.get('key')||'';if(!key){document.getElementById('lockMsg').innerText='❌ Hakuna KEY!';return;}try{let r=await fetch('./assistant_control.json?v='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('404');let d=await r.json();if(!d.enabled){document.getElementById('lockMsg').innerHTML='🔒 BOSS AMEZIMA';setTimeout(checkAccess,10000);return;}if(d.token&&d.token!==key){document.getElementById('lockMsg').innerHTML='❌ KEY IMEEXPIRE!';return;}document.getElementById('lock').style.display='none';document.getElementById('panel').style.display='block';}catch(e){document.getElementById('lockMsg').innerText='⏳ Haipatikani... '+e.message;setTimeout(checkAccess,3000);}}checkAccess();
-document.getElementById('bgInput').addEventListener('change',function(e){let f=e.target.files[0];if(!f)return;let u=URL.createObjectURL(f);document.getElementById('bgLayer').style.backgroundImage='url('+u+')';if(liveData)liveData.bg=u;});
-async function handleLink(){let link=document.getElementById('postLink').value.trim();if(!link||link.length<6){document.getElementById('linkPreview').style.display='none';return;}document.getElementById('prevUrl').innerText=link;document.getElementById('postStatus').innerText='⏳ Inavuta details...';let type='LINK',title='',thumb='',desc='';if(link.includes('youtu.be')||link.includes('youtube.com')){type='YOUTUBE';document.getElementById('prevBadge').innerText='YOUTUBE';document.getElementById('prevBadge').style.background='#ff0000';try{let o=await fetch('https://noembed.com/embed?url='+encodeURIComponent(link)).then(r=>r.json());title=o.title||'YouTube Video';thumb=o.thumbnail||'';desc=o.author_name||'YouTube';}catch{title='YouTube Video';}}else if(link.includes('facebook.com')||link.includes('fb.watch')){type='FACEBOOK';document.getElementById('prevBadge').innerText='FACEBOOK';document.getElementById('prevBadge').style.background='#1877f2';title='Facebook Video';desc='Facebook';}else if(link.includes('tiktok.com')){type='TIKTOK';document.getElementById('prevBadge').innerText='TIKTOK';document.getElementById('prevBadge').style.background='#000';title='TikTok Video';try{let o=await fetch('https://noembed.com/embed?url='+encodeURIComponent(link)).then(r=>r.json());title=o.title||title;thumb=o.thumbnail||'';}catch{}}else{type='WEB';document.getElementById('prevBadge').innerText='LINK';title=link;desc='Link';}postData={link:link,title:title,thumbnail:thumb,desc:desc,type:type};document.getElementById('prevTitle').innerText=title;document.getElementById('prevDesc').innerText=desc;if(thumb){document.getElementById('prevThumb').src=thumb;document.getElementById('prevThumb').style.display='block';}else{document.getElementById('prevThumb').style.display='none';}document.getElementById('linkPreview').style.display='block';document.getElementById('postTitleManual').style.display='block';document.getElementById('postTitleManual').value=title;document.getElementById('postStatus').innerText='✅ Tayari - Bonyeza TUMA';}
-function sendToTV(){if(!postData.link){alert('Weka link!');return;}let finalTitle=document.getElementById('postTitleManual').value.trim()||postData.title;let finalData={link:postData.link,title:finalTitle,thumbnail:postData.thumbnail,description:postData.desc,type:postData.type,showOnTV:true,postedBy:"MSAIDIZI",time:Date.now()};let blob=new Blob([JSON.stringify(finalData,null,2)],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='msaidizi-post.json';a.click();document.getElementById('postStatus').innerText='✅ ImePakuliwa! Upload GitHub';}
-function clearPost(){document.getElementById('postLink').value='';postData={};document.getElementById('linkPreview').style.display='none';document.getElementById('postTitleManual').style.display='none';}
-function startLive(){let room=document.getElementById('room').value.trim()||'msaidizi-live-1';let container=document.getElementById('jitsiContainer');document.getElementById('studioWrap').style.display='block';if(jitsiApi)try{jitsiApi.dispose();}catch{}let opts={roomName:room,width:"100%",height:"100%",parentNode:container,configOverwrite:{prejoinPageEnabled:false,startWithVideoMuted:false},interfaceConfigOverwrite:{SHOW_JITSI_WATERMARK:false},userInfo:{displayName:"MSAIDIZI LIVE"}};jitsiApi=new JitsiMeetExternalAPI("meet.jit.si",opts);liveData={live:true,room:room,bg:document.getElementById('bgLayer').style.backgroundImage,time:Date.now(),endTime:Date.now()+10800000};document.getElementById('dlBtn').style.display='block';document.getElementById('status').innerText='🔴 LIVE INAENDELEA';}
-function switchCamera(){currentFacing=currentFacing==='user'?'environment':'user';alert('📷 '+(currentFacing==='user'?'FRONT':'BACK')+' - Badilisha kwa Jitsi ndani');}
-function setFilter(type){let layer=document.getElementById('bgLayer');let jitsi=document.getElementById('jitsiContainer');if(type==='pic'){layer.style.filter='brightness(1.35) contrast(1.2) saturate(1.5)';jitsi.style.filter='brightness(1.28) contrast(1.18) saturate(1.35)';}else if(type==='smart'){jitsi.style.filter='brightness(1.25) contrast(1.25) saturate(1.3)';}else if(type==='beauty'){jitsi.style.filter='brightness(1.3) contrast(1.1) saturate(1.4) blur(0.3px)';}else{jitsi.style.filter='none';layer.style.filter='none';}}
-function stopLive(){if(jitsiApi)try{jitsiApi.dispose();}catch{}document.getElementById('studioWrap').style.display='none';liveData={live:false,room:"",time:Date.now(),endTime:0};document.getElementById('status').innerText='⏹️ IMEZIMWA';}
-function downloadLive(){if(!liveData){alert('Anza LIVE!');return;}let blob=new Blob([JSON.stringify(liveData,null,2)],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='live.json';a.click();}
+let jitsiApi=null;let liveData=null;let postData={};
+async function checkAccess(){let p=new URLSearchParams(location.search);let k=p.get('key')||'';if(!k){lockMsg.innerText='❌ Hakuna KEY!';return;}try{let r=await fetch('./assistant_control.json?v='+Date.now(),{cache:'no-store'});let d=await r.json();if(!d.enabled){lockMsg.innerHTML='🔒 BOSS AMEZIMA';return;}if(d.token&&d.token!==k){lockMsg.innerHTML='❌ KEY IMEEXPIRE!';return;}lock.style.display='none';panel.style.display='block';}catch(e){lockMsg.innerText='⏳...'+e.message;setTimeout(checkAccess,3000);}}checkAccess();
+bgInput.addEventListener('change',e=>{let f=e.target.files[0];if(!f)return;let u=URL.createObjectURL(f);document.getElementById('bgLayer').style.backgroundImage='url('+u+')';});
+async function handleLink(){let link=postLink.value.trim();if(link.length<6)return;let t='LINK',title='',thumb='',desc='';if(link.includes('youtu')){t='YOUTUBE';try{let o=await fetch('https://noembed.com/embed?url='+encodeURIComponent(link)).then(r=>r.json());title=o.title;thumb=o.thumbnail;}catch{title='YouTube Video';}}else{title=link;}postData={link,title,thumbnail:thumb,type:t};postTitleManual.style.display='block';postTitleManual.value=title;postStatus.innerText='✅ Tayari';}
+function sendToTV(){let finalTitle=postTitleManual.value.trim()||postData.title;let data={link:postData.link,title:finalTitle,thumbnail:postData.thumbnail,type:postData.type,time:Date.now()};let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='msaidizi-post.json';a.click();postStatus.innerText='✅ Upload GitHub';}
+function clearPost(){postLink.value='';postData={};}
+function startLive(){
+ let room=document.getElementById('room').value.trim()||'msaidizi-live-1';
+ let container=document.getElementById('jitsiContainer');
+ document.getElementById('studioWrap').style.display='block';
+ if(jitsiApi)try{jitsiApi.dispose();}catch{}
+ let opts={
+   roomName:room,
+   width:"100%",height:"100%",
+   parentNode:container,
+   configOverwrite:{
+     prejoinPageEnabled:false,
+     prejoinConfig:{enabled:false},
+     disableDeepLinking:true,
+     startWithVideoMuted:false,
+     startWithAudioMuted:false,
+     startAudioOnly:false
+   },
+   interfaceConfigOverwrite:{
+     SHOW_JITSI_WATERMARK:false,
+     SHOW_WATERMARK_FOR_GUESTS:false,
+     MOBILE_APP_PROMO:false,
+     DISABLE_JOIN_LEAVE_NOTIFICATIONS:true
+   },
+   userInfo:{displayName:"MSAIDIZI LIVE"}
+ };
+ jitsiApi=new JitsiMeetExternalAPI("meet.jit.si",opts);
+ liveData={live:true,room:room,time:Date.now(),endTime:Date.now()+10800000};
+ dlBtn.style.display='block';status.innerText='🔴 LIVE INAENDELEA - Hakuna tena Join in browser!';
+}
+function setFilter(t){let l=bgLayer,j=jitsiContainer;if(t==='pic'){l.style.filter='brightness(1.35) contrast(1.2) saturate(1.5)';j.style.filter='brightness(1.28) contrast(1.18) saturate(1.35)';}else if(t==='smart'){j.style.filter='brightness(1.25) contrast(1.25) saturate(1.3)';}else if(t==='beauty'){j.style.filter='brightness(1.3) contrast(1.1) saturate(1.4) blur(0.3px)';}else{j.style.filter='none';l.style.filter='none';}}
+function switchCamera(){alert('Badilisha camera ndani ya Jitsi - bonyeza dots 3 chini');}
+function stopLive(){if(jitsiApi)try{jitsiApi.dispose();}catch{}studioWrap.style.display='none';liveData={live:false};status.innerText='⏹️ IMEZIMWA';}
+function downloadLive(){let blob=new Blob([JSON.stringify(liveData,null,2)],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='live.json';a.click();}
 </script>
 </body>
 </html>
